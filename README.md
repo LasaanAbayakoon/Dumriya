@@ -38,8 +38,10 @@ All times are handled in **Asia/Colombo (+05:30, no DST)** regardless of the pho
 | Rule | Value | Constant |
 |---|---|---|
 | Reservations open before the date of travel | 30 calendar days (Asia/Colombo date) | `BOOKING_WINDOW_DAYS` |
+| "Date of travel" for the 30-day window | **Assumed, conservative, verify with SLR.** The date the train leaves its **origin**. If the passenger boards on a later calendar date (night train after midnight), both possible opening dates are shown and reminders use the earlier one | `BOOKING_WINDOW_DAYS` |
 | Time of day booking opens | **Not confirmed** – `null`, so the UI shows the date only with a "time not confirmed" note | `BOOKING_OPEN_TIME` |
 | Online booking closes before departure | 2 hours | `BOOKING_CLOSE_HOURS_BEFORE` |
+| Which departure the 2 hours count from | **Assumed, conservative, verify with SLR.** The train's **origin** station departure; UI says "may be later from your station". Boarding-station rule available as an option, off by default | `BOOKING_CLOSE_USE_BOARDING_STATION` |
 | Max seats per online booking | 5 | `MAX_SEATS_PER_BOOKING` |
 | Return trip with a different passenger count or boarding station | needs a separate booking | (booking helper logic) |
 | Online convenience fee | 5 % of fare | `CONVENIENCE_FEE_RATE` |
@@ -58,9 +60,7 @@ All times are handled in **Asia/Colombo (+05:30, no DST)** regardless of the pho
 | Pravesha commuter tickets | Can be bought up to 7 days in advance | `PRAVESHA_ADVANCE_DAYS` |
 | Payment dispute | Official site → Contact Us → dispute type "Payment issue" | `DISPUTE_TYPE_LABEL` |
 
-**Interpretations to confirm** (the FAQ is not explicit):
-- "2 hours before departure" is measured from the scheduled departure at the passenger's **boarding** station.
-- "Date of travel" for the 30-day window is the passenger's **boarding** date (matters for night trains boarded after midnight).
+**Ambiguity rule:** where SLR's wording is ambiguous, the app picks the interpretation that gives the user the **earlier** time, so nobody misses a window. Rows marked "assumed, conservative" above are such interpretations and must be confirmed with SLR.
 
 ## Official links
 

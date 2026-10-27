@@ -14,7 +14,13 @@ export const POLICY_UTC_OFFSET = '+05:30';
 
 // ── Reserved-seat booking window ────────────────────────────────────────────
 
-/** Reservations open this many calendar days before the date of travel (counted by date in Asia/Colombo). */
+/**
+ * Reservations open this many calendar days before the date of travel (counted by date in Asia/Colombo).
+ *
+ * ASSUMED, CONSERVATIVE – verify with SLR: "date of travel" is taken as the date the train
+ * leaves its ORIGIN. When a passenger boards on a later calendar date (night trains after
+ * midnight), the UI shows both possible opening dates and reminders use the earlier one.
+ */
 export const BOOKING_WINDOW_DAYS = 30;
 
 /**
@@ -27,6 +33,13 @@ export const BOOKING_OPEN_TIME: string | null = null;
 
 /** Online booking closes this many hours before the train's scheduled departure. */
 export const BOOKING_CLOSE_HOURS_BEFORE = 2;
+
+/**
+ * ASSUMED, CONSERVATIVE – verify with SLR: the close time is measured from the departure at
+ * the train's ORIGIN station (the earliest possible close). Set to true to measure from the
+ * passenger's boarding station instead.
+ */
+export const BOOKING_CLOSE_USE_BOARDING_STATION = false;
 
 /** Maximum seats in a single online booking. */
 export const MAX_SEATS_PER_BOOKING = 5;
