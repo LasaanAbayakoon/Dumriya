@@ -9,16 +9,16 @@ const SAT = '2026-11-07';
 
 describe('searchStations', () => {
   test.each([
-    ['kandy', 'kandy'],
-    ['KAN', 'kandy'],
-    ['මහනුවර', 'kandy'],
-    ['கண்டி', 'kandy'],
-    ['GLE', 'galle'],
-    ['fort', 'colombo-fort'],
-    ['lavinia', 'mount-lavinia'],
-    ['ගල්කිස්ස', 'mount-lavinia'],
-  ])('"%s" finds %s first', async (q, id) => {
-    const res = await searchStations(q);
+    { query: 'kandy', id: 'kandy' },
+    { query: 'KAN', id: 'kandy' },
+    { query: 'මහනුවර', id: 'kandy' },
+    { query: 'கண்டி', id: 'kandy' },
+    { query: 'GLE', id: 'galle' },
+    { query: 'fort', id: 'colombo-fort' },
+    { query: 'lavinia', id: 'mount-lavinia' },
+    { query: 'ගල්කිස්ස', id: 'mount-lavinia' },
+  ])('"$query" finds $id first', async ({ query, id }) => {
+    const res = await searchStations(query);
     expect(res[0]?.id).toBe(id);
   });
 

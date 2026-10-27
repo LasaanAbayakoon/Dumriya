@@ -1,14 +1,14 @@
 import { planBookings, praveshaWindow, splitPassengers, trueTotal } from './booking';
 
 test.each([
-  [0, []],
-  [1, [1]],
-  [5, [5]],
-  [6, [5, 1]],
-  [7, [5, 2]],
-  [12, [5, 5, 2]],
-])('splitPassengers(%i) → %j (max 5 per booking)', (n, groups) => {
-  expect(splitPassengers(n)).toEqual(groups);
+  { passengers: 0, groups: [] },
+  { passengers: 1, groups: [1] },
+  { passengers: 5, groups: [5] },
+  { passengers: 6, groups: [5, 1] },
+  { passengers: 7, groups: [5, 2] },
+  { passengers: 12, groups: [5, 5, 2] },
+])('splitPassengers($passengers) → $groups (max 5 per booking)', ({ passengers, groups }) => {
+  expect(splitPassengers(passengers)).toEqual(groups);
 });
 
 const out = { passengers: 4, boardingStationId: 'colombo-fort', alightingStationId: 'ella' };
@@ -50,11 +50,11 @@ describe('planBookings', () => {
 
 describe('trueTotal = fare + 5 % convenience fee', () => {
   test.each([
-    [1000, 2, 2000, 100, 2100],
-    [333, 3, 999, 49.95, 1048.95],
-    [101, 1, 101, 5.05, 106.05],
-    [1, 1, 1, 0.05, 1.05],
-  ])('%d × %d seats', (fare, seats, fareTotal, fee, total) => {
+    { fare: 1000, seats: 2, fareTotal: 2000, fee: 100, total: 2100 },
+    { fare: 333, seats: 3, fareTotal: 999, fee: 49.95, total: 1048.95 },
+    { fare: 101, seats: 1, fareTotal: 101, fee: 5.05, total: 106.05 },
+    { fare: 1, seats: 1, fareTotal: 1, fee: 0.05, total: 1.05 },
+  ])('$fare × $seats seats = $fareTotal + $fee fee = $total', ({ fare, seats, fareTotal, fee, total }) => {
     expect(trueTotal(fare, seats)).toEqual({ fareTotalLkr: fareTotal, convenienceFeeLkr: fee, totalLkr: total });
   });
 
@@ -66,13 +66,13 @@ describe('trueTotal = fare + 5 % convenience fee', () => {
 describe('Pravesha commuter tickets: up to 7 days in advance', () => {
   const at = (iso: string) => new Date(`${iso}+05:30`);
   test.each([
-    ['2026-12-02T23:59:00', false],
-    ['2026-12-03T00:00:00', true],
-    ['2026-12-10T21:00:00', true],
-    ['2026-12-11T00:00:00', false],
-  ])('travel 10 Dec, now %s → can buy: %s', (now, can) => {
+    { now: '2026-12-02T23:59:00', canBuy: false },
+    { now: '2026-12-03T00:00:00', canBuy: true },
+    { now: '2026-12-10T21:00:00', canBuy: true },
+    { now: '2026-12-11T00:00:00', canBuy: false },
+  ])('travel 10 Dec, now $now → can buy: $canBuy', ({ now, canBuy }) => {
     const w = praveshaWindow('2026-12-10', at(now));
     expect(w.opensOn).toBe('2026-12-03');
-    expect(w.canBuyNow).toBe(can);
+    expect(w.canBuyNow).toBe(canBuy);
   });
 });

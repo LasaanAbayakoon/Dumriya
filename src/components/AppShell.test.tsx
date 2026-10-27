@@ -1,19 +1,21 @@
-import { screen } from '@testing-library/react';
+import { cleanup, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import i18n, { setLanguage } from '@/i18n';
 import { renderRoute } from '@/test/renderRoute';
 
 afterEach(async () => {
+  // Unmount before switching language back, so no component updates outside act().
+  cleanup();
   await setLanguage('en');
 });
 
 test('shows the main navigation with the current tab marked', async () => {
   renderRoute('/more');
-  const nav = screen.getByRole('navigation', { name: 'Main' });
-  expect(nav).toBeInTheDocument();
+  // Wait for the lazy screen to settle before asserting on the shell.
+  expect(await screen.findByRole('heading', { level: 1, name: 'More' })).toBeInTheDocument();
+  expect(screen.getByRole('navigation', { name: 'Main' })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'More' })).toHaveAttribute('aria-current', 'page');
   expect(screen.getByRole('link', { name: 'Search' })).not.toHaveAttribute('aria-current');
-  expect(await screen.findByRole('heading', { level: 1, name: 'More' })).toBeInTheDocument();
 });
 
 test('switching language in Settings translates the UI and sets <html lang>', async () => {
@@ -21,6 +23,7 @@ test('switching language in Settings translates the UI and sets <html lang>', as
   renderRoute('/settings');
   await user.click(await screen.findByRole('radio', { name: 'සිංහල' }));
   expect(await screen.findByRole('heading', { level: 1, name: 'සැකසුම්' })).toBeInTheDocument();
+  expect(await screen.findByRole('link', { name: 'තවත්' })).toBeInTheDocument();
   expect(i18n.language).toBe('si');
   expect(document.documentElement.lang).toBe('si');
 });

@@ -31,6 +31,8 @@ void i18n.use(initReactI18next).init({
   fallbackLng: 'en',
   interpolation: { escapeValue: false },
   react: { useSuspense: false },
+  // English is bundled, so initialise synchronously: no re-render after first paint.
+  initAsync: false,
 });
 
 export function isLanguage(v: string | null): v is Language {

@@ -6,13 +6,13 @@ const before = (ms: number) => new Date(D.getTime() - ms);
 
 describe('refund tier boundaries (lower refund on an exact boundary)', () => {
   test.each([
-    ['168 h + 1 min before', 168 * HOUR + MINUTE, 75],
-    ['exactly 168 h before', 168 * HOUR, 50],
-    ['168 h − 1 min before', 168 * HOUR - MINUTE, 50],
-    ['48 h + 1 min before', 48 * HOUR + MINUTE, 50],
-    ['exactly 48 h before', 48 * HOUR, 0],
-    ['48 h − 1 min before', 48 * HOUR - MINUTE, 0],
-  ])('%s → %i %%', (_label, msLeft, expected) => {
+    { label: '168 h + 1 min before', msLeft: 168 * HOUR + MINUTE, expected: 75 },
+    { label: 'exactly 168 h before', msLeft: 168 * HOUR, expected: 50 },
+    { label: '168 h − 1 min before', msLeft: 168 * HOUR - MINUTE, expected: 50 },
+    { label: '48 h + 1 min before', msLeft: 48 * HOUR + MINUTE, expected: 50 },
+    { label: 'exactly 48 h before', msLeft: 48 * HOUR, expected: 0 },
+    { label: '48 h − 1 min before', msLeft: 48 * HOUR - MINUTE, expected: 0 },
+  ])('$label → $expected %', ({ msLeft, expected }) => {
     expect(refundPercent(msLeft)).toBe(expected);
     expect(refundQuote({ departure: D, fareLkr: 1000, serviceChargeLkr: 50 }, before(msLeft)).percent).toBe(expected);
   });
@@ -63,12 +63,12 @@ describe('tier deadlines and next drop', () => {
   });
 
   test.each([
-    [300 * HOUR, 168 * HOUR],
-    [168 * HOUR, 48 * HOUR], // exactly on the boundary we're already in the 50 % tier
-    [100 * HOUR, 48 * HOUR],
-  ])('with %d ms left the next drop is at departure − %d ms', (left, dropBefore) => {
-    const q = refundQuote({ departure: D, fareLkr: 1000, serviceChargeLkr: 50 }, before(left));
-    expect(q.nextDropAt?.toISOString()).toBe(before(dropBefore).toISOString());
+    { hoursLeft: 300, dropHoursBefore: 168 },
+    { hoursLeft: 168, dropHoursBefore: 48 }, // exactly on the boundary we're already in the 50 % tier
+    { hoursLeft: 100, dropHoursBefore: 48 },
+  ])('with $hoursLeft h left, the next drop is $dropHoursBefore h before departure', ({ hoursLeft, dropHoursBefore }) => {
+    const q = refundQuote({ departure: D, fareLkr: 1000, serviceChargeLkr: 50 }, before(hoursLeft * HOUR));
+    expect(q.nextDropAt?.toISOString()).toBe(before(dropHoursBefore * HOUR).toISOString());
   });
 
   test('no next drop once at 0 %', () => {
