@@ -9,6 +9,8 @@ const PAGES = [
   { name: 'results', url: '/results?from=colombo-fort&to=badulla&date=2026-12-10' },
   { name: 'train-nawalapitiya', url: '/train/1045?date=2026-12-10&from=nawalapitiya&to=badulla' },
   { name: 'train-unreserved', url: '/train/8059?date=2026-12-10' },
+  { name: 'book-night', url: '/train/1045/book?date=2026-12-10&from=nawalapitiya&to=badulla' },
+  { name: 'book-unreserved', url: '/train/8059/book?date=2026-12-10' },
 ];
 
 async function overflowing(page: Page) {

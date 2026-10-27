@@ -18,6 +18,8 @@ npm run build && npm run preview   # production build with the service worker
 
 ## Data layer and the mock-API swap point
 
+**Sample-data bar:** while the mock is active, `IS_SAMPLE_DATA` (exported by `src/api/index.ts`) is `true` and every screen with train data shows a permanent "Sample timetable — not real times" bar in its header. It disappears automatically when `api` points at the real implementation.
+
 Screens only ever import from `src/api` (enforced by ESLint: importing `src/mocks/*.json` or `src/api/mock` from a screen is a lint error).
 
 ```
@@ -43,7 +45,7 @@ All times are handled in **Asia/Colombo (+05:30, no DST)** regardless of the pho
 | Online booking closes before departure | 2 hours | `BOOKING_CLOSE_HOURS_BEFORE` |
 | Which departure the 2 hours count from | **Assumed, conservative, verify with SLR.** The train's **origin** station departure; UI says "may be later from your station". Boarding-station rule available as an option, off by default | `BOOKING_CLOSE_USE_BOARDING_STATION` |
 | Max seats per online booking | 5 | `MAX_SEATS_PER_BOOKING` |
-| Return trip with a different passenger count or boarding station | needs a separate booking | (booking helper logic) |
+| Return trip with a different passenger count or boarding station | needs a separate booking. **Assumed, verify with SLR:** "different boarding station" means the return does not start where the outward trip ended | `planBookings` in `src/lib/booking.ts` |
 | Online convenience fee | 5 % of fare | `CONVENIENCE_FEE_RATE` |
 | Payment methods | Card or LANKAQR only | `PAYMENT_METHODS` |
 | Valid email required | e-ticket is only sent by email | `EMAIL_REQUIRED_FOR_ETICKET` |
@@ -66,7 +68,9 @@ All times are handled in **Asia/Colombo (+05:30, no DST)** regardless of the pho
 
 Only these destinations are used for booking (`src/config/links.ts`):
 - Reserved seats: `https://seatreservation.railway.gov.lk`
-- Commuter tickets (Pravesha): `PRAVESHA_URL` – **TODO: fill in**. While it is `null`, the app hides the Pravesha button and points users to the station counter.
+- Commuter tickets (Pravesha): `PRAVESHA_URL` – **TODO: fill in**. While it is `null`, the Pravesha button is replaced by a non-clickable "Pravesha: link coming soon" and users are pointed to the station counter. There is never a broken or guessed link.
+
+Every outbound booking link goes through `isOfficialUrl()` (https and an exact official host); anything else is not rendered. The booking helper shows a "You are leaving Dumriya" notice with a look-alike-site warning and the exact host to check in the address bar.
 
 ## Map tiles
 
@@ -89,5 +93,7 @@ When `BOOKING_OPEN_TIME` is set, a single alert fires at the exact opening time 
 - Dates are built from month/weekday names in the translation files (`format.date`, `format.months`, `format.weekdaysShort`), **not** from the browser's `Intl` data: many Android WebViews ship without Sinhala/Tamil locale data and silently show US English. The Sinhala date order (`{{year}} {{month}} {{day}}, {{weekday}}`) needs native review.
 
 ## Translations
+
+Open questions for the Sinhala and Tamil reviewers are in [REVIEW.md](REVIEW.md).
 
 English (`src/i18n/en.ts`) is final. Sinhala (`si.ts`) and Tamil (`ta.ts`) are drafts: every line carries a `// TODO(review-si)` / `// TODO(review-ta)` comment for a native speaker to remove once checked. The type checker enforces identical keys; tests fail if any string *value* contains "TODO". Sinhala/Tamil station names in `src/mocks/stations.json` also need review.

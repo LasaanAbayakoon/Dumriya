@@ -2,13 +2,14 @@ import { lazy, type ComponentType } from 'react';
 import { createBrowserRouter, type RouteObject } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { AppShell } from '@/components/AppShell';
-import { Placeholder } from '@/components/Placeholder';
 import type en from '@/i18n/en';
 
 // Screens are code-split so the first load on a slow phone stays small.
+const Placeholder = lazy(() => import('@/components/Placeholder').then((m) => ({ default: m.Placeholder })));
 const HomeScreen = lazy(() => import('@/features/search/HomeScreen'));
 const ResultsScreen = lazy(() => import('@/features/results/ResultsScreen'));
 const TrainScreen = lazy(() => import('@/features/train/TrainScreen'));
+const BookingHelperScreen = lazy(() => import('@/features/book/BookingHelperScreen'));
 const MoreScreen = lazy(() => import('@/features/more/MoreScreen'));
 const SettingsScreen = lazy(() => import('@/features/settings/SettingsScreen'));
 const NotFoundScreen = lazy(() => import('@/features/NotFoundScreen'));
@@ -29,7 +30,7 @@ export const routes: RouteObject[] = [
       { path: '/', element: <HomeScreen /> },
       { path: '/results', element: <ResultsScreen /> },
       { path: '/train/:trainId', element: <TrainScreen /> },
-      { path: '/train/:trainId/book', element: el(todo('book')) },
+      { path: '/train/:trainId/book', element: <BookingHelperScreen /> },
       { path: '/train/:trainId/live', element: el(todo('live')) },
       { path: '/tickets', element: el(todo('tickets', false)) },
       { path: '/tickets/:ticketId', element: el(todo('ticket')) },

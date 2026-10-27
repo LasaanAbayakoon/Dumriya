@@ -41,7 +41,7 @@ export default function ResultsScreen() {
   if (!valid) {
     return (
       <>
-        <PageHeader title={title} back="/" />
+        <PageHeader title={title} back="/" sampleData />
         <div className="mx-auto grid max-w-2xl gap-4 p-4">
           <Notice>{t('results.missing')}</Notice>
           <ButtonLink to={homeUrl(query)}>{t('results.changeSearch')}</ButtonLink>
@@ -52,7 +52,7 @@ export default function ResultsScreen() {
 
   return (
     <>
-      <PageHeader title={title} back={homeUrl({ ...query, date })} />
+      <PageHeader title={title} back={homeUrl({ ...query, date })} sampleData />
       <div className="mx-auto grid max-w-2xl gap-3 p-4">
         <nav aria-label={t('home.date')} className="flex items-center gap-2">
           {date > today ? (
@@ -113,7 +113,6 @@ export default function ResultsScreen() {
             ))}
           </ul>
         )}
-        <p className="text-sm text-muted">{t('common.sampleData')}</p>
       </div>
     </>
   );

@@ -11,6 +11,13 @@ import { mockApi } from './mock';
 
 const api: DumriyaApi = mockApi;
 
+/**
+ * True while the mock (sample) data is in use. Screens showing train data display a
+ * permanent "Sample timetable" bar while this is true; it disappears on its own once
+ * `api` above points at the real backend.
+ */
+export const IS_SAMPLE_DATA: boolean = api === mockApi;
+
 export type { DumriyaApi, GetTripParams, SearchTrainsParams } from './contract';
 
 export const listStations: DumriyaApi['listStations'] = (...a) => api.listStations(...a);

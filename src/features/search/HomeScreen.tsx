@@ -207,7 +207,6 @@ export default function HomeScreen() {
         </section>
 
         <p className="text-sm text-muted">{t('home.unofficialNote')}</p>
-        <p className="text-sm text-muted">{t('common.sampleData')}</p>
       </div>
     </>
   );

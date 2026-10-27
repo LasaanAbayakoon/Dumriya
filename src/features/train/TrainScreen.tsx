@@ -42,7 +42,7 @@ export default function TrainScreen() {
   if (data.status === 'loading') {
     return (
       <>
-        <PageHeader title={t('screens.train')} back />
+        <PageHeader title={t('screens.train')} back sampleData />
         <Loading />
       </>
     );
@@ -50,7 +50,7 @@ export default function TrainScreen() {
   if (data.status === 'error') {
     return (
       <>
-        <PageHeader title={t('screens.train')} back />
+        <PageHeader title={t('screens.train')} back sampleData />
         <div className="mx-auto max-w-2xl p-4">
           <Notice tone="danger">
             <p>{t('common.error')}</p>
@@ -67,7 +67,7 @@ export default function TrainScreen() {
   if (!train) {
     return (
       <>
-        <PageHeader title={t('screens.train')} back />
+        <PageHeader title={t('screens.train')} back sampleData />
         <div className="mx-auto max-w-2xl p-4">
           <Notice tone="warn">{t('train.notFound')}</Notice>
         </div>
@@ -80,7 +80,7 @@ export default function TrainScreen() {
   if (!trip) {
     return (
       <>
-        <PageHeader title={title} back />
+        <PageHeader title={title} back sampleData />
         <div className="mx-auto grid max-w-2xl gap-4 p-4">
           <Notice tone="warn">{t('train.notRunning', { date: f.date(date) })}</Notice>
           <Card>
@@ -101,7 +101,7 @@ export default function TrainScreen() {
 
   return (
     <>
-      <PageHeader title={title} back />
+      <PageHeader title={title} back sampleData />
       <div className="mx-auto grid max-w-2xl gap-4 p-4">
         <Card>
           <p className="font-semibold [overflow-wrap:anywhere]">{t('results.route', { from: fromName, to: toName })}</p>
@@ -163,7 +163,6 @@ export default function TrainScreen() {
         <ButtonLink to={liveUrl(train.id, { date: trip.serviceDate })} variant="secondary" icon={<MapIcon />}>
           {t('train.liveMap')} · {t('common.preview')}
         </ButtonLink>
-        <p className="text-sm text-muted">{t('common.sampleData')}</p>
       </div>
     </>
   );
