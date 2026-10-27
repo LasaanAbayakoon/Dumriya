@@ -74,6 +74,12 @@ export const REFUND_TIERS: readonly { moreThanHours: number; percent: number }[]
   { moreThanHours: 168, percent: 75 },
   { moreThanHours: 48, percent: 50 },
 ];
+/**
+ * ASSUMED, CONSERVATIVE – verify with SLR: refund deadlines are counted from the
+ * train's departure at its ORIGIN station (the earliest possible reading). Set to true
+ * to count from the passenger's boarding station instead.
+ */
+export const REFUND_COUNT_FROM_BOARDING_STATION = false;
 /** Refund when no tier applies. */
 export const REFUND_FALLBACK_PERCENT = 0;
 /** The service charge / convenience fee is never refunded. */

@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { buttonClass } from '@/components/buttonClass';
 import { Card } from '@/components/Card';
+import { ExternalLink } from '@/components/ExternalLink';
 import { Notice } from '@/components/Notice';
 import { ExternalIcon, ShieldIcon } from '@/components/icons';
 import { isOfficialUrl } from '@/config/links';
@@ -28,16 +29,10 @@ export function OfficialHandoff({ url, buttonLabel, title, body }: { url: string
             {host}
           </p>
         </Notice>
-        <a
-          href={url}
-          target="_blank"
-          rel="noopener noreferrer"
-          referrerPolicy="no-referrer"
-          className={buttonClass('primary', 'lg')}
-        >
+        <ExternalLink href={url} className={buttonClass('primary', 'lg')}>
           <span className="min-w-0">{buttonLabel}</span>
           <ExternalIcon className="shrink-0" />
-        </a>
+        </ExternalLink>
         <p className="text-center text-sm text-muted">{t('book.opensNewTab')}</p>
       </section>
     </Card>

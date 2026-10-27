@@ -1,4 +1,5 @@
-import { defaultServiceCharge, refundPercent, refundQuote } from './refund';
+import { getTrip } from '@/api';
+import { defaultServiceCharge, refundDepartureForTrip, refundPercent, refundQuote } from './refund';
 import { HOUR, MINUTE } from './time';
 
 const D = new Date('2026-12-10T08:30:00+05:30'); // departure
@@ -80,4 +81,17 @@ test('default service charge is 5 % of the fare', () => {
   expect(defaultServiceCharge(1000)).toBe(50);
   expect(defaultServiceCharge(333)).toBe(16.65);
   expect(defaultServiceCharge(0)).toBe(0);
+});
+
+describe('which departure the deadlines count from (assumed, conservative)', () => {
+  test('Nawalapitiya 00:35 on 10 Dec counts from Colombo Fort 20:00 on 9 Dec', async () => {
+    const trip = (await getTrip({ trainId: '1045', date: '2026-12-10', fromStationId: 'nawalapitiya', toStationId: 'badulla' }))!;
+    expect(refundDepartureForTrip(trip).toISOString()).toBe(new Date('2026-12-09T20:00:00+05:30').toISOString());
+    expect(refundDepartureForTrip(trip, true).toISOString()).toBe(new Date('2026-12-10T00:35:00+05:30').toISOString());
+  });
+
+  test('boarding at the origin: both readings agree', async () => {
+    const trip = (await getTrip({ trainId: '1015', date: '2026-12-10' }))!;
+    expect(refundDepartureForTrip(trip).toISOString()).toBe(refundDepartureForTrip(trip, true).toISOString());
+  });
 });

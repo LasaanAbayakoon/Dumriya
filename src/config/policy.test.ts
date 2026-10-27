@@ -23,6 +23,7 @@ test('policy values match the documented SLR rules', () => {
       { moreThanHours: 168, percent: 75 },
       { moreThanHours: 48, percent: 50 },
     ],
+    REFUND_COUNT_FROM_BOARDING_STATION: false,
     REFUND_FALLBACK_PERCENT: 0,
     SERVICE_CHARGE_REFUNDABLE: false,
     REFUND_IN_PERSON_ONLY: true,

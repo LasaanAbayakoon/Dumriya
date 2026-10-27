@@ -3,8 +3,15 @@
  * a tier applies only while the time left is STRICTLY MORE than its threshold,
  * so on an exact boundary the lower refund applies.
  */
-import { CONVENIENCE_FEE_RATE, REFUND_FALLBACK_PERCENT, REFUND_TIERS, SERVICE_CHARGE_REFUNDABLE } from '@/config/policy';
-import { HOUR } from './time';
+import {
+  CONVENIENCE_FEE_RATE,
+  REFUND_COUNT_FROM_BOARDING_STATION,
+  REFUND_FALLBACK_PERCENT,
+  REFUND_TIERS,
+  SERVICE_CHARGE_REFUNDABLE,
+} from '@/config/policy';
+import type { Trip } from '@/types';
+import { colomboDateTime, HOUR } from './time';
 
 /** Refund percentage for a given amount of time left before departure (ms). */
 export function refundPercent(msBeforeDeparture: number): number {
@@ -71,4 +78,17 @@ export function refundQuote(
     tiers,
     nextDropAt: percent === REFUND_FALLBACK_PERCENT ? null : nextDropAt,
   };
+}
+
+/**
+ * The departure that refund deadlines count from for a trip. Uses the train's origin
+ * departure (earliest, so nobody misses a tier) unless REFUND_COUNT_FROM_BOARDING_STATION.
+ */
+export function refundDepartureForTrip(
+  trip: Pick<Trip, 'train' | 'serviceDate' | 'departure'>,
+  fromBoarding: boolean = REFUND_COUNT_FROM_BOARDING_STATION,
+): Date {
+  if (fromBoarding) return new Date(trip.departure);
+  const origin = trip.train.stops[0]!;
+  return colomboDateTime(trip.serviceDate, origin.departure!, origin.dayOffset);
 }

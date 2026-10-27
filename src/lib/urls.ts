@@ -21,3 +21,25 @@ export const trainUrl = (trainId: string, q: { date: IsoDate; from?: string; to?
 export const bookUrl = (trainId: string, q: { date: IsoDate; from?: string; to?: string }) =>
   `/train/${encodeURIComponent(trainId)}/book${qs(q)}`;
 export const liveUrl = (trainId: string, q: { date: IsoDate }) => `/train/${encodeURIComponent(trainId)}/live${qs(q)}`;
+
+export interface RefundQuery {
+  /** Departure the deadlines count from, ISO with +05:30. */
+  departure?: string;
+  fare?: number;
+  serviceCharge?: number;
+  trainId?: string;
+  date?: IsoDate;
+  from?: string;
+  to?: string;
+}
+
+export const refundUrl = (q: RefundQuery = {}) =>
+  `/refund${qs({
+    departure: q.departure,
+    fare: q.fare === undefined ? undefined : String(q.fare),
+    sc: q.serviceCharge === undefined ? undefined : String(q.serviceCharge),
+    train: q.trainId,
+    date: q.date,
+    from: q.from,
+    to: q.to,
+  })}`;

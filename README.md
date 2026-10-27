@@ -55,6 +55,7 @@ All times are handled in **Asia/Colombo (+05:30, no DST)** regardless of the pho
 | Refund, more than 168 h before departure | 75 % of fare | `REFUND_TIERS` |
 | Refund, 168 h or less and more than 48 h | 50 % of fare | `REFUND_TIERS` |
 | Refund, 48 h or less | 0 % | `REFUND_FALLBACK_PERCENT` |
+| Which departure refund deadlines count from | **Assumed, conservative, verify with SLR.** The train's **origin** departure (earliest). The calculator says so in words when the passenger boards later on the route | `REFUND_COUNT_FROM_BOARDING_STATION` |
 | Refund boundaries | Exactly on a boundary → the **lower** refund | `REFUND_TIERS` |
 | Service charge | Never refunded | `SERVICE_CHARGE_REFUNDABLE` |
 | How refunds are done | In person at a station counter, with an NIC/passport copy | `REFUND_IN_PERSON_ONLY`, `REFUND_DOCUMENTS` |
@@ -76,6 +77,14 @@ Every outbound booking link goes through `isOfficialUrl()` (https and an exact o
 ## Map tiles
 
 Tile URL and attribution are in `src/config/app.ts` (`MAP_TILE_URL`, `MAP_TILE_ATTRIBUTION`). The OSM standard tile server is for light use only; switch provider before public launch.
+
+## Privacy: payment dispute helper
+
+`/dispute` collects name, mobile, location, payment date/time, reference number, last 4 card digits and email **only in React component state**. It never writes them to IndexedDB, localStorage, sessionStorage, the URL or history state, and sends nothing over the network (tested: storage snapshots, IndexedDB, router location, fetch/XHR/sendBeacon/WebSocket spies). The form clears when the user leaves the screen or on `pagehide`, and autofill is off. The card field refuses any input with more than 4 digits (it never truncates a pasted card number). "Copy all" puts an English text block on the clipboard; the only link is to the official reservation site, for Contact Us → "Payment issue".
+
+## External links
+
+Every link that opens a new tab goes through `src/components/ExternalLink.tsx`, which always sets `rel="noopener noreferrer"`. A test fails if any other source file uses `target="_blank"`, and another renders each screen with outbound links and checks every `target=_blank` link. (Vitest's on-disk module cache is turned off in `vite.config.ts` so that source-scanning test always sees newly added files.)
 
 ## Booking-opens reminders
 

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useParams, useSearchParams } from 'react-router';
+import { Link, useParams, useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { getTrain, getTrip } from '@/api';
 import { Badge } from '@/components/Badge';
@@ -8,14 +8,15 @@ import { Card } from '@/components/Card';
 import { Loading } from '@/components/Loading';
 import { Notice } from '@/components/Notice';
 import { PageHeader } from '@/components/PageHeader';
-import { MapIcon } from '@/components/icons';
+import { ChevronRightIcon, MapIcon } from '@/components/icons';
 import { PRAVESHA_ADVANCE_DAYS } from '@/config/policy';
 import { useAsync } from '@/hooks/useAsync';
 import { useFormat } from '@/hooks/useFormat';
 import { useStations } from '@/hooks/useStations';
 import { praveshaWindow } from '@/lib/booking';
-import { isIsoDate, todayInColombo } from '@/lib/time';
-import { liveUrl } from '@/lib/urls';
+import { isIsoDate, todayInColombo, toColomboIso } from '@/lib/time';
+import { refundDepartureForTrip } from '@/lib/refund';
+import { liveUrl, refundUrl } from '@/lib/urls';
 import { BookingWindowCard } from './BookingWindowCard';
 import { DayOffset } from './DayOffset';
 import { FareTable } from './FareTable';
@@ -148,6 +149,22 @@ export default function TrainScreen() {
         <Card>
           <h2 className="mb-2 text-lg font-bold">{t('train.fares')}</h2>
           <FareTable fares={trip.fares} fromName={fromName} toName={toName} />
+          {trip.reservableOnline && (
+            <Link
+              to={refundUrl({
+                departure: toColomboIso(refundDepartureForTrip(trip)),
+                fare: trip.fares.find((x) => x.reservable)?.amountLkr,
+                trainId: trip.train.id,
+                date: trip.date,
+                from: trip.from.stationId,
+                to: trip.to.stationId,
+              })}
+              className="tap mt-2 inline-flex items-center gap-1 font-semibold text-accent underline"
+            >
+              {t('train.refundLink')}
+              <ChevronRightIcon className="shrink-0" />
+            </Link>
+          )}
         </Card>
 
         <Card>

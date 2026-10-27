@@ -1,7 +1,10 @@
 import '@testing-library/jest-dom/vitest';
 import 'fake-indexeddb/auto';
-import { cleanup } from '@testing-library/react';
+import { cleanup, configure } from '@testing-library/react';
 import '@/i18n';
+
+// Lazy route chunks can take over 1 s to load on a cold, parallel run; wait up to 5 s.
+configure({ asyncUtilTimeout: 5000 });
 
 // jsdom does not implement these browser APIs.
 Object.defineProperty(window, 'matchMedia', {
@@ -40,6 +43,7 @@ function format(...args: unknown[]): string {
 
 let errors: string[] = [];
 let allowed: RegExp[] = [];
+let spy: { mockRestore: () => void } | null = null;
 
 export function allowConsoleError(pattern: RegExp): void {
   allowed.push(pattern);
@@ -48,7 +52,7 @@ export function allowConsoleError(pattern: RegExp): void {
 beforeEach(() => {
   errors = [];
   allowed = [];
-  vi.spyOn(console, 'error').mockImplementation((...args: unknown[]) => {
+  spy = vi.spyOn(console, 'error').mockImplementation((...args: unknown[]) => {
     const message = format(...args);
     if (!allowed.some((p) => p.test(message))) errors.push(message);
   });
@@ -58,7 +62,7 @@ beforeEach(() => {
 // catching updates those hooks cause too. Unmount first so nothing updates late.
 afterEach(() => {
   cleanup();
-  vi.mocked(console.error).mockRestore();
+  spy?.mockRestore(); // safe even if a test already called vi.restoreAllMocks()
   if (errors.length > 0) {
     const summary = errors.map((e, i) => `  [${i + 1}] ${e.split('\n')[0]}`).join('\n');
     throw new Error(`Test logged ${errors.length} console.error call(s):\n${summary}`);
