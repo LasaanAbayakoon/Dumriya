@@ -13,6 +13,7 @@ Unofficial companion web app for Sri Lanka Railways passengers (React + TS + Vit
 ## Working rules
 
 - After each stage run `npm run check` (type check, lint, unit tests) and `npm run build` (enforces the 150 KB gzipped initial-JS budget), then tell the user what to click to see the stage.
+- Gate commits on the real exit code (`npm run check && npm run build && git commit …`). Never pipe the check through `grep`/`tail` in the same chain as the commit: the pipe hides a failure.
 - Screens import data only from `src/api`, never from `src/mocks` or `src/api/mock` (ESLint enforces this).
 - Every SLR policy rule lives in `src/config/policy.ts` and must also be listed in the README rules table.
 - When a policy rule is ambiguous, choose the interpretation that gives the user the **earlier** time, so nobody misses a window.

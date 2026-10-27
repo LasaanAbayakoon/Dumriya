@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { renderRoute } from '@/test/renderRoute';
 
 /**
@@ -31,9 +31,8 @@ const SCREENS = [
 test.each(SCREENS.map((url) => ({ url })))('every new-tab link on $url has rel="noopener noreferrer"', async ({ url }) => {
   renderRoute(url);
   await screen.findByRole('heading', { level: 1 });
-  // Let lazy data settle before scanning.
-  await new Promise((r) => setTimeout(r, 0));
-  await screen.findAllByRole('heading', { level: 2 }).catch(() => []);
+  // Let lazy data settle before scanning: wait until nothing is still loading.
+  await waitFor(() => expect(screen.queryByText('Loading…')).not.toBeInTheDocument());
   const blank = [...document.querySelectorAll<HTMLAnchorElement>('a[target="_blank"]')];
   for (const a of blank) {
     const rel = (a.getAttribute('rel') ?? '').split(/\s+/);
