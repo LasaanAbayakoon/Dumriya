@@ -1,0 +1,34 @@
+import { setLanguage } from '@/i18n';
+import { formatDate, formatShortDate, formatTime, formatWeekday } from './format';
+
+beforeAll(async () => {
+  // Make sure the Sinhala and Tamil bundles are loaded, then return to English.
+  await setLanguage('si');
+  await setLanguage('ta');
+  await setLanguage('en');
+});
+
+test.each([
+  { lng: 'en', date: 'Tue, 10 Nov 2026', short: '10 Nov' },
+  { lng: 'si', date: '2026 නොවැ 10, අඟහ', short: 'නොවැ 10' },
+  { lng: 'ta', date: 'செவ்., 10 நவ. 2026', short: '10 நவ.' },
+])('$lng dates use translated names, not browser locale data: $date', ({ lng, date, short }) => {
+  expect(formatDate('2026-11-10', lng)).toBe(date);
+  expect(formatShortDate('2026-11-10', lng)).toBe(short);
+});
+
+test('instants are formatted by their Colombo date, whatever the machine time zone', () => {
+  // 20:00 UTC on 9 Nov is 01:30 on 10 Nov in Colombo.
+  expect(formatDate(new Date('2026-11-09T20:00:00Z'), 'en')).toBe('Tue, 10 Nov 2026');
+  expect(formatTime(new Date('2026-11-09T20:00:00Z'))).toBe('01:30');
+});
+
+test('times are HH:mm in every language', () => {
+  for (const lng of ['en', 'si', 'ta']) expect(formatTime('2026-11-10T06:30:00+05:30', lng)).toBe('06:30');
+});
+
+test('weekday names', () => {
+  expect(formatWeekday(1, 'en', 'long')).toBe('Monday');
+  expect(formatWeekday(0, 'si')).toBe('ඉරිදා');
+  expect(formatWeekday(6, 'ta', 'long')).toBe('சனி');
+});

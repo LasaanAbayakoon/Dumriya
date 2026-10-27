@@ -72,6 +72,22 @@ Only these destinations are used for booking (`src/config/links.ts`):
 
 Tile URL and attribution are in `src/config/app.ts` (`MAP_TILE_URL`, `MAP_TILE_ATTRIBUTION`). The OSM standard tile server is for light use only; switch provider before public launch.
 
+## Booking-opens reminders
+
+While `BOOKING_OPEN_TIME` is `null`, a "Remind me when booking opens" reminder uses these alerts (all in [`src/config/app.ts`](src/config/app.ts)):
+
+| Alert | Default | Constant |
+|---|---|---|
+| Heads-up the evening **before** the earliest possible opening date: "Booking may open tomorrow for &lt;train&gt; on &lt;date&gt;. Exact time not confirmed." | 20:00, always on | `BOOKING_HEADS_UP_TIME` |
+| Optional alert at the start of the opening date (toggle: "Also alert me at midnight (seats on popular trains can sell out within minutes)") | 00:00, **off** | `BOOKING_MIDNIGHT_ALERT_TIME`, `BOOKING_MIDNIGHT_ALERT_DEFAULT` |
+
+When `BOOKING_OPEN_TIME` is set, a single alert fires at the exact opening time instead. Alerts already in the past are dropped. The `.ics` calendar export contains one event per alert at exactly the same times (tested in `src/lib/reminders.test.ts`).
+
+## Dates and times
+
+- Times are always `HH:mm` (24 h, Asia/Colombo) in every language, matching tickets and timetables.
+- Dates are built from month/weekday names in the translation files (`format.date`, `format.months`, `format.weekdaysShort`), **not** from the browser's `Intl` data: many Android WebViews ship without Sinhala/Tamil locale data and silently show US English. The Sinhala date order (`{{year}} {{month}} {{day}}, {{weekday}}`) needs native review.
+
 ## Translations
 
 English (`src/i18n/en.ts`) is final. Sinhala (`si.ts`) and Tamil (`ta.ts`) are drafts: every line carries a `// TODO(review-si)` / `// TODO(review-ta)` comment for a native speaker to remove once checked. The type checker enforces identical keys; tests fail if any string *value* contains "TODO". Sinhala/Tamil station names in `src/mocks/stations.json` also need review.

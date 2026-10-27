@@ -6,6 +6,9 @@ import { Placeholder } from '@/components/Placeholder';
 import type en from '@/i18n/en';
 
 // Screens are code-split so the first load on a slow phone stays small.
+const HomeScreen = lazy(() => import('@/features/search/HomeScreen'));
+const ResultsScreen = lazy(() => import('@/features/results/ResultsScreen'));
+const TrainScreen = lazy(() => import('@/features/train/TrainScreen'));
 const MoreScreen = lazy(() => import('@/features/more/MoreScreen'));
 const SettingsScreen = lazy(() => import('@/features/settings/SettingsScreen'));
 const NotFoundScreen = lazy(() => import('@/features/NotFoundScreen'));
@@ -23,9 +26,9 @@ export const routes: RouteObject[] = [
   {
     element: <AppShell />,
     children: [
-      { path: '/', element: el(todo('home', false)) },
-      { path: '/results', element: el(todo('results')) },
-      { path: '/train/:trainId', element: el(todo('train')) },
+      { path: '/', element: <HomeScreen /> },
+      { path: '/results', element: <ResultsScreen /> },
+      { path: '/train/:trainId', element: <TrainScreen /> },
       { path: '/train/:trainId/book', element: el(todo('book')) },
       { path: '/train/:trainId/live', element: el(todo('live')) },
       { path: '/tickets', element: el(todo('tickets', false)) },

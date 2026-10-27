@@ -1,5 +1,5 @@
 import { getTrip } from '@/api';
-import { bookingOpenReminderAt, bookingWindow, bookingWindowForTrip, type BookingWindowInput } from './bookingWindow';
+import { bookingOpenAlerts, bookingWindow, bookingWindowForTrip, type BookingWindowInput } from './bookingWindow';
 import { colomboDateTime } from './time';
 
 const at = (iso: string) => new Date(`${iso}+05:30`);
@@ -58,13 +58,13 @@ describe('closing time', () => {
 
 describe('status (time not confirmed)', () => {
   test.each([
-    ['2026-11-09T23:59:00', 'not-yet-open'],
-    ['2026-11-10T00:00:00', 'opens-today'],
-    ['2026-11-10T20:00:00', 'opens-today'],
-    ['2026-11-11T00:00:00', 'open'],
-    ['2026-12-10T06:29:00', 'open'],
-    ['2026-12-10T06:30:00', 'closed'],
-  ])('at %s → %s', (now, status) => {
+    { now: '2026-11-09T23:59:00', status: 'not-yet-open' },
+    { now: '2026-11-10T00:00:00', status: 'opens-today' },
+    { now: '2026-11-10T20:00:00', status: 'opens-today' },
+    { now: '2026-11-11T00:00:00', status: 'open' },
+    { now: '2026-12-10T06:29:00', status: 'open' },
+    { now: '2026-12-10T06:30:00', status: 'closed' },
+  ])('at $now → $status', ({ now, status }) => {
     expect(bookingWindow(dayTrain, at(now)).status).toBe(status);
   });
 });
@@ -86,9 +86,13 @@ describe('Nawalapitiya 00:35 (boarding a night train after midnight)', () => {
     expect(w.altOpensOn).toBe('2026-11-10');
   });
 
-  test('reminder is set for the earlier date', () => {
+  test('reminders are set for the earlier date: heads-up the evening before, optional midnight alert', () => {
     const w = bookingWindow(nawalapitiya);
-    expect(bookingOpenReminderAt(w).toISOString()).toBe(at('2026-11-09T00:00:00').toISOString());
+    const alerts = bookingOpenAlerts(w, { midnight: true, now: at('2026-11-01T00:00:00') });
+    expect(alerts.map((a) => a.at.toISOString())).toEqual([
+      at('2026-11-08T20:00:00').toISOString(),
+      at('2026-11-09T00:00:00').toISOString(),
+    ]);
   });
 
   test('closes 2 hours before the train leaves Colombo Fort, i.e. the evening before boarding', () => {
@@ -98,19 +102,20 @@ describe('Nawalapitiya 00:35 (boarding a night train after midnight)', () => {
   });
 
   test.each([
-    ['2026-11-08T12:00:00', 'not-yet-open'],
-    ['2026-11-09T12:00:00', 'opens-today'],
-    ['2026-11-10T12:00:00', 'may-be-open'],
-    ['2026-11-11T00:00:00', 'open'],
-    ['2026-12-09T17:59:00', 'open'],
-    ['2026-12-09T18:00:00', 'closed'],
-  ])('at %s → %s', (now, status) => {
+    { now: '2026-11-08T12:00:00', status: 'not-yet-open' },
+    { now: '2026-11-09T12:00:00', status: 'opens-today' },
+    { now: '2026-11-10T12:00:00', status: 'may-be-open' },
+    { now: '2026-11-11T00:00:00', status: 'open' },
+    { now: '2026-12-09T17:59:00', status: 'open' },
+    { now: '2026-12-09T18:00:00', status: 'closed' },
+  ])('at $now → $status', ({ now, status }) => {
     expect(bookingWindow(nawalapitiya, at(now)).status).toBe(status);
   });
 
   test('with a confirmed opening time, uses it on the earlier date and flags the gap', () => {
     const withTime = { ...nawalapitiya, openTime: '07:00' };
-    expect(bookingOpenReminderAt(bookingWindow(withTime)).toISOString()).toBe(at('2026-11-09T07:00:00').toISOString());
+    const alerts = bookingOpenAlerts(bookingWindow(withTime), { now: at('2026-11-01T00:00:00') });
+    expect(alerts.map((a) => [a.kind, a.at.toISOString()])).toEqual([['opening', at('2026-11-09T07:00:00').toISOString()]]);
     expect(bookingWindow(withTime, at('2026-11-09T06:59:00')).status).toBe('not-yet-open');
     expect(bookingWindow(withTime, at('2026-11-09T07:00:00')).status).toBe('may-be-open');
     expect(bookingWindow(withTime, at('2026-11-10T07:00:00')).status).toBe('open');
@@ -126,6 +131,3 @@ describe('Nawalapitiya 00:35 (boarding a night train after midnight)', () => {
   });
 });
 
-test('reminder for a same-day train with unconfirmed time is 00:00 on the opening date', () => {
-  expect(bookingOpenReminderAt(bookingWindow(dayTrain)).toISOString()).toBe(at('2026-11-10T00:00:00').toISOString());
-});

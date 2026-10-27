@@ -22,6 +22,16 @@ export const SIMULATED_POSITION_AGE_MIN = 2;
 /** Delay (minutes) at or above which a train counts as "delayed" rather than "on time". */
 export const DELAYED_THRESHOLD_MIN = 5;
 
+// ── "Booking opens" reminders ───────────────────────────────────────────────
+// Used while BOOKING_OPEN_TIME (config/policy.ts) is null. Once it is set, a single
+// alert fires at the exact opening time instead.
+/** Heads-up on the evening BEFORE the earliest possible opening date (Asia/Colombo). */
+export const BOOKING_HEADS_UP_TIME = '20:00';
+/** Optional alert on the earliest possible opening date itself (Asia/Colombo). */
+export const BOOKING_MIDNIGHT_ALERT_TIME = '00:00';
+/** The midnight alert is off unless the user turns it on. */
+export const BOOKING_MIDNIGHT_ALERT_DEFAULT = false;
+
 // ── Local data ──────────────────────────────────────────────────────────────
 export const MAX_RECENT_SEARCHES = 5;
 /** Largest e-ticket file the wallet accepts (bytes). */

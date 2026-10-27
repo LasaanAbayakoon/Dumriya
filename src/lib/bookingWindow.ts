@@ -8,6 +8,7 @@ import {
   BOOKING_OPEN_TIME,
   BOOKING_WINDOW_DAYS,
 } from '@/config/policy';
+import { BOOKING_HEADS_UP_TIME, BOOKING_MIDNIGHT_ALERT_DEFAULT, BOOKING_MIDNIGHT_ALERT_TIME } from '@/config/app';
 import type { ClockTime, IsoDate, Trip } from '@/types';
 import { addDays, colomboDateOf, colomboDateTime, HOUR } from './time';
 
@@ -91,10 +92,32 @@ export function bookingWindowForTrip(trip: Trip, now: Date = new Date()): Bookin
   );
 }
 
+export type BookingAlertKind =
+  /** Evening before the earliest possible opening date (time not confirmed). */
+  | 'heads-up'
+  /** Optional: start of the earliest possible opening date (time not confirmed). */
+  | 'midnight'
+  /** Exact opening time (only when BOOKING_OPEN_TIME is configured). */
+  | 'opening';
+
+export interface BookingAlert {
+  kind: BookingAlertKind;
+  at: Date;
+}
+
 /**
- * When a "booking opens" reminder should fire: the exact opening time if known,
- * otherwise the start (00:00 Colombo) of the earliest possible opening date.
+ * Alerts for a "Remind me when booking opens" request. Always based on the EARLIER
+ * possible opening date. Alerts already in the past are dropped.
  */
-export function bookingOpenReminderAt(w: BookingWindow): Date {
-  return w.opensAt ?? colomboDateTime(w.opensOn, '00:00');
+export function bookingOpenAlerts(
+  w: BookingWindow,
+  { midnight = BOOKING_MIDNIGHT_ALERT_DEFAULT, now = new Date() }: { midnight?: boolean; now?: Date } = {},
+): BookingAlert[] {
+  const alerts: BookingAlert[] = w.opensAt
+    ? [{ kind: 'opening', at: w.opensAt }]
+    : [
+        { kind: 'heads-up', at: colomboDateTime(addDays(w.opensOn, -1), BOOKING_HEADS_UP_TIME) },
+        ...(midnight ? [{ kind: 'midnight' as const, at: colomboDateTime(w.opensOn, BOOKING_MIDNIGHT_ALERT_TIME) }] : []),
+      ];
+  return alerts.filter((a) => a.at.getTime() > now.getTime());
 }
