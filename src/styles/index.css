@@ -1,0 +1,122 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Design tokens. One accent colour; status colours are reserved for meaning
+ * (on time / delayed / cancelled) and must not be used for decoration.
+ */
+:root {
+  --bg: #f6f7f7;
+  --surface: #ffffff;
+  --surface-2: #eef1f1;
+  --text: #14191a;
+  --muted: #4b5759;
+  --border: #d3dadb;
+  --accent: #0b5f6b;
+  --accent-hover: #084c56;
+  --accent-contrast: #ffffff;
+  --accent-soft: #e1eff1;
+  --ok: #17703a;
+  --ok-soft: #e3f3e8;
+  --warn: #835400;
+  --warn-soft: #fbf0d9;
+  --danger: #b42318;
+  --danger-soft: #fdeceb;
+  --focus: #1d4ed8;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #0e1314;
+  --surface: #161d1e;
+  --surface-2: #1f2829;
+  --text: #e8eded;
+  --muted: #a5b2b4;
+  --border: #33403f;
+  --accent: #62c6d1;
+  --accent-hover: #86d5de;
+  --accent-contrast: #05272c;
+  --accent-soft: #12383d;
+  --ok: #5ccf86;
+  --ok-soft: #12301e;
+  --warn: #e6b84a;
+  --warn-soft: #362a0d;
+  --danger: #ff8e85;
+  --danger-soft: #3a1714;
+  --focus: #93b4ff;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-contrast: var(--accent-contrast);
+  --color-accent-soft: var(--accent-soft);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-focus: var(--focus);
+  --font-sans:
+    system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+    -webkit-tap-highlight-color: transparent;
+  }
+  /* Sinhala and Tamil glyphs have tall ascenders/descenders. */
+  :lang(si),
+  :lang(ta) {
+    line-height: 1.65;
+  }
+  :focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  button,
+  [role='button'] {
+    cursor: pointer;
+  }
+}
+
+@layer utilities {
+  /* Minimum 44px touch target that still grows with large text. */
+  .tap {
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
