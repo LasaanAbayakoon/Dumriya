@@ -1,0 +1,385 @@
+{
+  "_notice": "SAMPLE DATA – NOT OFFICIAL. Invented for UI development. Times, fares, codes, platforms and facilities are plausible placeholders and must not be used for travel.",
+  "_review": "Sinhala and Tamil station names are drafts and need native-speaker review. Coordinates are approximate.",
+  "stations": [
+    {
+      "id": "colombo-fort",
+      "code": "FOT",
+      "name": {
+        "en": "Colombo Fort",
+        "si": "කොළඹ කොටුව",
+        "ta": "கொழும்பு கோட்டை"
+      },
+      "lines": [
+        "main",
+        "coastal"
+      ],
+      "lat": 6.9339,
+      "lng": 79.85,
+      "facilities": {
+        "reservationCounter": true,
+        "mTicketing": true
+      }
+    },
+    {
+      "id": "maradana",
+      "code": "MDA",
+      "name": {
+        "en": "Maradana",
+        "si": "මරදාන",
+        "ta": "மருதானை"
+      },
+      "lines": [
+        "main"
+      ],
+      "lat": 6.9289,
+      "lng": 79.8656,
+      "facilities": {
+        "reservationCounter": true,
+        "mTicketing": true
+      }
+    },
+    {
+      "id": "gampaha",
+      "code": "GPH",
+      "name": {
+        "en": "Gampaha",
+        "si": "ගම්පහ",
+        "ta": "கம்பஹா"
+      },
+      "lines": [
+        "main"
+      ],
+      "lat": 7.0917,
+      "lng": 79.9942,
+      "facilities": {
+        "reservationCounter": false,
+        "mTicketing": true
+      }
+    },
+    {
+      "id": "polgahawela",
+      "code": "PGW",
+      "name": {
+        "en": "Polgahawela",
+        "si": "පොල්ගහවෙල",
+        "ta": "பொல்கஹவெல"
+      },
+      "lines": [
+        "main"
+      ],
+      "lat": 7.3325,
+      "lng": 80.2981,
+      "facilities": {
+        "reservationCounter": true,
+        "mTicketing": false
+      }
+    },
+    {
+      "id": "peradeniya",
+      "code": "PDA",
+      "name": {
+        "en": "Peradeniya Junction",
+        "si": "පේරාදෙණිය හන්දිය",
+        "ta": "பேராதனை சந்தி"
+      },
+      "lines": [
+        "main"
+      ],
+      "lat": 7.258,
+      "lng": 80.596,
+      "facilities": {
+        "reservationCounter": false,
+        "mTicketing": false
+      }
+    },
+    {
+      "id": "kandy",
+      "code": "KDT",
+      "name": {
+        "en": "Kandy",
+        "si": "මහනුවර",
+        "ta": "கண்டி"
+      },
+      "lines": [
+        "main"
+      ],
+      "lat": 7.2906,
+      "lng": 80.6326,
+      "facilities": {
+        "reservationCounter": true,
+        "mTicketing": true
+      }
+    },
+    {
+      "id": "nawalapitiya",
+      "code": "NVP",
+      "name": {
+        "en": "Nawalapitiya",
+        "si": "නාවලපිටිය",
+        "ta": "நாவலப்பிட்டி"
+      },
+      "lines": [
+        "main"
+      ],
+      "lat": 7.0537,
+      "lng": 80.5339,
+      "facilities": {
+        "reservationCounter": true,
+        "mTicketing": false
+      }
+    },
+    {
+      "id": "hatton",
+      "code": "HTN",
+      "name": {
+        "en": "Hatton",
+        "si": "හැටන්",
+        "ta": "ஹட்டன்"
+      },
+      "lines": [
+        "main"
+      ],
+      "lat": 6.8913,
+      "lng": 80.5958,
+      "facilities": {
+        "reservationCounter": true,
+        "mTicketing": false
+      }
+    },
+    {
+      "id": "nanu-oya",
+      "code": "NOA",
+      "name": {
+        "en": "Nanu Oya",
+        "si": "නානුඔය",
+        "ta": "நானுஓயா"
+      },
+      "lines": [
+        "main"
+      ],
+      "lat": 6.9449,
+      "lng": 80.7421,
+      "facilities": {
+        "reservationCounter": true,
+        "mTicketing": false
+      }
+    },
+    {
+      "id": "haputale",
+      "code": "HPT",
+      "name": {
+        "en": "Haputale",
+        "si": "හපුතලේ",
+        "ta": "ஹப்புத்தளை"
+      },
+      "lines": [
+        "main"
+      ],
+      "lat": 6.7681,
+      "lng": 80.958,
+      "facilities": {
+        "reservationCounter": false,
+        "mTicketing": false
+      }
+    },
+    {
+      "id": "bandarawela",
+      "code": "BDA",
+      "name": {
+        "en": "Bandarawela",
+        "si": "බණ්ඩාරවෙල",
+        "ta": "பண்டாரவளை"
+      },
+      "lines": [
+        "main"
+      ],
+      "lat": 6.8317,
+      "lng": 80.9867,
+      "facilities": {
+        "reservationCounter": true,
+        "mTicketing": false
+      }
+    },
+    {
+      "id": "ella",
+      "code": "ELL",
+      "name": {
+        "en": "Ella",
+        "si": "ඇල්ල",
+        "ta": "எல்ல"
+      },
+      "lines": [
+        "main"
+      ],
+      "lat": 6.8762,
+      "lng": 81.0537,
+      "facilities": {
+        "reservationCounter": true,
+        "mTicketing": false
+      }
+    },
+    {
+      "id": "badulla",
+      "code": "BAD",
+      "name": {
+        "en": "Badulla",
+        "si": "බදුල්ල",
+        "ta": "பதுளை"
+      },
+      "lines": [
+        "main"
+      ],
+      "lat": 6.9853,
+      "lng": 81.0565,
+      "facilities": {
+        "reservationCounter": true,
+        "mTicketing": true
+      }
+    },
+    {
+      "id": "mount-lavinia",
+      "code": "MLV",
+      "name": {
+        "en": "Mount Lavinia",
+        "si": "ගල්කිස්ස",
+        "ta": "கல்கிசை"
+      },
+      "lines": [
+        "coastal"
+      ],
+      "lat": 6.8316,
+      "lng": 79.8631,
+      "facilities": {
+        "reservationCounter": false,
+        "mTicketing": true
+      }
+    },
+    {
+      "id": "panadura",
+      "code": "PND",
+      "name": {
+        "en": "Panadura",
+        "si": "පානදුර",
+        "ta": "பாணந்துறை"
+      },
+      "lines": [
+        "coastal"
+      ],
+      "lat": 6.7128,
+      "lng": 79.9047,
+      "facilities": {
+        "reservationCounter": false,
+        "mTicketing": true
+      }
+    },
+    {
+      "id": "kalutara-south",
+      "code": "KTS",
+      "name": {
+        "en": "Kalutara South",
+        "si": "කළුතර දකුණ",
+        "ta": "களுத்துறை தெற்கு"
+      },
+      "lines": [
+        "coastal"
+      ],
+      "lat": 6.5795,
+      "lng": 79.9616,
+      "facilities": {
+        "reservationCounter": true,
+        "mTicketing": false
+      }
+    },
+    {
+      "id": "aluthgama",
+      "code": "ALT",
+      "name": {
+        "en": "Aluthgama",
+        "si": "අළුත්ගම",
+        "ta": "அளுத்கம"
+      },
+      "lines": [
+        "coastal"
+      ],
+      "lat": 6.4337,
+      "lng": 80.0022,
+      "facilities": {
+        "reservationCounter": true,
+        "mTicketing": false
+      }
+    },
+    {
+      "id": "hikkaduwa",
+      "code": "HKD",
+      "name": {
+        "en": "Hikkaduwa",
+        "si": "හික්කඩුව",
+        "ta": "ஹிக்கடுவை"
+      },
+      "lines": [
+        "coastal"
+      ],
+      "lat": 6.1395,
+      "lng": 80.1038,
+      "facilities": {
+        "reservationCounter": false,
+        "mTicketing": false
+      }
+    },
+    {
+      "id": "galle",
+      "code": "GLE",
+      "name": {
+        "en": "Galle",
+        "si": "ගාල්ල",
+        "ta": "காலி"
+      },
+      "lines": [
+        "coastal"
+      ],
+      "lat": 6.0329,
+      "lng": 80.2141,
+      "facilities": {
+        "reservationCounter": true,
+        "mTicketing": true
+      }
+    },
+    {
+      "id": "weligama",
+      "code": "WLM",
+      "name": {
+        "en": "Weligama",
+        "si": "වැලිගම",
+        "ta": "வெலிகம"
+      },
+      "lines": [
+        "coastal"
+      ],
+      "lat": 5.9744,
+      "lng": 80.429,
+      "facilities": {
+        "reservationCounter": false,
+        "mTicketing": false
+      }
+    },
+    {
+      "id": "matara",
+      "code": "MTR",
+      "name": {
+        "en": "Matara",
+        "si": "මාතර",
+        "ta": "மாத்தறை"
+      },
+      "lines": [
+        "coastal"
+      ],
+      "lat": 5.9485,
+      "lng": 80.5413,
+      "facilities": {
+        "reservationCounter": true,
+        "mTicketing": true
+      }
+    }
+  ]
+}

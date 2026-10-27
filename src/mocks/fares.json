@@ -1,0 +1,17 @@
+{
+  "_notice": "SAMPLE DATA – NOT OFFICIAL. Invented for UI development. Times, fares, codes, platforms and facilities are plausible placeholders and must not be used for travel.",
+  "_howItWorks": "fare = max(minimum, km × perKm), rounded up to roundTo. Per adult, one way, before the 5% online convenience fee.",
+  "perKm": {
+    "firstAC": 7.5,
+    "observation": 8,
+    "second": 3.4,
+    "third": 1.9
+  },
+  "minimum": {
+    "firstAC": 300,
+    "observation": 400,
+    "second": 40,
+    "third": 20
+  },
+  "roundTo": 10
+}

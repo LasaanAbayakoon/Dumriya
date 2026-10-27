@@ -1,0 +1,1417 @@
+{
+  "_notice": "SAMPLE DATA – NOT OFFICIAL. Invented for UI development. Times, fares, codes, platforms and facilities are plausible placeholders and must not be used for travel.",
+  "trains": [
+    {
+      "id": "1005",
+      "number": "1005",
+      "name": {
+        "en": "Podi Menike",
+        "si": "පොඩි මැණිකේ",
+        "ta": "பொடி மெனிகே"
+      },
+      "type": "express",
+      "line": "main",
+      "runningDays": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "classes": [
+        {
+          "travelClass": "observation",
+          "reservable": true
+        },
+        {
+          "travelClass": "second",
+          "reservable": true
+        },
+        {
+          "travelClass": "third",
+          "reservable": false
+        }
+      ],
+      "stops": [
+        {
+          "stationId": "colombo-fort",
+          "arrival": null,
+          "departure": "05:55",
+          "dayOffset": 0,
+          "km": 0,
+          "platform": "3"
+        },
+        {
+          "stationId": "maradana",
+          "arrival": "06:01",
+          "departure": "06:03",
+          "dayOffset": 0,
+          "km": 2
+        },
+        {
+          "stationId": "gampaha",
+          "arrival": "06:32",
+          "departure": "06:33",
+          "dayOffset": 0,
+          "km": 27
+        },
+        {
+          "stationId": "polgahawela",
+          "arrival": "07:35",
+          "departure": "07:38",
+          "dayOffset": 0,
+          "km": 74
+        },
+        {
+          "stationId": "peradeniya",
+          "arrival": "08:55",
+          "departure": "08:58",
+          "dayOffset": 0,
+          "km": 115
+        },
+        {
+          "stationId": "kandy",
+          "arrival": "09:10",
+          "departure": "09:45",
+          "dayOffset": 0,
+          "km": 121,
+          "platform": "2"
+        },
+        {
+          "stationId": "nawalapitiya",
+          "arrival": "10:50",
+          "departure": "10:53",
+          "dayOffset": 0,
+          "km": 154
+        },
+        {
+          "stationId": "hatton",
+          "arrival": "12:15",
+          "departure": "12:18",
+          "dayOffset": 0,
+          "km": 187
+        },
+        {
+          "stationId": "nanu-oya",
+          "arrival": "13:45",
+          "departure": "13:50",
+          "dayOffset": 0,
+          "km": 220
+        },
+        {
+          "stationId": "haputale",
+          "arrival": "15:25",
+          "departure": "15:27",
+          "dayOffset": 0,
+          "km": 265
+        },
+        {
+          "stationId": "bandarawela",
+          "arrival": "15:50",
+          "departure": "15:53",
+          "dayOffset": 0,
+          "km": 274
+        },
+        {
+          "stationId": "ella",
+          "arrival": "16:35",
+          "departure": "16:38",
+          "dayOffset": 0,
+          "km": 287
+        },
+        {
+          "stationId": "badulla",
+          "arrival": "17:45",
+          "departure": null,
+          "dayOffset": 0,
+          "km": 304,
+          "platform": "1"
+        }
+      ]
+    },
+    {
+      "id": "1015",
+      "number": "1015",
+      "name": {
+        "en": "Udarata Menike",
+        "si": "උඩරට මැණිකේ",
+        "ta": "உடரட்ட மெனிகே"
+      },
+      "type": "express",
+      "line": "main",
+      "runningDays": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "classes": [
+        {
+          "travelClass": "observation",
+          "reservable": true
+        },
+        {
+          "travelClass": "second",
+          "reservable": true
+        },
+        {
+          "travelClass": "third",
+          "reservable": false
+        }
+      ],
+      "stops": [
+        {
+          "stationId": "colombo-fort",
+          "arrival": null,
+          "departure": "08:30",
+          "dayOffset": 0,
+          "km": 0,
+          "platform": "4"
+        },
+        {
+          "stationId": "maradana",
+          "arrival": "08:36",
+          "departure": "08:38",
+          "dayOffset": 0,
+          "km": 2
+        },
+        {
+          "stationId": "gampaha",
+          "arrival": "09:05",
+          "departure": "09:06",
+          "dayOffset": 0,
+          "km": 27
+        },
+        {
+          "stationId": "polgahawela",
+          "arrival": "10:02",
+          "departure": "10:05",
+          "dayOffset": 0,
+          "km": 74
+        },
+        {
+          "stationId": "peradeniya",
+          "arrival": "11:24",
+          "departure": "11:28",
+          "dayOffset": 0,
+          "km": 115
+        },
+        {
+          "stationId": "nawalapitiya",
+          "arrival": "12:22",
+          "departure": "12:25",
+          "dayOffset": 0,
+          "km": 142
+        },
+        {
+          "stationId": "hatton",
+          "arrival": "13:42",
+          "departure": "13:45",
+          "dayOffset": 0,
+          "km": 175
+        },
+        {
+          "stationId": "nanu-oya",
+          "arrival": "15:10",
+          "departure": "15:15",
+          "dayOffset": 0,
+          "km": 208
+        },
+        {
+          "stationId": "haputale",
+          "arrival": "16:48",
+          "departure": "16:50",
+          "dayOffset": 0,
+          "km": 253
+        },
+        {
+          "stationId": "bandarawela",
+          "arrival": "17:12",
+          "departure": "17:15",
+          "dayOffset": 0,
+          "km": 262
+        },
+        {
+          "stationId": "ella",
+          "arrival": "17:52",
+          "departure": "17:55",
+          "dayOffset": 0,
+          "km": 275
+        },
+        {
+          "stationId": "badulla",
+          "arrival": "18:55",
+          "departure": null,
+          "dayOffset": 0,
+          "km": 292
+        }
+      ]
+    },
+    {
+      "id": "1001",
+      "number": "1001",
+      "name": {
+        "en": "Denuwara Menike",
+        "si": "දෙනුවර මැණිකේ",
+        "ta": "தெனுவர மெனிகே"
+      },
+      "type": "intercity",
+      "line": "main",
+      "runningDays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "classes": [
+        {
+          "travelClass": "firstAC",
+          "reservable": true
+        },
+        {
+          "travelClass": "second",
+          "reservable": true
+        },
+        {
+          "travelClass": "third",
+          "reservable": true
+        }
+      ],
+      "stops": [
+        {
+          "stationId": "colombo-fort",
+          "arrival": null,
+          "departure": "06:45",
+          "dayOffset": 0,
+          "km": 0,
+          "platform": "5"
+        },
+        {
+          "stationId": "gampaha",
+          "arrival": "07:11",
+          "departure": "07:12",
+          "dayOffset": 0,
+          "km": 27
+        },
+        {
+          "stationId": "polgahawela",
+          "arrival": "08:03",
+          "departure": "08:05",
+          "dayOffset": 0,
+          "km": 74
+        },
+        {
+          "stationId": "peradeniya",
+          "arrival": "09:12",
+          "departure": "09:15",
+          "dayOffset": 0,
+          "km": 115
+        },
+        {
+          "stationId": "nawalapitiya",
+          "arrival": "10:00",
+          "departure": "10:02",
+          "dayOffset": 0,
+          "km": 142
+        },
+        {
+          "stationId": "hatton",
+          "arrival": "11:08",
+          "departure": "11:10",
+          "dayOffset": 0,
+          "km": 175
+        },
+        {
+          "stationId": "nanu-oya",
+          "arrival": "12:25",
+          "departure": "12:28",
+          "dayOffset": 0,
+          "km": 208
+        },
+        {
+          "stationId": "haputale",
+          "arrival": "13:51",
+          "departure": "13:52",
+          "dayOffset": 0,
+          "km": 253
+        },
+        {
+          "stationId": "bandarawela",
+          "arrival": "14:10",
+          "departure": "14:12",
+          "dayOffset": 0,
+          "km": 262
+        },
+        {
+          "stationId": "ella",
+          "arrival": "14:46",
+          "departure": "14:48",
+          "dayOffset": 0,
+          "km": 275
+        },
+        {
+          "stationId": "badulla",
+          "arrival": "15:45",
+          "departure": null,
+          "dayOffset": 0,
+          "km": 292
+        }
+      ]
+    },
+    {
+      "id": "1045",
+      "number": "1045",
+      "name": {
+        "en": "Night Mail",
+        "si": "රාත්‍රී තැපැල් දුම්රිය",
+        "ta": "இரவு தபால் ரயில்"
+      },
+      "type": "night-mail",
+      "line": "main",
+      "runningDays": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "classes": [
+        {
+          "travelClass": "second",
+          "reservable": true
+        },
+        {
+          "travelClass": "third",
+          "reservable": false
+        }
+      ],
+      "stops": [
+        {
+          "stationId": "colombo-fort",
+          "arrival": null,
+          "departure": "20:00",
+          "dayOffset": 0,
+          "km": 0,
+          "platform": "6"
+        },
+        {
+          "stationId": "maradana",
+          "arrival": "20:06",
+          "departure": "20:10",
+          "dayOffset": 0,
+          "km": 2
+        },
+        {
+          "stationId": "gampaha",
+          "arrival": "20:42",
+          "departure": "20:44",
+          "dayOffset": 0,
+          "km": 27
+        },
+        {
+          "stationId": "polgahawela",
+          "arrival": "21:45",
+          "departure": "21:50",
+          "dayOffset": 0,
+          "km": 74
+        },
+        {
+          "stationId": "peradeniya",
+          "arrival": "23:20",
+          "departure": "23:25",
+          "dayOffset": 0,
+          "km": 115
+        },
+        {
+          "stationId": "nawalapitiya",
+          "arrival": "00:30",
+          "departure": "00:35",
+          "dayOffset": 1,
+          "km": 142
+        },
+        {
+          "stationId": "hatton",
+          "arrival": "02:05",
+          "departure": "02:10",
+          "dayOffset": 1,
+          "km": 175
+        },
+        {
+          "stationId": "nanu-oya",
+          "arrival": "03:45",
+          "departure": "03:55",
+          "dayOffset": 1,
+          "km": 208
+        },
+        {
+          "stationId": "haputale",
+          "arrival": "05:35",
+          "departure": "05:38",
+          "dayOffset": 1,
+          "km": 253
+        },
+        {
+          "stationId": "bandarawela",
+          "arrival": "06:02",
+          "departure": "06:05",
+          "dayOffset": 1,
+          "km": 262
+        },
+        {
+          "stationId": "ella",
+          "arrival": "06:48",
+          "departure": "06:50",
+          "dayOffset": 1,
+          "km": 275
+        },
+        {
+          "stationId": "badulla",
+          "arrival": "07:55",
+          "departure": null,
+          "dayOffset": 1,
+          "km": 292
+        }
+      ]
+    },
+    {
+      "id": "1029",
+      "number": "1029",
+      "name": {
+        "en": "Kandy Intercity",
+        "si": "මහනුවර අන්තර් නගර",
+        "ta": "கண்டி இன்டர்சிட்டி"
+      },
+      "type": "intercity",
+      "line": "main",
+      "runningDays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "classes": [
+        {
+          "travelClass": "firstAC",
+          "reservable": true
+        },
+        {
+          "travelClass": "second",
+          "reservable": true
+        }
+      ],
+      "stops": [
+        {
+          "stationId": "colombo-fort",
+          "arrival": null,
+          "departure": "15:35",
+          "dayOffset": 0,
+          "km": 0,
+          "platform": "2"
+        },
+        {
+          "stationId": "gampaha",
+          "arrival": "15:58",
+          "departure": "15:59",
+          "dayOffset": 0,
+          "km": 27
+        },
+        {
+          "stationId": "polgahawela",
+          "arrival": "16:46",
+          "departure": "16:48",
+          "dayOffset": 0,
+          "km": 74
+        },
+        {
+          "stationId": "peradeniya",
+          "arrival": "17:48",
+          "departure": "17:50",
+          "dayOffset": 0,
+          "km": 115
+        },
+        {
+          "stationId": "kandy",
+          "arrival": "18:05",
+          "departure": null,
+          "dayOffset": 0,
+          "km": 121,
+          "platform": "1"
+        }
+      ]
+    },
+    {
+      "id": "1161",
+      "number": "1161",
+      "name": null,
+      "type": "slow",
+      "line": "main",
+      "runningDays": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "classes": [
+        {
+          "travelClass": "second",
+          "reservable": false
+        },
+        {
+          "travelClass": "third",
+          "reservable": false
+        }
+      ],
+      "stops": [
+        {
+          "stationId": "colombo-fort",
+          "arrival": null,
+          "departure": "16:25",
+          "dayOffset": 0,
+          "km": 0
+        },
+        {
+          "stationId": "maradana",
+          "arrival": "16:31",
+          "departure": "16:33",
+          "dayOffset": 0,
+          "km": 2
+        },
+        {
+          "stationId": "gampaha",
+          "arrival": "17:10",
+          "departure": "17:12",
+          "dayOffset": 0,
+          "km": 27
+        },
+        {
+          "stationId": "polgahawela",
+          "arrival": "18:35",
+          "departure": "18:40",
+          "dayOffset": 0,
+          "km": 74
+        },
+        {
+          "stationId": "peradeniya",
+          "arrival": "20:05",
+          "departure": "20:07",
+          "dayOffset": 0,
+          "km": 115
+        },
+        {
+          "stationId": "kandy",
+          "arrival": "20:25",
+          "departure": null,
+          "dayOffset": 0,
+          "km": 121
+        }
+      ]
+    },
+    {
+      "id": "1006",
+      "number": "1006",
+      "name": {
+        "en": "Podi Menike",
+        "si": "පොඩි මැණිකේ",
+        "ta": "பொடி மெனிகே"
+      },
+      "type": "express",
+      "line": "main",
+      "runningDays": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "classes": [
+        {
+          "travelClass": "observation",
+          "reservable": true
+        },
+        {
+          "travelClass": "second",
+          "reservable": true
+        },
+        {
+          "travelClass": "third",
+          "reservable": false
+        }
+      ],
+      "stops": [
+        {
+          "stationId": "badulla",
+          "arrival": null,
+          "departure": "08:50",
+          "dayOffset": 0,
+          "km": 0,
+          "platform": "1"
+        },
+        {
+          "stationId": "ella",
+          "arrival": "09:55",
+          "departure": "09:58",
+          "dayOffset": 0,
+          "km": 17
+        },
+        {
+          "stationId": "bandarawela",
+          "arrival": "10:40",
+          "departure": "10:43",
+          "dayOffset": 0,
+          "km": 30
+        },
+        {
+          "stationId": "haputale",
+          "arrival": "11:05",
+          "departure": "11:08",
+          "dayOffset": 0,
+          "km": 39
+        },
+        {
+          "stationId": "nanu-oya",
+          "arrival": "12:45",
+          "departure": "12:50",
+          "dayOffset": 0,
+          "km": 84
+        },
+        {
+          "stationId": "hatton",
+          "arrival": "14:15",
+          "departure": "14:18",
+          "dayOffset": 0,
+          "km": 117
+        },
+        {
+          "stationId": "nawalapitiya",
+          "arrival": "15:40",
+          "departure": "15:43",
+          "dayOffset": 0,
+          "km": 150
+        },
+        {
+          "stationId": "kandy",
+          "arrival": "16:48",
+          "departure": "17:15",
+          "dayOffset": 0,
+          "km": 183,
+          "platform": "2"
+        },
+        {
+          "stationId": "peradeniya",
+          "arrival": "17:27",
+          "departure": "17:30",
+          "dayOffset": 0,
+          "km": 189
+        },
+        {
+          "stationId": "polgahawela",
+          "arrival": "18:50",
+          "departure": "18:53",
+          "dayOffset": 0,
+          "km": 230
+        },
+        {
+          "stationId": "gampaha",
+          "arrival": "19:50",
+          "departure": "19:51",
+          "dayOffset": 0,
+          "km": 277
+        },
+        {
+          "stationId": "maradana",
+          "arrival": "20:20",
+          "departure": "20:22",
+          "dayOffset": 0,
+          "km": 302
+        },
+        {
+          "stationId": "colombo-fort",
+          "arrival": "20:30",
+          "departure": null,
+          "dayOffset": 0,
+          "km": 304,
+          "platform": "3"
+        }
+      ]
+    },
+    {
+      "id": "1046",
+      "number": "1046",
+      "name": {
+        "en": "Night Mail",
+        "si": "රාත්‍රී තැපැල් දුම්රිය",
+        "ta": "இரவு தபால் ரயில்"
+      },
+      "type": "night-mail",
+      "line": "main",
+      "runningDays": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "classes": [
+        {
+          "travelClass": "second",
+          "reservable": true
+        },
+        {
+          "travelClass": "third",
+          "reservable": false
+        }
+      ],
+      "stops": [
+        {
+          "stationId": "badulla",
+          "arrival": null,
+          "departure": "17:45",
+          "dayOffset": 0,
+          "km": 0
+        },
+        {
+          "stationId": "ella",
+          "arrival": "18:50",
+          "departure": "18:53",
+          "dayOffset": 0,
+          "km": 17
+        },
+        {
+          "stationId": "bandarawela",
+          "arrival": "19:35",
+          "departure": "19:38",
+          "dayOffset": 0,
+          "km": 30
+        },
+        {
+          "stationId": "haputale",
+          "arrival": "20:00",
+          "departure": "20:03",
+          "dayOffset": 0,
+          "km": 39
+        },
+        {
+          "stationId": "nanu-oya",
+          "arrival": "21:45",
+          "departure": "21:55",
+          "dayOffset": 0,
+          "km": 84
+        },
+        {
+          "stationId": "hatton",
+          "arrival": "23:25",
+          "departure": "23:30",
+          "dayOffset": 0,
+          "km": 117
+        },
+        {
+          "stationId": "nawalapitiya",
+          "arrival": "00:55",
+          "departure": "01:00",
+          "dayOffset": 1,
+          "km": 150
+        },
+        {
+          "stationId": "peradeniya",
+          "arrival": "02:05",
+          "departure": "02:10",
+          "dayOffset": 1,
+          "km": 177
+        },
+        {
+          "stationId": "polgahawela",
+          "arrival": "03:40",
+          "departure": "03:45",
+          "dayOffset": 1,
+          "km": 218
+        },
+        {
+          "stationId": "gampaha",
+          "arrival": "04:50",
+          "departure": "04:52",
+          "dayOffset": 1,
+          "km": 265
+        },
+        {
+          "stationId": "maradana",
+          "arrival": "05:25",
+          "departure": "05:28",
+          "dayOffset": 1,
+          "km": 290
+        },
+        {
+          "stationId": "colombo-fort",
+          "arrival": "05:35",
+          "departure": null,
+          "dayOffset": 1,
+          "km": 292,
+          "platform": "6"
+        }
+      ]
+    },
+    {
+      "id": "8086",
+      "number": "8086",
+      "name": {
+        "en": "Coastal Intercity",
+        "si": "වෙරළ අන්තර් නගර",
+        "ta": "கரையோர இன்டர்சிட்டி"
+      },
+      "type": "intercity",
+      "line": "coastal",
+      "runningDays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "classes": [
+        {
+          "travelClass": "firstAC",
+          "reservable": true
+        },
+        {
+          "travelClass": "second",
+          "reservable": true
+        }
+      ],
+      "stops": [
+        {
+          "stationId": "colombo-fort",
+          "arrival": null,
+          "departure": "07:00",
+          "dayOffset": 0,
+          "km": 0,
+          "platform": "7"
+        },
+        {
+          "stationId": "mount-lavinia",
+          "arrival": "07:20",
+          "departure": "07:21",
+          "dayOffset": 0,
+          "km": 11
+        },
+        {
+          "stationId": "panadura",
+          "arrival": "07:40",
+          "departure": "07:41",
+          "dayOffset": 0,
+          "km": 27
+        },
+        {
+          "stationId": "kalutara-south",
+          "arrival": "08:00",
+          "departure": "08:01",
+          "dayOffset": 0,
+          "km": 43
+        },
+        {
+          "stationId": "aluthgama",
+          "arrival": "08:20",
+          "departure": "08:21",
+          "dayOffset": 0,
+          "km": 61
+        },
+        {
+          "stationId": "hikkaduwa",
+          "arrival": "08:58",
+          "departure": "08:59",
+          "dayOffset": 0,
+          "km": 98
+        },
+        {
+          "stationId": "galle",
+          "arrival": "09:18",
+          "departure": "09:23",
+          "dayOffset": 0,
+          "km": 116,
+          "platform": "1"
+        },
+        {
+          "stationId": "weligama",
+          "arrival": "09:55",
+          "departure": "09:56",
+          "dayOffset": 0,
+          "km": 145
+        },
+        {
+          "stationId": "matara",
+          "arrival": "10:15",
+          "departure": null,
+          "dayOffset": 0,
+          "km": 158,
+          "platform": "2"
+        }
+      ]
+    },
+    {
+      "id": "8050",
+      "number": "8050",
+      "name": null,
+      "type": "express",
+      "line": "coastal",
+      "runningDays": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "classes": [
+        {
+          "travelClass": "second",
+          "reservable": false
+        },
+        {
+          "travelClass": "third",
+          "reservable": false
+        }
+      ],
+      "stops": [
+        {
+          "stationId": "colombo-fort",
+          "arrival": null,
+          "departure": "06:55",
+          "dayOffset": 0,
+          "km": 0,
+          "platform": "8"
+        },
+        {
+          "stationId": "mount-lavinia",
+          "arrival": "07:18",
+          "departure": "07:19",
+          "dayOffset": 0,
+          "km": 11
+        },
+        {
+          "stationId": "panadura",
+          "arrival": "07:39",
+          "departure": "07:40",
+          "dayOffset": 0,
+          "km": 27
+        },
+        {
+          "stationId": "kalutara-south",
+          "arrival": "08:04",
+          "departure": "08:05",
+          "dayOffset": 0,
+          "km": 43
+        },
+        {
+          "stationId": "aluthgama",
+          "arrival": "08:29",
+          "departure": "08:30",
+          "dayOffset": 0,
+          "km": 61
+        },
+        {
+          "stationId": "hikkaduwa",
+          "arrival": "09:14",
+          "departure": "09:15",
+          "dayOffset": 0,
+          "km": 98
+        },
+        {
+          "stationId": "galle",
+          "arrival": "09:40",
+          "departure": "09:45",
+          "dayOffset": 0,
+          "km": 116
+        },
+        {
+          "stationId": "weligama",
+          "arrival": "10:21",
+          "departure": "10:22",
+          "dayOffset": 0,
+          "km": 145
+        },
+        {
+          "stationId": "matara",
+          "arrival": "10:45",
+          "departure": null,
+          "dayOffset": 0,
+          "km": 158
+        }
+      ]
+    },
+    {
+      "id": "8059",
+      "number": "8059",
+      "name": {
+        "en": "Ruhunu Kumari",
+        "si": "රුහුණු කුමාරි",
+        "ta": "ருஹுனு குமாரி"
+      },
+      "type": "express",
+      "line": "coastal",
+      "runningDays": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "classes": [
+        {
+          "travelClass": "second",
+          "reservable": false
+        },
+        {
+          "travelClass": "third",
+          "reservable": false
+        }
+      ],
+      "stops": [
+        {
+          "stationId": "colombo-fort",
+          "arrival": null,
+          "departure": "15:50",
+          "dayOffset": 0,
+          "km": 0,
+          "platform": "9"
+        },
+        {
+          "stationId": "mount-lavinia",
+          "arrival": "16:11",
+          "departure": "16:12",
+          "dayOffset": 0,
+          "km": 11
+        },
+        {
+          "stationId": "panadura",
+          "arrival": "16:34",
+          "departure": "16:35",
+          "dayOffset": 0,
+          "km": 27
+        },
+        {
+          "stationId": "kalutara-south",
+          "arrival": "17:01",
+          "departure": "17:02",
+          "dayOffset": 0,
+          "km": 43
+        },
+        {
+          "stationId": "aluthgama",
+          "arrival": "17:29",
+          "departure": "17:30",
+          "dayOffset": 0,
+          "km": 61
+        },
+        {
+          "stationId": "hikkaduwa",
+          "arrival": "18:17",
+          "departure": "18:18",
+          "dayOffset": 0,
+          "km": 98
+        },
+        {
+          "stationId": "galle",
+          "arrival": "18:40",
+          "departure": "18:45",
+          "dayOffset": 0,
+          "km": 116,
+          "platform": "2"
+        },
+        {
+          "stationId": "weligama",
+          "arrival": "19:21",
+          "departure": "19:22",
+          "dayOffset": 0,
+          "km": 145
+        },
+        {
+          "stationId": "matara",
+          "arrival": "19:45",
+          "departure": null,
+          "dayOffset": 0,
+          "km": 158
+        }
+      ]
+    },
+    {
+      "id": "8058",
+      "number": "8058",
+      "name": {
+        "en": "Ruhunu Kumari",
+        "si": "රුහුණු කුමාරි",
+        "ta": "ருஹுனு குமாரி"
+      },
+      "type": "express",
+      "line": "coastal",
+      "runningDays": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "classes": [
+        {
+          "travelClass": "second",
+          "reservable": false
+        },
+        {
+          "travelClass": "third",
+          "reservable": false
+        }
+      ],
+      "stops": [
+        {
+          "stationId": "matara",
+          "arrival": null,
+          "departure": "05:15",
+          "dayOffset": 0,
+          "km": 0,
+          "platform": "1"
+        },
+        {
+          "stationId": "weligama",
+          "arrival": "05:34",
+          "departure": "05:35",
+          "dayOffset": 0,
+          "km": 13
+        },
+        {
+          "stationId": "galle",
+          "arrival": "06:15",
+          "departure": "06:20",
+          "dayOffset": 0,
+          "km": 42,
+          "platform": "1"
+        },
+        {
+          "stationId": "hikkaduwa",
+          "arrival": "06:41",
+          "departure": "06:42",
+          "dayOffset": 0,
+          "km": 60
+        },
+        {
+          "stationId": "aluthgama",
+          "arrival": "07:24",
+          "departure": "07:25",
+          "dayOffset": 0,
+          "km": 97
+        },
+        {
+          "stationId": "kalutara-south",
+          "arrival": "07:49",
+          "departure": "07:50",
+          "dayOffset": 0,
+          "km": 115
+        },
+        {
+          "stationId": "panadura",
+          "arrival": "08:11",
+          "departure": "08:12",
+          "dayOffset": 0,
+          "km": 131
+        },
+        {
+          "stationId": "mount-lavinia",
+          "arrival": "08:31",
+          "departure": "08:32",
+          "dayOffset": 0,
+          "km": 147
+        },
+        {
+          "stationId": "colombo-fort",
+          "arrival": "08:55",
+          "departure": null,
+          "dayOffset": 0,
+          "km": 158,
+          "platform": "9"
+        }
+      ]
+    },
+    {
+      "id": "8087",
+      "number": "8087",
+      "name": {
+        "en": "Coastal Intercity",
+        "si": "වෙරළ අන්තර් නගර",
+        "ta": "கரையோர இன்டர்சிட்டி"
+      },
+      "type": "intercity",
+      "line": "coastal",
+      "runningDays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "classes": [
+        {
+          "travelClass": "firstAC",
+          "reservable": true
+        },
+        {
+          "travelClass": "second",
+          "reservable": true
+        }
+      ],
+      "stops": [
+        {
+          "stationId": "matara",
+          "arrival": null,
+          "departure": "15:20",
+          "dayOffset": 0,
+          "km": 0,
+          "platform": "2"
+        },
+        {
+          "stationId": "weligama",
+          "arrival": "15:38",
+          "departure": "15:39",
+          "dayOffset": 0,
+          "km": 13
+        },
+        {
+          "stationId": "galle",
+          "arrival": "16:10",
+          "departure": "16:15",
+          "dayOffset": 0,
+          "km": 42,
+          "platform": "1"
+        },
+        {
+          "stationId": "hikkaduwa",
+          "arrival": "16:34",
+          "departure": "16:35",
+          "dayOffset": 0,
+          "km": 60
+        },
+        {
+          "stationId": "aluthgama",
+          "arrival": "17:11",
+          "departure": "17:12",
+          "dayOffset": 0,
+          "km": 97
+        },
+        {
+          "stationId": "kalutara-south",
+          "arrival": "17:31",
+          "departure": "17:32",
+          "dayOffset": 0,
+          "km": 115
+        },
+        {
+          "stationId": "panadura",
+          "arrival": "17:51",
+          "departure": "17:52",
+          "dayOffset": 0,
+          "km": 131
+        },
+        {
+          "stationId": "mount-lavinia",
+          "arrival": "18:11",
+          "departure": "18:12",
+          "dayOffset": 0,
+          "km": 147
+        },
+        {
+          "stationId": "colombo-fort",
+          "arrival": "18:35",
+          "departure": null,
+          "dayOffset": 0,
+          "km": 158,
+          "platform": "7"
+        }
+      ]
+    },
+    {
+      "id": "8327",
+      "number": "8327",
+      "name": null,
+      "type": "slow",
+      "line": "coastal",
+      "runningDays": [
+        0,
+        6
+      ],
+      "classes": [
+        {
+          "travelClass": "third",
+          "reservable": false
+        }
+      ],
+      "stops": [
+        {
+          "stationId": "galle",
+          "arrival": null,
+          "departure": "13:00",
+          "dayOffset": 0,
+          "km": 0
+        },
+        {
+          "stationId": "hikkaduwa",
+          "arrival": "13:28",
+          "departure": "13:30",
+          "dayOffset": 0,
+          "km": 18
+        },
+        {
+          "stationId": "aluthgama",
+          "arrival": "14:20",
+          "departure": "14:23",
+          "dayOffset": 0,
+          "km": 55
+        },
+        {
+          "stationId": "kalutara-south",
+          "arrival": "14:55",
+          "departure": "14:58",
+          "dayOffset": 0,
+          "km": 73
+        },
+        {
+          "stationId": "panadura",
+          "arrival": "15:25",
+          "departure": "15:27",
+          "dayOffset": 0,
+          "km": 89
+        },
+        {
+          "stationId": "mount-lavinia",
+          "arrival": "15:55",
+          "departure": "15:57",
+          "dayOffset": 0,
+          "km": 105
+        },
+        {
+          "stationId": "colombo-fort",
+          "arrival": "16:30",
+          "departure": null,
+          "dayOffset": 0,
+          "km": 116
+        }
+      ]
+    }
+  ]
+}

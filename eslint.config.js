@@ -17,12 +17,17 @@ export default tseslint.config(
       // Screens must go through src/api, never import mock JSON directly.
       'no-restricted-imports': [
         'error',
-        { patterns: [{ group: ['**/mocks/*', '@/mocks/*'], message: 'Import data via src/api, not mock JSON.' }] },
+        {
+          patterns: [
+            { group: ['**/mocks/*', '@/mocks/*'], message: 'Import data via src/api, not mock JSON.' },
+            { group: ['@/api/mock', '@/api/mock/*'], message: 'Import from @/api so the backend can be swapped.' },
+          ],
+        },
       ],
     },
   },
   {
-    files: ['src/api/mock/**'],
+    files: ['src/api/mock/**', 'src/api/*.test.ts'],
     rules: { 'no-restricted-imports': 'off' },
   },
   {
