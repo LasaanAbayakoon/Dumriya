@@ -7,3 +7,6 @@ coverage
 test-results
 playwright-report
 node_modules/.tmp
+
+# Claude Code local settings (per machine, not shared)
+.claude/settings.local.json
