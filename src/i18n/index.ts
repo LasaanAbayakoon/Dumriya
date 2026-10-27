@@ -46,11 +46,16 @@ export function getSavedLanguage(): Language {
   return isLanguage(nav) ? nav : 'en';
 }
 
-export async function setLanguage(lng: Language): Promise<void> {
+/** Load a language's strings without switching the UI to it (e.g. to copy text in another language). */
+export async function ensureLanguageLoaded(lng: Language): Promise<void> {
   if (lng !== 'en' && !i18n.hasResourceBundle(lng, 'translation')) {
     const mod = await loaders[lng]();
     i18n.addResourceBundle(lng, 'translation', mod.default, true, true);
   }
+}
+
+export async function setLanguage(lng: Language): Promise<void> {
+  await ensureLanguageLoaded(lng);
   await i18n.changeLanguage(lng);
   document.documentElement.lang = lng;
   writePref('lang', lng);

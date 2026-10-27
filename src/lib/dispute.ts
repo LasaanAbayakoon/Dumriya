@@ -1,9 +1,9 @@
 /**
  * Payment dispute helper (card charged, no e-ticket). Pure functions only:
- * nothing here stores or sends anything. The text block is always English so
- * any support officer can read it.
+ * nothing here stores or sends anything.
  */
 import { DISPUTE_TYPE_LABEL } from '@/config/policy';
+import i18n from '@/i18n';
 import { formatDate } from './format';
 import { isClockTime, isIsoDate } from './time';
 
@@ -64,18 +64,26 @@ export function validateDispute(f: DisputeFields): Partial<Record<DisputeField, 
   return errors;
 }
 
-/** The block the user pastes into Contact Us. Assumes the fields passed validation. */
-export function buildDisputeText(f: DisputeFields): string {
+export const DISPUTE_TEXT_LANGS = ['en', 'si', 'ta'] as const;
+export type DisputeTextLang = (typeof DISPUTE_TEXT_LANGS)[number];
+
+/**
+ * The block the user pastes into Contact Us, in the chosen language (English by default).
+ * The dispute type stays in English: it must match the option on the official form.
+ * Assumes the fields passed validation.
+ */
+export function buildDisputeText(f: DisputeFields, lang: DisputeTextLang = 'en'): string {
+  const t = i18n.getFixedT(lang);
   return [
-    `Dispute type: ${DISPUTE_TYPE_LABEL}`,
-    'Problem: my card was charged but I did not receive an e-ticket.',
+    t('disputeBlock.type', { type: DISPUTE_TYPE_LABEL }),
+    t('disputeBlock.problem'),
     '',
-    `Name: ${f.name.trim()}`,
-    `Mobile: ${normalizeMobile(f.mobile) ?? f.mobile.trim()}`,
-    `Location: ${f.location.trim()}`,
-    `Date and time of payment: ${formatDate(f.paidDate, 'en')}, ${f.paidTime} (Sri Lanka time)`,
-    `Reference number: ${f.reference.trim()}`,
-    `Card used: last 4 digits ${f.last4}`,
-    `Email used for the booking: ${f.email.trim()}`,
+    t('disputeBlock.name', { v: f.name.trim() }),
+    t('disputeBlock.mobile', { v: normalizeMobile(f.mobile) ?? f.mobile.trim() }),
+    t('disputeBlock.location', { v: f.location.trim() }),
+    t('disputeBlock.paid', { date: formatDate(f.paidDate, lang), time: f.paidTime }),
+    t('disputeBlock.reference', { v: f.reference.trim() }),
+    t('disputeBlock.card', { v: f.last4 }),
+    t('disputeBlock.email', { v: f.email.trim() }),
   ].join('\n');
 }

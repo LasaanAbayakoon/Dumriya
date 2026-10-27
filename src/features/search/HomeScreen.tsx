@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/Badge';
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
+import { ChosenDateTime } from '@/components/ChosenDateTime';
 import { PageHeader } from '@/components/PageHeader';
 import { StationPicker } from '@/components/StationPicker';
 import { BellIcon, ChevronRightIcon, CoinsIcon, SearchIcon, SwapIcon, TicketIcon } from '@/components/icons';
@@ -108,7 +109,7 @@ export default function HomeScreen() {
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
                   aria-invalid={errors.date ? true : undefined}
-                  aria-describedby={errors.date ? 'search-date-error' : undefined}
+                  aria-describedby={errors.date ? 'search-date-error search-chosen' : 'search-chosen'}
                   className="tap w-full rounded-xl border border-border bg-surface px-3 py-2 text-lg"
                 />
                 {errors.date && (
@@ -126,7 +127,7 @@ export default function HomeScreen() {
                   type="time"
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
-                  aria-describedby="search-time-hint"
+                  aria-describedby="search-time-hint search-chosen"
                   className="tap w-full rounded-xl border border-border bg-surface px-3 py-2 text-lg"
                 />
                 <p id="search-time-hint" className="mt-1 text-sm text-muted">
@@ -134,6 +135,7 @@ export default function HomeScreen() {
                 </p>
               </div>
             </div>
+            <ChosenDateTime id="search-chosen" date={date} time={time} />
             <Button type="submit" size="lg" icon={<SearchIcon />}>
               {t('home.search')}
             </Button>

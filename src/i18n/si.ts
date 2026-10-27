@@ -71,6 +71,9 @@ const si: Messages = {
     countdownDhm: 'දින {{d}} පැය {{h}} මිනිත්තු {{m}}', // TODO(review-si)
     countdownHms: 'පැය {{h}} මිනිත්තු {{m}} තත්පර {{s}}', // TODO(review-si)
     dateTime: '{{date}} {{time}}', // TODO(review-si)
+    chosen: 'ඔබ තෝරාගත්තේ: {{value}}', // TODO(review-si)
+    chosenDateTime: '{{date}}, {{time}} (ශ්‍රී ලංකා වේලාව)', // TODO(review-si)
+    chosenTime: '{{time}} (ශ්‍රී ලංකා වේලාව)', // TODO(review-si)
     date: '{{year}} {{month}} {{day}}, {{weekday}}', // TODO(review-si)
     shortDate: '{{month}} {{day}}', // TODO(review-si)
     months: {
@@ -365,7 +368,6 @@ const si: Messages = {
     fixErrors: 'සමහර විස්තර නිවැරදි කළ යුතුය. රතු පාටින් සලකුණු කළ ක්ෂේත්‍ර පරීක්ෂා කරන්න.', // TODO(review-si)
     copyAll: 'සියල්ල පිටපත් කරන්න', // TODO(review-si)
     previewTitle: 'යැවිය යුතු පාඨය', // TODO(review-si)
-    englishNote: 'ඕනෑම සහාය නිලධාරියෙකුට කියවිය හැකි වන සේ පාඨය ඉංග්‍රීසියෙන් ඇත.', // TODO(review-si)
     nextTitle: 'දැන් එය ශ්‍රී ලංකා දුම්රිය සේවයට යවන්න', // TODO(review-si)
     step1: 'නිල වෙබ් අඩවිය විවෘත කර Contact Us වෙත යන්න.', // TODO(review-si)
     step2: '“{{type}}” ආරවුල් වර්ගය තෝරන්න.', // TODO(review-si)
@@ -375,6 +377,19 @@ const si: Messages = {
     contactBody: 'Contact Us ඇත්තේ නිල ශ්‍රී ලංකා දුම්රිය ආසන වෙන්කිරීමේ වෙබ් අඩවියේ ය. Dumriya ට ඔබේ පණිවිඩය දැකීමට හෝ යැවීමට නොහැක.', // TODO(review-si)
     openOfficial: 'නිල වෙබ් අඩවිය විවෘත කරන්න', // TODO(review-si)
     clear: 'පෝරමය හිස් කරන්න', // TODO(review-si)
+    copyIn: 'පිටපත් කරන භාෂාව', // TODO(review-si)
+    copyInHint: 'ඕනෑම සහාය නිලධාරියෙකුට කියවිය හැකි වන සේ ඉංග්‍රීසි පෙරනිමිය වේ.', // TODO(review-si)
+  },
+  disputeBlock: {
+    type: 'ආරවුල් වර්ගය: {{type}}', // TODO(review-si)
+    problem: 'ගැටලුව: මගේ කාඩ්පතෙන් මුදල් අය වුණා, නමුත් මට ඊ-ටිකට්පතක් ලැබුණේ නැත.', // TODO(review-si)
+    name: 'නම: {{v}}', // TODO(review-si)
+    mobile: 'ජංගම අංකය: {{v}}', // TODO(review-si)
+    location: 'ස්ථානය: {{v}}', // TODO(review-si)
+    paid: 'ගෙවූ දිනය සහ වේලාව: {{date}}, {{time}} (ශ්‍රී ලංකා වේලාව)', // TODO(review-si)
+    reference: 'යොමු අංකය: {{v}}', // TODO(review-si)
+    card: 'භාවිත කළ කාඩ්පත: අවසාන ඉලක්කම් 4 {{v}}', // TODO(review-si)
+    email: 'වෙන්කිරීමට භාවිත කළ ඊමේල්: {{v}}', // TODO(review-si)
   },
 };
 

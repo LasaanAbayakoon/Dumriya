@@ -155,7 +155,7 @@ describe('privacy: nothing saved, nothing sent', () => {
 
   test('autofill is off on every field', async () => {
     renderRoute('/dispute');
-    const inputs = (await screen.findByRole('button', { name: 'Copy all' })).closest('form')!.querySelectorAll('input');
+    const inputs = (await screen.findByRole('button', { name: 'Copy all' })).closest('form')!.querySelectorAll('input:not([type="radio"])');
     expect(inputs).toHaveLength(8);
     inputs.forEach((i) => expect(i).toHaveAttribute('autocomplete', 'off'));
   });
@@ -181,4 +181,17 @@ describe('privacy: nothing saved, nothing sent', () => {
     expect(screen.getByLabelText('Full name')).toHaveValue('');
     expect(screen.getByLabelText('Email address used for the booking')).toHaveValue('');
   });
+});
+
+test('Copy in: English by default; choosing සිංහල copies Sinhala text', async () => {
+  const user = userEvent.setup();
+  renderRoute('/dispute');
+  expect(await screen.findByRole('radio', { name: 'English' })).toBeChecked();
+  await fillAll(user);
+  await user.click(screen.getByRole('radio', { name: 'සිංහල' }));
+  await user.click(screen.getByRole('button', { name: 'Copy all' }));
+  const text = await clipboardText();
+  expect(text.split('\n')[0]).toBe('ආරවුල් වර්ගය: Payment issue');
+  expect(text).toContain('නම: A. Perera');
+  expect(screen.getByTestId('dispute-preview').textContent).toBe(text);
 });

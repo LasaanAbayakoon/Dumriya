@@ -7,6 +7,7 @@ import { PageHeader } from '@/components/PageHeader';
 import { CheckIcon, CopyIcon, ShieldIcon } from '@/components/icons';
 import { OFFICIAL_RESERVATION_URL } from '@/config/links';
 import { DISPUTE_TYPE_LABEL } from '@/config/policy';
+import { ensureLanguageLoaded, LANGUAGES } from '@/i18n';
 import { copyText } from '@/lib/clipboard';
 import {
   acceptLast4,
@@ -16,7 +17,9 @@ import {
   type DisputeError,
   type DisputeField,
   type DisputeFields,
+  type DisputeTextLang,
 } from '@/lib/dispute';
+import { ChosenDateTime } from '@/components/ChosenDateTime';
 import { OfficialHandoff } from '../book/OfficialHandoff';
 
 /**
@@ -41,6 +44,8 @@ export default function DisputeScreen() {
   const [attempted, setAttempted] = useState(false);
   const [refused, setRefused] = useState(false);
   const [copied, setCopied] = useState<null | 'ok' | 'failed'>(null);
+  // Language of the copied text. English by default; the screen itself follows the app language.
+  const [textLang, setTextLang] = useState<DisputeTextLang>('en');
   const nextRef = useRef<HTMLHeadingElement>(null);
 
   const reset = () => {
@@ -48,6 +53,7 @@ export default function DisputeScreen() {
     setAttempted(false);
     setRefused(false);
     setCopied(null);
+    setTextLang('en');
   };
 
   useEffect(() => {
@@ -88,7 +94,8 @@ export default function DisputeScreen() {
       return;
     }
     try {
-      await copyText(buildDisputeText(fields));
+      await ensureLanguageLoaded(textLang); // Sinhala/Tamil strings may not be loaded if the UI is in another language
+      await copyText(buildDisputeText(fields, textLang));
       setCopied('ok');
     } catch {
       setCopied('failed');
@@ -97,11 +104,16 @@ export default function DisputeScreen() {
   };
 
   const hasErrors = Object.keys(errors).length > 0;
-  const text = hasErrors || !attempted ? null : buildDisputeText(fields);
+  const text = hasErrors || !attempted ? null : buildDisputeText(fields, textLang);
 
   const field = (k: DisputeField, label: string, props: React.InputHTMLAttributes<HTMLInputElement> = {}, hint?: string) => {
     const err = errors[k];
-    const describedBy = [hint && `dispute-${k}-hint`, err && `dispute-${k}-err`, k === 'last4' && refused && 'dispute-last4-refused']
+    const describedBy = [
+      hint && `dispute-${k}-hint`,
+      err && `dispute-${k}-err`,
+      k === 'last4' && refused && 'dispute-last4-refused',
+      (k === 'paidDate' || k === 'paidTime') && 'dispute-paid-chosen',
+    ]
       .filter(Boolean)
       .join(' ');
     return (
@@ -153,6 +165,7 @@ export default function DisputeScreen() {
               {field('paidDate', t('dispute.paidDate'), { type: 'date' })}
               {field('paidTime', t('dispute.paidTime'), { type: 'time' })}
             </div>
+            <ChosenDateTime id="dispute-paid-chosen" date={fields.paidDate} time={fields.paidTime} />
             {field('reference', t('dispute.reference'), {}, t('dispute.referenceHint'))}
             {field(
               'last4',
@@ -172,6 +185,30 @@ export default function DisputeScreen() {
                 <span role="alert">{t('dispute.fixErrors')}</span>
               </Notice>
             )}
+            <fieldset>
+              <legend className="mb-1 text-sm font-semibold text-muted">{t('dispute.copyIn')}</legend>
+              <div className="flex flex-wrap gap-2">
+                {LANGUAGES.map((l) => (
+                  <label
+                    key={l.code}
+                    className="tap inline-flex items-center gap-2 rounded-xl border border-border px-3 py-1 has-[:checked]:border-accent has-[:checked]:bg-accent-soft"
+                  >
+                    <input
+                      type="radio"
+                      name="dispute-text-lang"
+                      checked={textLang === l.code}
+                      onChange={() => {
+                        setTextLang(l.code);
+                        setCopied(null);
+                      }}
+                      className="size-5 accent-[var(--accent)]"
+                    />
+                    <span lang={l.code}>{l.nativeName}</span>
+                  </label>
+                ))}
+              </div>
+              <p className="mt-1 text-sm text-muted">{t('dispute.copyInHint')}</p>
+            </fieldset>
             <Button size="lg" icon={copied === 'ok' ? <CheckIcon /> : <CopyIcon />} onClick={() => void copyAll()}>
               {t('dispute.copyAll')}
             </Button>
@@ -212,7 +249,6 @@ export default function DisputeScreen() {
                   >
                     {text}
                   </pre>
-                  <p className="mt-1 text-sm text-muted">{t('dispute.englishNote')}</p>
                 </div>
               </section>
             </Card>

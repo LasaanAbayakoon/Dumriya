@@ -71,6 +71,9 @@ const ta: Messages = {
     countdownDhm: '{{d}} நாள் {{h}} மணி {{m}} நிமி', // TODO(review-ta)
     countdownHms: '{{h}} மணி {{m}} நிமி {{s}} வி', // TODO(review-ta)
     dateTime: '{{date}}, {{time}}', // TODO(review-ta)
+    chosen: 'நீங்கள் தேர்ந்தெடுத்தது: {{value}}', // TODO(review-ta)
+    chosenDateTime: '{{date}}, {{time}} (இலங்கை நேரம்)', // TODO(review-ta)
+    chosenTime: '{{time}} (இலங்கை நேரம்)', // TODO(review-ta)
     date: '{{weekday}}, {{day}} {{month}} {{year}}', // TODO(review-ta)
     shortDate: '{{day}} {{month}}', // TODO(review-ta)
     months: {
@@ -365,7 +368,6 @@ const ta: Messages = {
     fixErrors: 'சில விவரங்களைத் திருத்த வேண்டும். சிவப்பில் குறிக்கப்பட்ட புலங்களைப் பார்க்கவும்.', // TODO(review-ta)
     copyAll: 'அனைத்தையும் நகலெடு', // TODO(review-ta)
     previewTitle: 'அனுப்ப வேண்டிய உரை', // TODO(review-ta)
-    englishNote: 'எந்த உதவி அலுவலரும் படிக்கக்கூடிய வகையில் உரை ஆங்கிலத்தில் உள்ளது.', // TODO(review-ta)
     nextTitle: 'இப்போது அதை இலங்கை ரயில்வேக்கு அனுப்புங்கள்', // TODO(review-ta)
     step1: 'அதிகாரப்பூர்வ தளத்தைத் திறந்து Contact Us க்குச் செல்லவும்.', // TODO(review-ta)
     step2: '“{{type}}” என்ற முறைப்பாட்டு வகையைத் தேர்ந்தெடுக்கவும்.', // TODO(review-ta)
@@ -375,6 +377,19 @@ const ta: Messages = {
     contactBody: 'Contact Us அதிகாரப்பூர்வ இலங்கை ரயில்வே இருக்கை முன்பதிவுத் தளத்தில் உள்ளது. Dumriya உங்கள் செய்தியைப் பார்க்கவோ அனுப்பவோ முடியாது.', // TODO(review-ta)
     openOfficial: 'அதிகாரப்பூர்வ தளத்தைத் திற', // TODO(review-ta)
     clear: 'படிவத்தை அழி', // TODO(review-ta)
+    copyIn: 'நகலெடுக்கும் மொழி', // TODO(review-ta)
+    copyInHint: 'எந்த உதவி அலுவலரும் படிக்கக்கூடிய வகையில் ஆங்கிலம் இயல்புநிலை.', // TODO(review-ta)
+  },
+  disputeBlock: {
+    type: 'முறைப்பாட்டு வகை: {{type}}', // TODO(review-ta)
+    problem: 'பிரச்சினை: என் அட்டையில் பணம் கழிந்தது, ஆனால் எனக்கு மின்-டிக்கெட் கிடைக்கவில்லை.', // TODO(review-ta)
+    name: 'பெயர்: {{v}}', // TODO(review-ta)
+    mobile: 'கைபேசி: {{v}}', // TODO(review-ta)
+    location: 'இடம்: {{v}}', // TODO(review-ta)
+    paid: 'பணம் செலுத்திய தேதியும் நேரமும்: {{date}}, {{time}} (இலங்கை நேரம்)', // TODO(review-ta)
+    reference: 'குறிப்பு எண்: {{v}}', // TODO(review-ta)
+    card: 'பயன்படுத்திய அட்டை: கடைசி 4 இலக்கங்கள் {{v}}', // TODO(review-ta)
+    email: 'முன்பதிவுக்குப் பயன்படுத்திய மின்னஞ்சல்: {{v}}', // TODO(review-ta)
   },
 };
 

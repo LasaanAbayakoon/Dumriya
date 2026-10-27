@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { getTrip } from '@/api';
 import { Badge } from '@/components/Badge';
 import { Card } from '@/components/Card';
+import { ChosenDateTime } from '@/components/ChosenDateTime';
 import { Notice } from '@/components/Notice';
 import { PageHeader } from '@/components/PageHeader';
 import { ChevronRightIcon } from '@/components/icons';
@@ -67,7 +68,7 @@ export default function RefundScreen() {
                   type="date"
                   value={depDate}
                   onChange={(e) => setDepDate(e.target.value)}
-                  aria-describedby="refund-dep-hint"
+                  aria-describedby="refund-dep-hint refund-chosen"
                   aria-invalid={errors.departure ? true : undefined}
                   className={`${input} ${border(errors.departure)}`}
                 />
@@ -81,7 +82,7 @@ export default function RefundScreen() {
                   type="time"
                   value={depTime}
                   onChange={(e) => setDepTime(e.target.value)}
-                  aria-describedby="refund-dep-hint"
+                  aria-describedby="refund-dep-hint refund-chosen"
                   aria-invalid={errors.departure ? true : undefined}
                   className={`${input} ${border(errors.departure)}`}
                 />
@@ -90,6 +91,7 @@ export default function RefundScreen() {
             <p id="refund-dep-hint" className="-mt-2 text-sm text-muted">
               {t('refund.departureHint')}
             </p>
+            <ChosenDateTime id="refund-chosen" date={depDate} time={depTime} />
             {errors.departure && <p className="text-sm font-semibold text-danger">{errors.departure}</p>}
 
             <div>

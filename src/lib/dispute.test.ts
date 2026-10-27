@@ -67,3 +67,18 @@ test('the copied block is clean English text with the dispute type', () => {
     ].join('\n'),
   );
 });
+
+test('the copied block can be in Sinhala or Tamil; the dispute type stays as on the official form', async () => {
+  const { setLanguage } = await import('@/i18n');
+  await setLanguage('si');
+  await setLanguage('ta');
+  await setLanguage('en');
+  const si = buildDisputeText(valid, 'si');
+  expect(si.split('\n')[0]).toBe('ආරවුල් වර්ගය: Payment issue');
+  expect(si).toContain('භාවිත කළ කාඩ්පත: අවසාන ඉලක්කම් 4 4242');
+  expect(si).toContain('2026 නොවැ 10, අඟහ, 14:30');
+  const ta = buildDisputeText(valid, 'ta');
+  expect(ta.split('\n')[0]).toBe('முறைப்பாட்டு வகை: Payment issue');
+  expect(ta).toContain('செவ்., 10 நவ. 2026, 14:30 (இலங்கை நேரம்)');
+  expect(buildDisputeText(valid)).toBe(buildDisputeText(valid, 'en'));
+});

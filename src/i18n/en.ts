@@ -68,6 +68,9 @@ const en = {
     countdownDhm: '{{d}} d {{h}} h {{m}} min',
     countdownHms: '{{h}} h {{m}} min {{s}} s',
     dateTime: '{{time}} on {{date}}',
+    chosen: 'You chose: {{value}}',
+    chosenDateTime: '{{date}}, {{time}} (Sri Lanka time)',
+    chosenTime: '{{time}} (Sri Lanka time)',
     // Dates are built from these names (not the browser's locale data, which is
     // often missing Sinhala/Tamil on low-end phones). Word order is per language.
     date: '{{weekday}}, {{day}} {{month}} {{year}}',
@@ -367,7 +370,6 @@ const en = {
     fixErrors: 'Some details need fixing. Check the fields marked in red.',
     copyAll: 'Copy all',
     previewTitle: 'Text to send',
-    englishNote: 'The text is in English so that any support officer can read it.',
     nextTitle: 'Now send it to Sri Lanka Railways',
     step1: 'Open the official site and go to Contact Us.',
     step2: 'Choose the dispute type “{{type}}”.',
@@ -377,6 +379,19 @@ const en = {
     contactBody: 'Contact Us is on the official Sri Lanka Railways seat reservation site. Dumriya cannot see or send your message.',
     openOfficial: 'Open official site',
     clear: 'Clear form',
+    copyIn: 'Copy in',
+    copyInHint: 'English is the default so that any support officer can read it.',
+  },
+  disputeBlock: {
+    type: 'Dispute type: {{type}}',
+    problem: 'Problem: my card was charged but I did not receive an e-ticket.',
+    name: 'Name: {{v}}',
+    mobile: 'Mobile: {{v}}',
+    location: 'Location: {{v}}',
+    paid: 'Date and time of payment: {{date}}, {{time}} (Sri Lanka time)',
+    reference: 'Reference number: {{v}}',
+    card: 'Card used: last 4 digits {{v}}',
+    email: 'Email used for the booking: {{v}}',
   },
 };
 
