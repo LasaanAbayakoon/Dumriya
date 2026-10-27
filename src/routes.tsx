@@ -12,6 +12,9 @@ const TrainScreen = lazy(() => import('@/features/train/TrainScreen'));
 const BookingHelperScreen = lazy(() => import('@/features/book/BookingHelperScreen'));
 const RefundScreen = lazy(() => import('@/features/refund/RefundScreen'));
 const DisputeScreen = lazy(() => import('@/features/dispute/DisputeScreen'));
+const TicketsScreen = lazy(() => import('@/features/tickets/TicketsScreen'));
+const TicketNewScreen = lazy(() => import('@/features/tickets/TicketNewScreen'));
+const TicketScreen = lazy(() => import('@/features/tickets/TicketScreen'));
 const MoreScreen = lazy(() => import('@/features/more/MoreScreen'));
 const SettingsScreen = lazy(() => import('@/features/settings/SettingsScreen'));
 const NotFoundScreen = lazy(() => import('@/features/NotFoundScreen'));
@@ -34,8 +37,9 @@ export const routes: RouteObject[] = [
       { path: '/train/:trainId', element: <TrainScreen /> },
       { path: '/train/:trainId/book', element: <BookingHelperScreen /> },
       { path: '/train/:trainId/live', element: el(todo('live')) },
-      { path: '/tickets', element: el(todo('tickets', false)) },
-      { path: '/tickets/:ticketId', element: el(todo('ticket')) },
+      { path: '/tickets', element: <TicketsScreen /> },
+      { path: '/tickets/new', element: <TicketNewScreen /> },
+      { path: '/tickets/:ticketId', element: <TicketScreen /> },
       { path: '/refund', element: <RefundScreen /> },
       { path: '/dispute', element: <DisputeScreen /> },
       { path: '/reminders', element: el(todo('reminders', false)) },

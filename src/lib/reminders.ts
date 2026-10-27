@@ -2,10 +2,11 @@
 import type { IsoDateTime, Reminder, ReminderAlert, Trip } from '@/types';
 import { bookingOpenAlerts, type BookingWindow } from './bookingWindow';
 import type { IcsEvent } from './ics';
+import { newId } from './id';
 import { colomboDateTime, toColomboIso } from './time';
 
-export const newReminderId = () =>
-  typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : `r-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+/** Kept as a named export for reminder callers. */
+export const newReminderId = newId;
 
 export function bookingOpensReminder(
   trip: Trip,

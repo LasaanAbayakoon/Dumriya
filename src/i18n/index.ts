@@ -54,11 +54,12 @@ export async function ensureLanguageLoaded(lng: Language): Promise<void> {
   }
 }
 
-export async function setLanguage(lng: Language): Promise<void> {
+/** Switch the UI language. `persist: false` switches without saving the choice (used after "Delete all my data"). */
+export async function setLanguage(lng: Language, { persist = true }: { persist?: boolean } = {}): Promise<void> {
   await ensureLanguageLoaded(lng);
   await i18n.changeLanguage(lng);
   document.documentElement.lang = lng;
-  writePref('lang', lng);
+  if (persist) writePref('lang', lng);
 }
 
 export default i18n;

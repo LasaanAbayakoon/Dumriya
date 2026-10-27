@@ -82,6 +82,15 @@ Tile URL and attribution are in `src/config/app.ts` (`MAP_TILE_URL`, `MAP_TILE_A
 
 `/dispute` collects name, mobile, location, payment date/time, reference number, last 4 card digits and email **only in React component state**. It never writes them to IndexedDB, localStorage, sessionStorage, the URL or history state, and sends nothing over the network (tested: storage snapshots, IndexedDB, router location, fetch/XHR/sendBeacon/WebSocket spies). The form clears when the user leaves the screen or on `pagehide`, and autofill is off. The card field refuses any input with more than 4 digits (it never truncates a pasted card number). "Copy all" puts an English text block on the clipboard; the only link is to the official reservation site, for Contact Us → "Payment issue".
 
+## Ticket wallet (offline)
+
+- Tickets live only in IndexedDB on the phone (`dumriya-tickets`); the file is stored as raw bytes (`ArrayBuffer`, up to `MAX_TICKET_FILE_BYTES` = 10 MB, PDF or image) and is **never read or parsed**. The user types or confirms every detail.
+- Refund countdowns use the tested `refundQuote()`. Deadlines count from the **earlier** of the departure the user entered and the train's origin departure (when the train is in the timetable); this is worked out when the ticket is saved, so countdowns work offline.
+- After the first save the app asks the browser for persistent storage (`navigator.storage.persist()`), and the wallet says plainly whether the browser agreed.
+- Storage failures are explained in words: "blocked" (private browsing, blocked site data) vs "full" (`QuotaExceededError`).
+- Settings → "Delete all my data" clears tickets, reminders and every local preference.
+- `e2e/wallet-offline.spec.ts` saves a ticket, cuts the network, reloads the app from the service worker and opens the ticket.
+
 ## External links
 
 Every link that opens a new tab goes through `src/components/ExternalLink.tsx`, which always sets `rel="noopener noreferrer"`. A test fails if any other source file uses `target="_blank"`, and another renders each screen with outbound links and checks every `target=_blank` link. (Vitest's on-disk module cache is turned off in `vite.config.ts` so that source-scanning test always sees newly added files.)

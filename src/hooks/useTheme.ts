@@ -32,5 +32,11 @@ export function useTheme() {
     setThemeState(t);
   }, []);
 
-  return { theme, setTheme };
+  /** Back to "match phone" without saving a preference (used after "Delete all my data"). */
+  const resetTheme = useCallback(() => {
+    writePref('theme', null);
+    setThemeState('system');
+  }, []);
+
+  return { theme, setTheme, resetTheme };
 }

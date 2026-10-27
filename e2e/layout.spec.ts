@@ -13,6 +13,8 @@ const PAGES = [
   { name: 'book-unreserved', url: '/train/8059/book?date=2026-12-10' },
   { name: 'refund', url: '/refund?departure=2026-12-09T20%3A00%3A00%2B05%3A30&fare=1240&train=1045&date=2026-12-10&from=nawalapitiya&to=badulla' },
   { name: 'dispute', url: '/dispute' },
+  { name: 'tickets', url: '/tickets' },
+  { name: 'ticket-new', url: '/tickets/new?train=1045&date=2026-12-10&from=nawalapitiya&to=badulla&time=00:35&fare=510' },
 ];
 
 async function overflowing(page: Page) {

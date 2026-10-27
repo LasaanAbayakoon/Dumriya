@@ -1,8 +1,9 @@
-import type { AnchorHTMLAttributes, ReactNode } from 'react';
+import type { AnchorHTMLAttributes, ReactNode, Ref } from 'react';
 
 type Props = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'target' | 'rel' | 'referrerPolicy'> & {
   href: string;
   children: ReactNode;
+  ref?: Ref<HTMLAnchorElement>;
 };
 
 /**
@@ -10,9 +11,9 @@ type Props = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'target' | 'rel' | 'r
  * (the new page can't reach back into Dumriya or see where it came from).
  * A test fails if any other code uses target="_blank".
  */
-export function ExternalLink({ href, children, ...rest }: Props) {
+export function ExternalLink({ href, children, ref, ...rest }: Props) {
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" referrerPolicy="no-referrer" {...rest}>
+    <a ref={ref} href={href} target="_blank" rel="noopener noreferrer" referrerPolicy="no-referrer" {...rest}>
       {children}
     </a>
   );

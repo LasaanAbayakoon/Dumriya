@@ -146,6 +146,20 @@ export default function TrainScreen() {
           </Card>
         )}
 
+        <Link
+          to={`/tickets/new?${new URLSearchParams({
+            train: train.number,
+            date: trip.date,
+            from: trip.from.stationId,
+            to: trip.to.stationId,
+            time: f.time(trip.departure),
+          })}`}
+          className="tap inline-flex items-center gap-1 font-semibold text-accent underline"
+        >
+          {t('train.saveTicket')}
+          <ChevronRightIcon className="shrink-0" />
+        </Link>
+
         <Card>
           <h2 className="mb-2 text-lg font-bold">{t('train.fares')}</h2>
           <FareTable fares={trip.fares} fromName={fromName} toName={toName} />
