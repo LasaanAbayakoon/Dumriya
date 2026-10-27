@@ -95,6 +95,12 @@ export const WARRANT_EXPIRES_HOURS_BEFORE_JOURNEY = 48;
 /** Pravesha commuter tickets can be bought up to this many days in advance. */
 export const PRAVESHA_ADVANCE_DAYS = 7;
 
+/**
+ * ASSUMED – verify with SLR (source: Sunday Observer, Sep 2024): at most this many
+ * Pravesha tickets in one order, return tickets included. The UI says it is not confirmed.
+ */
+export const PRAVESHA_MAX_TICKETS_PER_ORDER = 5;
+
 // ── Payment disputes ────────────────────────────────────────────────────────
 
 /** Dispute type to choose on the official site's Contact Us form. */

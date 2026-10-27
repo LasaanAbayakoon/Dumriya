@@ -60,6 +60,7 @@ All times are handled in **Asia/Colombo (+05:30, no DST)** regardless of the pho
 | How refunds are done | In person at a station counter, with an NIC/passport copy | `REFUND_IN_PERSON_ONLY`, `REFUND_DOCUMENTS` |
 | Temporary warrant reservation expiry | 7 days after booking **or** 48 h before the journey, whichever is first; must be confirmed at a station | `WARRANT_EXPIRES_DAYS_AFTER_BOOKING`, `WARRANT_EXPIRES_HOURS_BEFORE_JOURNEY` |
 | Pravesha commuter tickets | Can be bought up to 7 days in advance | `PRAVESHA_ADVANCE_DAYS` |
+| Pravesha tickets per order | **Assumed — verify with SLR** (source: Sunday Observer, Sep 2024). At most 5 per order, return tickets included; the UI says it is not confirmed | `PRAVESHA_MAX_TICKETS_PER_ORDER` |
 | Payment dispute | Official site → Contact Us → dispute type "Payment issue" | `DISPUTE_TYPE_LABEL` |
 
 **Ambiguity rule:** where SLR's wording is ambiguous, the app picks the interpretation that gives the user the **earlier** time, so nobody misses a window. Rows marked "assumed, conservative" above are such interpretations and must be confirmed with SLR.
@@ -68,7 +69,7 @@ All times are handled in **Asia/Colombo (+05:30, no DST)** regardless of the pho
 
 Only these destinations are used for booking (`src/config/links.ts`):
 - Reserved seats: `https://seatreservation.railway.gov.lk`
-- Commuter tickets (Pravesha): `PRAVESHA_URL` – **TODO: fill in**. While it is `null`, the Pravesha button is replaced by a non-clickable "Pravesha: link coming soon" and users are pointed to the station counter. There is never a broken or guessed link.
+- Commuter tickets (Pravesha): `https://www.pravesha.lk` (`PRAVESHA_URL`; sources: Ada Derana Aug 2024, Newswire Sep 2026; verified by the project owner). If it is ever set back to `null`, the Pravesha button is replaced by a non-clickable "Pravesha: link coming soon" and users are pointed to the station counter, so there is never a broken or guessed link.
 
 Every outbound booking link goes through `isOfficialUrl()` (https and an exact official host); anything else is not rendered. The booking helper shows a "You are leaving Dumriya" notice with a look-alike-site warning and the exact host to check in the address bar.
 

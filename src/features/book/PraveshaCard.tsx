@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/Card';
+import { Notice } from '@/components/Notice';
 import { PRAVESHA_URL } from '@/config/links';
-import { PRAVESHA_ADVANCE_DAYS } from '@/config/policy';
+import { PRAVESHA_ADVANCE_DAYS, PRAVESHA_MAX_TICKETS_PER_ORDER } from '@/config/policy';
 import { useFormat } from '@/hooks/useFormat';
 import { praveshaWindow } from '@/lib/booking';
 import { colomboDateOf } from '@/lib/time';
@@ -26,6 +27,7 @@ export function PraveshaCard({ trip, now, url = PRAVESHA_URL }: { trip: Trip; no
           </h2>
           <p>{t('book.praveshaClasses', { classes: unreserved.map((x) => t(`classes.${x.travelClass}`)).join(', ') })}</p>
           <p>{t('train.praveshaNote', { days: PRAVESHA_ADVANCE_DAYS })}</p>
+          <Notice title={t('common.notConfirmed')}>{t('book.praveshaMax', { max: PRAVESHA_MAX_TICKETS_PER_ORDER })}</Notice>
           <p className="font-semibold">
             {notOnSaleYet
               ? t('book.praveshaNotYet', { date: f.date(w.opensOn) })
@@ -45,7 +47,14 @@ export function PraveshaCard({ trip, now, url = PRAVESHA_URL }: { trip: Trip; no
           )}
         </section>
       </Card>
-      {url && <OfficialHandoff url={url} buttonLabel={t('book.praveshaContinue')} />}
+      {url && (
+        <OfficialHandoff
+          url={url}
+          buttonLabel={t('book.praveshaContinue')}
+          title={t('book.leaveTitlePravesha')}
+          body={t('book.leaveBodyPravesha')}
+        />
+      )}
     </>
   );
 }

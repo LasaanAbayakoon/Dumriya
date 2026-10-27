@@ -297,6 +297,9 @@ const ta: Messages = {
     praveshaSoon: 'Pravesha: இணைப்பு விரைவில்', // TODO(review-ta)
     praveshaSoonBody: 'அதுவரை, நிலையக் கருமபீடத்தில் டிக்கெட் வாங்கவும்.', // TODO(review-ta)
     praveshaNotYet: 'இந்தத் தேதிக்கு இன்னும் விற்பனை இல்லை. பயணிகள் டிக்கெட்டுகள் {{date}} முதல் விற்பனைக்கு வரும்.', // TODO(review-ta)
+    praveshaMax: 'Pravesha ஒரு ஆர்டரில், திரும்பும் டிக்கெட்டுகள் உட்பட, அதிகபட்சம் {{max}} டிக்கெட்டுகளை அனுமதிக்கிறது. இந்த வரம்பு இலங்கை ரயில்வேயால் உறுதிப்படுத்தப்படவில்லை.', // TODO(review-ta)
+    leaveTitlePravesha: 'நீங்கள் Dumriya ஐ விட்டு Pravesha க்குச் செல்கிறீர்கள்', // TODO(review-ta)
+    leaveBodyPravesha: 'நீங்கள் பயணிகள் டிக்கெட்டுகளுக்கான அதிகாரப்பூர்வ Pravesha சேவையில் தொடர்வீர்கள். Dumriya இலங்கை ரயில்வேயின் பகுதி அல்ல, உங்கள் வாங்குதலைப் பார்க்கவும் முடியாது.', // TODO(review-ta)
   },
 };
 

@@ -29,6 +29,7 @@ test('policy values match the documented SLR rules', () => {
     WARRANT_EXPIRES_DAYS_AFTER_BOOKING: 7,
     WARRANT_EXPIRES_HOURS_BEFORE_JOURNEY: 48,
     PRAVESHA_ADVANCE_DAYS: 7,
+    PRAVESHA_MAX_TICKETS_PER_ORDER: 5,
     DISPUTE_TYPE_LABEL: 'Payment issue',
   });
 });

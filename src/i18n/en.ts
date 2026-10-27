@@ -297,6 +297,9 @@ const en = {
     praveshaSoon: 'Pravesha: link coming soon',
     praveshaSoonBody: 'Until then, buy your ticket at the station counter.',
     praveshaNotYet: 'Not on sale yet for this date. Commuter tickets go on sale on {{date}}.',
+    praveshaMax: 'Pravesha allows at most {{max}} tickets in one order, including return tickets. This limit is not confirmed by Sri Lanka Railways.',
+    leaveTitlePravesha: 'You are leaving Dumriya for Pravesha',
+    leaveBodyPravesha: 'You will continue on Pravesha, the official commuter ticket service. Dumriya is not part of Sri Lanka Railways and cannot see your purchase.',
   },
 };
 

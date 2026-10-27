@@ -15,8 +15,12 @@ test.each([
   expect(isOfficialUrl(url)).toBe(false);
 });
 
-test('Pravesha URL is not set yet (the UI shows "Link coming soon")', () => {
-  expect(PRAVESHA_URL).toBeNull();
+test('Pravesha URL is the official site and is accepted as official', () => {
+  expect(PRAVESHA_URL).toBe('https://www.pravesha.lk');
+  expect(isOfficialUrl(PRAVESHA_URL!)).toBe(true);
+  expect(isOfficialUrl('https://www.pravesha.lk.example.com')).toBe(false);
+  expect(isOfficialUrl('https://pravesha-lk.com')).toBe(false);
+  expect(isOfficialUrl('http://www.pravesha.lk')).toBe(false);
 });
 
 test('directions link', () => {

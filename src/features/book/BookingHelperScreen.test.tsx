@@ -1,7 +1,9 @@
-import { cleanup, screen, within } from '@testing-library/react';
+import { cleanup, render, screen, within } from '@testing-library/react';
+import { getTrip } from '@/api';
 import userEvent from '@testing-library/user-event';
 import { setLanguage } from '@/i18n';
 import { renderRoute } from '@/test/renderRoute';
+import { PraveshaCard } from './PraveshaCard';
 
 const DAY_TRAIN = '/train/1015/book?date=2026-12-10&from=colombo-fort&to=ella';
 const NIGHT = '/train/1045/book?date=2026-12-10&from=nawalapitiya&to=badulla';
@@ -114,7 +116,8 @@ describe('official handoff', () => {
     expect(leave.getByTestId('official-host')).toHaveTextContent('seatreservation.railway.gov.lk');
 
     const external = screen.getAllByRole('link').filter((a) => /^https?:/.test(a.getAttribute('href') ?? ''));
-    expect(external.map((a) => a.getAttribute('href'))).toEqual(['https://seatreservation.railway.gov.lk']);
+    // Only the two official destinations: reserved seats and Pravesha (for the unreserved 3rd class).
+    expect(external.map((a) => a.getAttribute('href'))).toEqual(['https://seatreservation.railway.gov.lk', 'https://www.pravesha.lk']);
   });
 
   test('copy trip details', async () => {
@@ -140,14 +143,24 @@ describe('uncertain values in plain words', () => {
 });
 
 describe('unreserved and Pravesha', () => {
-  test('unreserved-only train: no seat booking, Pravesha shows "Link coming soon" and is not a link', async () => {
+  test('unreserved-only train: no seat booking; Pravesha card with limit (not confirmed) and its own handoff', async () => {
     renderRoute(UNRESERVED);
     const pravesha = await section('Commuter ticket (unreserved)');
-    expect(pravesha.getByText('Pravesha: link coming soon')).toBeInTheDocument();
-    expect(pravesha.getByText('Until then, buy your ticket at the station counter.')).toBeInTheDocument();
-    expect(pravesha.queryByRole('link')).not.toBeInTheDocument();
-    expect(pravesha.queryByRole('button')).not.toBeInTheDocument();
     expect(pravesha.getByText('Not on sale yet for this date. Commuter tickets go on sale on Thu, 3 Dec 2026.')).toBeInTheDocument();
+    expect(pravesha.getByText('Not confirmed')).toBeInTheDocument();
+    expect(
+      pravesha.getByText(
+        'Pravesha allows at most 5 tickets in one order, including return tickets. This limit is not confirmed by Sri Lanka Railways.',
+      ),
+    ).toBeInTheDocument();
+
+    const leave = await section('You are leaving Dumriya for Pravesha');
+    expect(leave.getByText(/Pravesha, the official commuter ticket service/)).toBeInTheDocument();
+    expect(leave.getByTestId('official-host')).toHaveTextContent('www.pravesha.lk');
+    const link = leave.getByRole('link', { name: 'Continue on Pravesha' });
+    expect(link).toHaveAttribute('href', 'https://www.pravesha.lk');
+    expect(link.getAttribute('rel')).toContain('noopener');
+
     expect(screen.queryByRole('link', { name: 'Continue on official site' })).not.toBeInTheDocument();
     expect(screen.queryByRole('heading', { name: 'How many bookings you need' })).not.toBeInTheDocument();
   });
@@ -156,5 +169,15 @@ describe('unreserved and Pravesha', () => {
     renderRoute(DAY_TRAIN);
     const pravesha = await section('Commuter ticket (unreserved)');
     expect(pravesha.getByText('Unreserved on this train: 3rd class.')).toBeInTheDocument();
+  });
+
+  test('if PRAVESHA_URL is ever null: "link coming soon", no link or button', async () => {
+    const trip = (await getTrip({ trainId: '8059', date: '2026-12-10' }))!;
+    render(<PraveshaCard trip={trip} now={new Date('2026-11-01T12:00:00+05:30')} url={null} />);
+    const pravesha = await section('Commuter ticket (unreserved)');
+    expect(pravesha.getByText('Pravesha: link coming soon')).toBeInTheDocument();
+    expect(pravesha.getByText('Until then, buy your ticket at the station counter.')).toBeInTheDocument();
+    expect(screen.queryByRole('link')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
 });

@@ -297,6 +297,9 @@ const si: Messages = {
     praveshaSoon: 'Pravesha: සබැඳිය ඉක්මනින්', // TODO(review-si)
     praveshaSoonBody: 'ඒ දක්වා, දුම්රිය ස්ථාන කවුළුවෙන් ටිකට්පත මිලදී ගන්න.', // TODO(review-si)
     praveshaNotYet: 'මෙම දිනය සඳහා තවම අලෙවි නොකෙරේ. ගමන් ටිකට්පත් {{date}} සිට අලෙවි වේ.', // TODO(review-si)
+    praveshaMax: 'Pravesha එක් ඇණවුමකට, ආපසු ටිකට්පත් ද ඇතුළුව, උපරිම ටිකට්පත් {{max}} ක් ඉඩ දෙයි. මෙම සීමාව ශ්‍රී ලංකා දුම්රිය සේවය විසින් තහවුරු කර නැත.', // TODO(review-si)
+    leaveTitlePravesha: 'ඔබ Dumriya හැර Pravesha වෙත යයි', // TODO(review-si)
+    leaveBodyPravesha: 'ඔබ ගමන් ටිකට්පත් සඳහා වන නිල Pravesha සේවාවෙන් ඉදිරියට යනු ඇත. Dumriya ශ්‍රී ලංකා දුම්රිය සේවයේ කොටසක් නොවන අතර ඔබේ මිලදී ගැනීම දැකිය නොහැක.', // TODO(review-si)
   },
 };
 
