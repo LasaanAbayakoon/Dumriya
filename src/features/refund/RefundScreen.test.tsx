@@ -1,7 +1,7 @@
 import { act, cleanup, screen, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { setLanguage } from '@/i18n';
 import { renderRoute } from '@/test/renderRoute';
+import { setupUser } from '@/test/user';
 
 const NOW = new Date('2026-11-01T12:00:00+05:30');
 const DEP = new Date('2026-12-10T08:30:00+05:30');
@@ -21,7 +21,7 @@ const section = async (name: string) => within((await screen.findByRole('heading
 const manual = (fare = '1000') => `/refund?departure=${encodeURIComponent('2026-12-10T08:30:00+05:30')}&fare=${fare}`;
 
 test('opened from Train detail: departure, fare and 5 % service charge are prefilled', async () => {
-  const user = userEvent.setup();
+  const user = setupUser();
   renderRoute('/train/1015?date=2026-12-10&from=colombo-fort&to=ella');
   await user.click(await screen.findByRole('link', { name: 'If you cancel: refund calculator' }));
   expect(await screen.findByRole('heading', { level: 1, name: 'Refund calculator' })).toBeInTheDocument();
@@ -86,7 +86,7 @@ test('after departure: no refund', async () => {
 });
 
 test('service charge follows the fare until edited, then stays', async () => {
-  const user = userEvent.setup();
+  const user = setupUser();
   renderRoute('/refund');
   const fare = await screen.findByLabelText('Ticket fare (Rs)');
   const sc = screen.getByLabelText('Service charge (not refundable)');
@@ -100,7 +100,7 @@ test('service charge follows the fare until edited, then stays', async () => {
 });
 
 test('invalid inputs explain the problem in words', async () => {
-  const user = userEvent.setup();
+  const user = setupUser();
   renderRoute('/refund');
   await user.type(await screen.findByLabelText('Ticket fare (Rs)'), 'abc');
   expect(screen.getByText('Enter the fare as a number greater than 0.')).toBeInTheDocument();
@@ -115,7 +115,7 @@ test('in-person rule is always stated in plain words, even before any input', as
 });
 
 test('boarding mid-route: deadlines count from the origin, and the screen says so (not confirmed)', async () => {
-  const user = userEvent.setup();
+  const user = setupUser();
   renderRoute('/train/1045?date=2026-12-10&from=nawalapitiya&to=badulla');
   await user.click(await screen.findByRole('link', { name: 'If you cancel: refund calculator' }));
   expect(await screen.findByLabelText('Departure date')).toHaveValue('2026-12-09');

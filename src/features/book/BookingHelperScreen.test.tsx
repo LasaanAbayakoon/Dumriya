@@ -1,8 +1,8 @@
 import { cleanup, render, screen, within } from '@testing-library/react';
 import { getTrip } from '@/api';
-import userEvent from '@testing-library/user-event';
 import { setLanguage } from '@/i18n';
 import { renderRoute } from '@/test/renderRoute';
+import { setupUser } from '@/test/user';
 import { PraveshaCard } from './PraveshaCard';
 
 const DAY_TRAIN = '/train/1015/book?date=2026-12-10&from=colombo-fort&to=ella';
@@ -23,7 +23,7 @@ const section = async (name: string) => within((await screen.findByRole('heading
 
 describe('how many bookings', () => {
   test('warns about the 5-seat limit and splits 7 passengers into 5 + 2', async () => {
-    const user = userEvent.setup();
+    const user = setupUser();
     renderRoute(DAY_TRAIN);
     const plan = await section('How many bookings you need');
     expect(plan.getByText('The official site allows at most 5 seats in one booking.')).toBeInTheDocument();
@@ -38,7 +38,7 @@ describe('how many bookings', () => {
   });
 
   test('a simple return goes in the same booking; a different count or station needs its own', async () => {
-    const user = userEvent.setup();
+    const user = setupUser();
     renderRoute(DAY_TRAIN);
     const plan = await section('How many bookings you need');
     await user.click(plan.getByRole('button', { name: 'One passenger more' })); // 2 passengers
@@ -66,7 +66,7 @@ describe('how many bookings', () => {
 
 describe('true total', () => {
   test('fare × seats + 5 % convenience fee, card or LANKAQR only', async () => {
-    const user = userEvent.setup();
+    const user = setupUser();
     renderRoute(DAY_TRAIN);
     const cost = await section('What you will pay');
     // Default class is the first reservable one (observation saloon).
@@ -85,7 +85,7 @@ describe('true total', () => {
 
 describe('checklist and email', () => {
   test('every rule is listed, ticking updates progress, nothing is blocked', async () => {
-    const user = userEvent.setup();
+    const user = setupUser();
     renderRoute(DAY_TRAIN);
     const list = await section('Before you pay');
     expect(list.getByText('0 of 5 checked')).toBeInTheDocument();
@@ -121,7 +121,7 @@ describe('official handoff', () => {
   });
 
   test('copy trip details', async () => {
-    const user = userEvent.setup();
+    const user = setupUser();
     const writeText = vi.fn().mockResolvedValue(undefined);
     Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true });
     renderRoute(DAY_TRAIN);

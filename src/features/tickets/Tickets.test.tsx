@@ -1,9 +1,10 @@
 import { cleanup, screen, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import type userEvent from '@testing-library/user-event';
 import { setLanguage } from '@/i18n';
 import { StorageError, tickets } from '@/lib/storage';
 import { buildTicket } from '@/lib/tickets';
 import { renderRoute } from '@/test/renderRoute';
+import { setupUser } from '@/test/user';
 
 const NAWALAPITIYA = '/train/1045?date=2026-12-10&from=nawalapitiya&to=badulla';
 const pdf = () => new File(['%PDF-1.4 sample'], 'eticket.pdf', { type: 'application/pdf' });
@@ -49,7 +50,7 @@ test('empty wallet explains itself and shows storage used', async () => {
 });
 
 test('save from Train detail: details are prefilled to confirm; file stored; refund countdown and calculator link', async () => {
-  const user = userEvent.setup();
+  const user = setupUser();
   renderRoute(NAWALAPITIYA);
   await user.click(await screen.findByRole('link', { name: 'Already booked? Save your e-ticket' }));
 
@@ -105,7 +106,7 @@ test('list shows the ticket with seat and a live refund line', async () => {
 
 describe('form checks', () => {
   test('missing details are explained and focus goes to the file field first', async () => {
-    const user = userEvent.setup();
+    const user = setupUser();
     renderRoute('/tickets/new');
     await user.click(await screen.findByRole('button', { name: 'Save ticket' }));
     expect(screen.getByText('Choose your e-ticket file.')).toBeInTheDocument();
@@ -115,14 +116,14 @@ describe('form checks', () => {
   });
 
   test('a file that is not a PDF or image is refused in plain words', async () => {
-    const user = userEvent.setup({ applyAccept: false });
+    const user = setupUser({ applyAccept: false });
     renderRoute('/tickets/new');
     await user.upload(await screen.findByLabelText('E-ticket file (PDF or photo)'), new File(['x'], 'notes.docx', { type: 'application/msword' }));
     expect(screen.getByText('This is not a PDF or an image. Choose the e-ticket PDF, or a photo or screenshot of it.')).toBeInTheDocument();
   });
 
   test('a file over 10 MB is refused in plain words', async () => {
-    const user = userEvent.setup();
+    const user = setupUser();
     renderRoute('/tickets/new');
     const big = new File(['x'], 'huge.jpg', { type: 'image/jpeg' });
     Object.defineProperty(big, 'size', { value: 11 * 1024 * 1024 });
@@ -150,7 +151,7 @@ describe('when the browser refuses storage', () => {
         'This ticket could not be saved: your browser is blocking storage, for example in private browsing. Keep the e-ticket email or PDF instead.',
     },
   ])('$reason: plain-words error, stays on the form', async ({ reason, message }) => {
-    const user = userEvent.setup();
+    const user = setupUser();
     vi.spyOn(tickets, 'put').mockRejectedValue(new StorageError(reason));
     await fillValid(user);
     await user.click(screen.getByRole('button', { name: 'Save ticket' }));
@@ -169,7 +170,7 @@ describe('when the browser refuses storage', () => {
 
 describe('deleting', () => {
   test('asks first; Cancel keeps the ticket, Delete removes it', async () => {
-    const user = userEvent.setup();
+    const user = setupUser();
     await saveOne();
     renderRoute('/tickets/saved-1');
     await user.click(await screen.findByRole('button', { name: 'Delete ticket' }));
@@ -186,7 +187,7 @@ describe('deleting', () => {
   });
 
   test('"Delete all my data" in Settings also removes tickets', async () => {
-    const user = userEvent.setup();
+    const user = setupUser();
     await saveOne();
     renderRoute('/settings');
     await user.click(await screen.findByRole('button', { name: 'Delete all my data' }));

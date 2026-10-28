@@ -6,8 +6,8 @@ import '@/i18n';
 // Lazy route chunks can take over 1 s to load on a cold, parallel run; wait up to 5 s.
 configure({ asyncUtilTimeout: 5000 });
 
-// jsdom does not implement these browser APIs.
-Object.defineProperty(window, 'matchMedia', {
+// The test DOM (happy-dom) lacks these browser APIs. (Skipped in node-environment tests.)
+if (typeof window !== 'undefined') Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: (query: string) => ({
     matches: false,
@@ -20,7 +20,7 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: () => false,
   }),
 });
-window.scrollTo = () => {};
+if (typeof window !== 'undefined') window.scrollTo = () => {};
 
 // ── Fail any test that logs console.error (this includes React act() warnings) ──
 // A test that expects an error can call `allowConsoleError(/pattern/)` first.
@@ -62,6 +62,7 @@ beforeEach(() => {
 // catching updates those hooks cause too. Unmount first so nothing updates late.
 afterEach(() => {
   cleanup();
+  vi.useRealTimers(); // in case a test (or setupUser) faked them
   spy?.mockRestore(); // safe even if a test already called vi.restoreAllMocks()
   if (errors.length > 0) {
     const summary = errors.map((e, i) => `  [${i + 1}] ${e.split('\n')[0]}`).join('\n');

@@ -67,12 +67,9 @@ export default defineConfig({
   ],
   test: {
     globals: true,
-    environment: 'jsdom',
+    environment: 'happy-dom',
     setupFiles: ['./src/test/setup.ts'],
-    include: ['src/**/*.test.{ts,tsx}'],
+    include: ['src/**/*.test.{ts,tsx}', 'build/**/*.test.ts'],
     css: false,
-    // Off: the persistent transform cache does not notice files added to an
-    // import.meta.glob, so the source-scanning guard tests could miss new files.
-    fsModuleCache: false,
   },
 });

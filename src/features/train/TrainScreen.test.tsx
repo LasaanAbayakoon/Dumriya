@@ -1,5 +1,4 @@
 import { cleanup, screen, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import en from '@/i18n/en';
 import si from '@/i18n/si';
 import ta from '@/i18n/ta';
@@ -7,6 +6,7 @@ import { setLanguage, type Language } from '@/i18n';
 import { reminders } from '@/lib/storage';
 import { formatDate } from '@/lib/format';
 import { renderRoute } from '@/test/renderRoute';
+import { setupUser } from '@/test/user';
 
 const NAWALAPITIYA = '/train/1045?date=2026-12-10&from=nawalapitiya&to=badulla';
 const HATTON_DAY = '/train/1015?date=2026-12-10&from=hatton&to=ella';
@@ -84,7 +84,7 @@ describe('reminder sheet', () => {
   beforeEach(() => reminders.clear());
 
   test('default: one heads-up at 20:00 the evening before; midnight toggle adds 00:00; saves offline', async () => {
-    const user = userEvent.setup();
+    const user = setupUser();
     renderRoute(NAWALAPITIYA);
     await user.click(await screen.findByRole('button', { name: 'Remind me when booking opens' }));
     const dialog = within(await screen.findByRole('dialog', { name: 'Booking reminder' }));
@@ -111,7 +111,7 @@ describe('reminder sheet', () => {
   });
 
   test('Escape closes the sheet and returns focus to the button', async () => {
-    const user = userEvent.setup();
+    const user = setupUser();
     renderRoute(NAWALAPITIYA);
     const button = await screen.findByRole('button', { name: 'Remind me when booking opens' });
     await user.click(button);

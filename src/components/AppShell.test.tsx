@@ -1,7 +1,7 @@
 import { cleanup, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import i18n, { setLanguage } from '@/i18n';
 import { renderRoute } from '@/test/renderRoute';
+import { setupUser } from '@/test/user';
 
 afterEach(async () => {
   // Unmount before switching language back, so no component updates outside act().
@@ -19,7 +19,7 @@ test('shows the main navigation with the current tab marked', async () => {
 });
 
 test('switching language in Settings translates the UI and sets <html lang>', async () => {
-  const user = userEvent.setup();
+  const user = setupUser();
   renderRoute('/settings');
   await user.click(await screen.findByRole('radio', { name: 'සිංහල' }));
   expect(await screen.findByRole('heading', { level: 1, name: 'සැකසුම්' })).toBeInTheDocument();

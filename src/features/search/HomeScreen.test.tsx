@@ -1,7 +1,8 @@
 import { screen, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import type userEvent from '@testing-library/user-event';
 import { clearRecentSearches, getRecentSearches } from '@/lib/recentSearches';
 import { renderRoute } from '@/test/renderRoute';
+import { setupUser } from '@/test/user';
 
 beforeEach(() => {
   vi.useFakeTimers({ toFake: ['Date'] });
@@ -18,7 +19,7 @@ async function pickStation(user: ReturnType<typeof userEvent.setup>, field: RegE
 }
 
 test('shows inline errors and focuses the first invalid field', async () => {
-  const user = userEvent.setup();
+  const user = setupUser();
   renderRoute('/');
   await user.click(await screen.findByRole('button', { name: 'Search trains' }));
   expect(screen.getByText('Choose the station you are leaving from.')).toBeInTheDocument();
@@ -27,7 +28,7 @@ test('shows inline errors and focuses the first invalid field', async () => {
 });
 
 test('search by Sinhala and Tamil names, then results list trains in order', async () => {
-  const user = userEvent.setup();
+  const user = setupUser();
   const { router } = renderRoute('/');
   await pickStation(user, /^From/, 'කොටුව', /Colombo Fort/);
   await pickStation(user, /^To/, 'பதுளை', /Badulla/);
@@ -43,7 +44,7 @@ test('search by Sinhala and Tamil names, then results list trains in order', asy
 });
 
 test('From and To must differ', async () => {
-  const user = userEvent.setup();
+  const user = setupUser();
   renderRoute('/');
   await pickStation(user, /^From/, 'galle', /Galle/);
   await pickStation(user, /^To/, 'GLE', /Galle/);

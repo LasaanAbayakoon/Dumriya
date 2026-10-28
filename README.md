@@ -93,7 +93,13 @@ Tile URL and attribution are in `src/config/app.ts` (`MAP_TILE_URL`, `MAP_TILE_A
 
 ## External links
 
-Every link that opens a new tab goes through `src/components/ExternalLink.tsx`, which always sets `rel="noopener noreferrer"`. A test fails if any other source file uses `target="_blank"`, and another renders each screen with outbound links and checks every `target=_blank` link. (Vitest's on-disk module cache is turned off in `vite.config.ts` so that source-scanning test always sees newly added files.)
+Every link that opens a new tab goes through `src/components/ExternalLink.tsx`, which always sets `rel="noopener noreferrer"`. A test fails if any other source file uses `target="_blank"` (`build/source-guards.test.ts`, which reads `src/` from disk at run time so Vitest's on-disk module cache can never hide a new file), and another renders each screen with outbound links and checks every `target=_blank` link.
+
+## Tests
+
+- `npm test` runs Vitest with **happy-dom** (about 6 s for the full suite on the development machine; it was about 20 s with jsdom and real keystroke delays under the same load).
+- Use `setupUser()` from `src/test/user.ts` instead of `userEvent.setup()`: it types with no delay between keys, so tests never wait on real time and a frozen `vi.setSystemTime` stays exact. `fakeClipboard()` gives an in-memory clipboard.
+- Any `console.error` (including React act warnings) fails the test (`src/test/setup.ts`).
 
 ## Booking-opens reminders
 

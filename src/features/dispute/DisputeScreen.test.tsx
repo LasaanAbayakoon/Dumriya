@@ -1,6 +1,7 @@
-import { act, cleanup, screen, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { act, cleanup, fireEvent, screen, within } from '@testing-library/react';
+import type userEvent from '@testing-library/user-event';
 import { renderRoute } from '@/test/renderRoute';
+import { fakeClipboard, setupUser } from '@/test/user';
 
 const VALUES = {
   'Full name': 'A. Perera',
@@ -26,23 +27,28 @@ const EXPECTED_TEXT = [
   'Email used for the booking: a.perera@example.com',
 ].join('\n');
 
-// userEvent.setup() installs a fake clipboard; tests read back from it.
-const clipboardText = () => navigator.clipboard.readText();
+// No real waiting between keystrokes (setupUser) and an in-memory clipboard.
+let clip: ReturnType<typeof fakeClipboard>;
+function setup() {
+  const user = setupUser();
+  clip = fakeClipboard();
+  return user;
+}
+const clipboardText = async () => clip.read();
 afterEach(() => {
   cleanup();
+  vi.useRealTimers();
   vi.restoreAllMocks();
   vi.unstubAllGlobals();
 });
 
-async function fillAll(user: ReturnType<typeof userEvent.setup>) {
+/**
+ * Fill every field for tests that only need a complete form. One change event per field
+ * (not one per character): typing itself is covered by the card-digit tests below.
+ */
+async function fillAll(_user?: ReturnType<typeof userEvent.setup>) {
   for (const [label, value] of Object.entries(VALUES)) {
-    const input = await screen.findByLabelText(label);
-    if ((input as HTMLInputElement).type === 'date' || (input as HTMLInputElement).type === 'time') {
-      await user.clear(input);
-      await user.type(input, value);
-    } else {
-      await user.type(input, value);
-    }
+    fireEvent.change(await screen.findByLabelText(label), { target: { value } });
   }
 }
 
@@ -54,11 +60,11 @@ test('shows the privacy note in plain words', async () => {
 });
 
 test('Copy all produces a clean block, then shows Contact Us steps and the official link only', async () => {
-  const user = userEvent.setup();
+  const user = setup();
   renderRoute('/dispute');
   await fillAll(user);
   await user.click(screen.getByRole('button', { name: 'Copy all' }));
-
+  await screen.findByRole('heading', { name: 'Now send it to Sri Lanka Railways' });
   expect(await clipboardText()).toBe(EXPECTED_TEXT);
   const next = within((await screen.findByRole('heading', { name: 'Now send it to Sri Lanka Railways' })).closest('section')!);
   expect(next.getByTestId('dispute-preview').textContent).toBe(EXPECTED_TEXT);
@@ -75,7 +81,7 @@ test('Copy all produces a clean block, then shows Contact Us steps and the offic
 
 describe('card digits', () => {
   test('pasting a full card number is refused and explained; nothing is kept', async () => {
-    const user = userEvent.setup();
+    const user = setup();
     renderRoute('/dispute');
     const input = await screen.findByLabelText('Last 4 digits of the card');
     await user.click(input);
@@ -87,7 +93,7 @@ describe('card digits', () => {
   });
 
   test('a fifth typed digit is refused; the first four stay', async () => {
-    const user = userEvent.setup();
+    const user = setup();
     renderRoute('/dispute');
     const input = await screen.findByLabelText('Last 4 digits of the card');
     await user.type(input, '12345');
@@ -96,7 +102,7 @@ describe('card digits', () => {
   });
 
   test('fewer than 4 digits is an error on Copy all', async () => {
-    const user = userEvent.setup();
+    const user = setup();
     renderRoute('/dispute');
     await fillAll(user);
     const input = screen.getByLabelText('Last 4 digits of the card');
@@ -110,7 +116,7 @@ describe('card digits', () => {
 });
 
 test('empty form: every field explains what is missing and focus goes to the first', async () => {
-  const user = userEvent.setup();
+  const user = setup();
   renderRoute('/dispute');
   await user.click(await screen.findByRole('button', { name: 'Copy all' }));
   expect(screen.getAllByText('Fill in this field.')).toHaveLength(8);
@@ -120,7 +126,7 @@ test('empty form: every field explains what is missing and focus goes to the fir
 
 describe('privacy: nothing saved, nothing sent', () => {
   test('no storage, no URL change, no network while typing and copying', async () => {
-    const user = userEvent.setup();
+    const user = setup();
     const fetchSpy = vi.fn();
     vi.stubGlobal('fetch', fetchSpy);
     const xhrOpen = vi.spyOn(XMLHttpRequest.prototype, 'open');
@@ -161,7 +167,7 @@ describe('privacy: nothing saved, nothing sent', () => {
   });
 
   test('leaving the screen clears the form', async () => {
-    const user = userEvent.setup();
+    const user = setup();
     const { router } = renderRoute('/dispute');
     await fillAll(user);
     await act(() => router.navigate('/more'));
@@ -172,7 +178,7 @@ describe('privacy: nothing saved, nothing sent', () => {
   });
 
   test('hiding the page (pagehide, back-forward cache) clears the form', async () => {
-    const user = userEvent.setup();
+    const user = setup();
     renderRoute('/dispute');
     await fillAll(user);
     act(() => {
@@ -184,12 +190,14 @@ describe('privacy: nothing saved, nothing sent', () => {
 });
 
 test('Copy in: English by default; choosing සිංහල copies Sinhala text', async () => {
-  const user = userEvent.setup();
+  const user = setup();
   renderRoute('/dispute');
   expect(await screen.findByRole('radio', { name: 'English' })).toBeChecked();
   await fillAll(user);
   await user.click(screen.getByRole('radio', { name: 'සිංහල' }));
   await user.click(screen.getByRole('button', { name: 'Copy all' }));
+  // Copying finishes after the Sinhala strings load; wait for the result before reading.
+  await screen.findByRole('heading', { name: 'Now send it to Sri Lanka Railways' });
   const text = await clipboardText();
   expect(text.split('\n')[0]).toBe('ආරවුල් වර්ගය: Payment issue');
   expect(text).toContain('නම: A. Perera');

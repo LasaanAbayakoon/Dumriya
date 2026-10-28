@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { setLanguage, type Language } from '@/i18n';
 import { renderRoute } from '@/test/renderRoute';
+import { setupUser } from '@/test/user';
 import { ChosenDateTime } from './ChosenDateTime';
 
 afterEach(async () => {
@@ -31,7 +31,7 @@ test('date only, time only, and nothing for empty or invalid values', () => {
 });
 
 test('Home: updates as the user picks a date and time', async () => {
-  const user = userEvent.setup();
+  const user = setupUser();
   renderRoute('/');
   const date = await screen.findByLabelText('Date');
   await user.clear(date);
@@ -47,7 +47,7 @@ test('Refund calculator: prefilled departure is echoed', async () => {
 });
 
 test('Dispute helper: payment date and time are echoed', async () => {
-  const user = userEvent.setup();
+  const user = setupUser();
   renderRoute('/dispute');
   await user.type(await screen.findByLabelText('Date of payment'), '2026-11-10');
   await user.type(screen.getByLabelText('Time of payment'), '14:30');
