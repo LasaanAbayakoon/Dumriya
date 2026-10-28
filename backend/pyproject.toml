@@ -1,0 +1,50 @@
+[project]
+name = "dumriya-backend"
+version = "0.1.0"
+description = "API for Dumriya, an unofficial companion app for Sri Lanka Railways passengers."
+readme = "README.md"
+requires-python = ">=3.12"
+# Minimum versions only; uv.lock records the exact versions that were tested.
+dependencies = [
+    "fastapi>=0.162",
+    "uvicorn[standard]>=0.54",
+    "pydantic-settings>=2.16",
+    "sqlalchemy>=2.1",
+    "psycopg[binary]>=3.3",
+]
+
+# Installed by `uv sync` for development and CI, never in production.
+[dependency-groups]
+dev = [
+    "pytest>=9.2",
+    "httpx>=0.28",
+    "ruff>=0.17",
+]
+
+[tool.uv]
+# This is an application, not a library: don't build or install it as a package.
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."] # so tests can `import app`
+addopts = ["-ra", "--strict-markers", "--strict-config"]
+
+[tool.ruff]
+line-length = 100
+# target-version comes from requires-python (3.12).
+
+[tool.ruff.lint]
+select = [
+    "E", "W", # pycodestyle: basic style
+    "F",      # pyflakes: unused imports and names, undefined names
+    "I",      # import sorting
+    "UP",     # use modern Python syntax for 3.12
+    "B",      # bugbear: likely bugs (mutable default arguments etc.)
+    "SIM",    # simpler equivalent code
+    "S",      # bandit: security issues (hard-coded passwords, SQL built from strings)
+]
+
+[tool.ruff.lint.per-file-ignores]
+# pytest is built on plain `assert`.
+"tests/**" = ["S101"]

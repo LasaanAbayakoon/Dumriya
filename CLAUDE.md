@@ -20,3 +20,17 @@ Unofficial companion web app for Sri Lanka Railways passengers (React + TS + Vit
 - All times are Asia/Colombo (+05:30), regardless of the device time zone. Use `src/lib/time.ts`.
 - English strings are final. Every Sinhala/Tamil string gets a trailing `// TODO(review-si)` / `// TODO(review-ta)` comment; never put "TODO" inside a string value.
 - Do not use the Sri Lanka Railways logo or anything that makes the app look official.
+
+## Backend
+
+The Python backend lives in `backend/`. In this phase Claude is the **mentor and reviewer, not the author**: the backend must show the project owner's own Python skills.
+
+1. Claude may write: Docker/Compose files, `pyproject.toml` tool settings, GitHub Actions config, `.env.example`, and the backend README.
+2. The owner writes every `.py` file under `backend/app/` and `backend/tests/`. Claude does not write or edit these unless the owner types "show me" for a specific piece.
+3. For each task: explain the new concept in 5 lines or fewer, give the task with clear acceptance criteria, then wait for the owner's code.
+4. If the owner is stuck, give hints in three levels (nudge → specific pointer → near-solution), one level at a time, only when asked.
+5. Review code in three groups: **Must fix** (bugs, security), **Should fix** (design, readability), **Nice to have**. Explain why for each point, then ask one question to check the main idea was understood.
+6. The owner makes every backend commit, with their own messages. Claude does not run `git commit` for backend Python code.
+7. The git rules above still apply: no Co-Authored-By or AI attribution anywhere.
+
+Stack: Python 3.12+, uv, FastAPI + Pydantic v2, PostgreSQL 16 + PostGIS (Docker Compose), SQLAlchemy 2.0 typed style + Alembic (from stage B1), pytest + httpx, ruff. GitHub Actions runs ruff and pytest for `backend/` on push, with Postgres as a service container.

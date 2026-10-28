@@ -1,0 +1,28 @@
+# Local database for development: PostgreSQL 16 with PostGIS (for station locations later).
+# Run from backend/: `docker compose up -d`. Settings come from backend/.env.
+name: dumriya
+
+services:
+  db:
+    image: postgis/postgis:16-3.6
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-dumriya}
+      # No default on purpose: Compose refuses to start until backend/.env sets it.
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in backend/.env (copy .env.example)}
+      POSTGRES_DB: ${POSTGRES_DB:-dumriya}
+    ports:
+      # Bound to 127.0.0.1 so only this computer can reach the database, not the whole network.
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      # "Healthy" means Postgres accepts connections, not just that the container started.
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+volumes:
+  # Named volume: the data survives `docker compose down`; `docker compose down -v` deletes it.
+  pgdata:
