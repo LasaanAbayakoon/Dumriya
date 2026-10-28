@@ -1,57 +1,28 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, fakeTiles, type Lang, NOW, openScreen, overflowing, SCREENS, setPrefs, setTextScale, test } from './support';
 
 /**
  * Layout guard at 360px: no horizontal page scroll and no text overflowing its
- * button/link/heading, in all three languages, at normal and 200 % text size.
+ * button/link/heading. Sinhala and Tamil at 200 % text are in longest-strings.spec.ts.
  */
-const PAGES = [
-  { name: 'home', url: '/' },
-  { name: 'results', url: '/results?from=colombo-fort&to=badulla&date=2026-12-10' },
-  { name: 'train-nawalapitiya', url: '/train/1045?date=2026-12-10&from=nawalapitiya&to=badulla' },
-  { name: 'train-unreserved', url: '/train/8059?date=2026-12-10' },
-  { name: 'book-night', url: '/train/1045/book?date=2026-12-10&from=nawalapitiya&to=badulla' },
-  { name: 'book-unreserved', url: '/train/8059/book?date=2026-12-10' },
-  { name: 'refund', url: '/refund?departure=2026-12-09T20%3A00%3A00%2B05%3A30&fare=1240&train=1045&date=2026-12-10&from=nawalapitiya&to=badulla' },
-  { name: 'dispute', url: '/dispute' },
-  { name: 'tickets', url: '/tickets' },
-  { name: 'reminders', url: '/reminders' },
-  { name: 'stations', url: '/stations' },
-  { name: 'station', url: '/stations/kandy' },
-  { name: 'settings', url: '/settings' },
-  { name: 'about', url: '/settings/about' },
-  { name: 'live', url: '/train/1015/live?date=2026-11-02' },
-  { name: 'board', url: '/stations/galle/board' },
-  { name: 'results-no-direct', url: '/results?from=aluthgama&to=bandarawela&date=2026-12-10' },
-  { name: 'ticket-new', url: '/tickets/new?train=1045&date=2026-12-10&from=nawalapitiya&to=badulla&time=00:35&fare=510' },
+test.use({ serviceWorkers: 'block' }); // map tiles go through fakeTiles()
+
+const RUNS: [Lang, number][] = [
+  ['en', 100],
+  ['en', 200],
+  ['si', 100],
+  ['ta', 100],
 ];
 
-async function overflowing(page: Page) {
-  return page.evaluate(() => {
-    const out: string[] = [];
-    if (document.documentElement.scrollWidth > window.innerWidth) {
-      out.push(`page scrolls horizontally: ${document.documentElement.scrollWidth}px > ${window.innerWidth}px`);
+for (const [lang, scale] of RUNS) {
+  test(`${lang} @ ${scale}% text fits 360px`, async ({ page }) => {
+    test.setTimeout(120_000);
+    await page.clock.setFixedTime(NOW);
+    await setPrefs(page, { lang });
+    await fakeTiles(page);
+    for (const s of SCREENS) {
+      await openScreen(page, s.url);
+      if (scale !== 100) await setTextScale(page, scale);
+      expect(await overflowing(page), `${s.name} (${lang}, ${scale}%)`).toEqual([]);
     }
-    for (const el of document.querySelectorAll<HTMLElement>('button, a, h1, h2, h3, label, dd, p, th, td')) {
-      if (el.offsetParent === null) continue; // hidden
-      if (el.getBoundingClientRect().width <= 1) continue; // visually hidden (sr-only), e.g. the skip link
-      if (el.scrollWidth > el.clientWidth + 1) out.push(`${el.tagName} "${el.textContent?.trim().slice(0, 40)}" overflows`);
-    }
-    return out;
   });
-}
-
-for (const lang of ['en', 'si', 'ta']) {
-  for (const scale of [100, 200]) {
-    test(`${lang} @ ${scale}% text fits 360px`, async ({ page }) => {
-      await page.clock.setFixedTime(new Date('2026-11-01T12:00:00+05:30'));
-      await page.addInitScript((l) => localStorage.setItem('dumriya.lang', l), lang);
-      for (const p of PAGES) {
-        await page.goto(p.url);
-        await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-        await page.waitForLoadState('networkidle');
-        if (scale !== 100) await page.evaluate((s) => (document.documentElement.style.fontSize = `${s}%`), scale);
-        expect(await overflowing(page), `${p.name} (${lang}, ${scale}%)`).toEqual([]);
-      }
-    });
-  }
 }

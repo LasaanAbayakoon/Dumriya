@@ -47,7 +47,7 @@ export function Stepper({ label, value, min, max, onChange, decreaseLabel, incre
             if (Number.isFinite(n) && n >= min) onChange(clamp(n));
           }}
           onBlur={() => setDraft(null)}
-          className="tap w-20 rounded-xl border border-border bg-surface px-2 py-2 text-center text-xl font-bold tabular"
+          className="min-h-[2.75rem] w-16 min-w-0 rounded-xl border border-border bg-surface px-2 py-2 text-center text-xl font-bold tabular"
         />
         <button type="button" className={btn} aria-label={increaseLabel} disabled={value >= max} onClick={() => step(1)}>
           <PlusIcon />

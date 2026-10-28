@@ -7,6 +7,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 import { bundleBudget } from './build/bundleBudget.ts';
 import { runtimeCaching } from './build/runtimeCaching.ts';
 import { licensesPlugin } from './build/licenses.ts';
+import { siteHeaders } from './build/headers.ts';
 import pkg from './package.json' with { type: 'json' };
 
 export default defineConfig({
@@ -15,6 +16,8 @@ export default defineConfig({
     __APP_VERSION__: JSON.stringify(pkg.version),
     __BUILD_DATE__: JSON.stringify(new Date().toISOString()),
   },
+  // Same headers as the deployed demo (public/_headers), so Playwright tests run under the real CSP.
+  preview: { headers: siteHeaders(fileURLToPath(new URL('./public/_headers', import.meta.url))) },
   resolve: {
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
   },
@@ -25,7 +28,7 @@ export default defineConfig({
     licensesPlugin(fileURLToPath(new URL('.', import.meta.url))),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'apple-touch-icon-180x180.png', 'sw-notifications.js'],
+      includeAssets: ['favicon.svg', 'apple-touch-icon-180x180.png', 'sw-notifications.js', 'theme-init.js'],
       manifest: {
         name: 'Dumriya – train companion (unofficial)',
         short_name: 'Dumriya',

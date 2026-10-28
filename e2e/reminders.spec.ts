@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './support';
 
 /**
  * In a real browser: a reminder saved in the UI fires when its time comes while the app

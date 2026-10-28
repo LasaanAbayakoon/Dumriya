@@ -1,6 +1,7 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useRef } from 'react';
 import { NavLink, Outlet, ScrollRestoration, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { useFitsOnScreen } from '@/hooks/useFitsOnScreen';
 import { useOnline } from '@/hooks/useOnline';
 import { BellIcon, MenuIcon, SearchIcon, TicketIcon } from './icons';
 import { Loading } from './Loading';
@@ -23,6 +24,10 @@ export function AppShell() {
   const { t } = useTranslation();
   const online = useOnline();
   const { pathname } = useLocation();
+  // Fixed to the bottom while it takes at most 20 % of the screen height; with very large text
+  // it sits at the end of the page instead, so it never covers the content.
+  const navRef = useRef<HTMLElement>(null);
+  const navFixed = useFitsOnScreen(navRef, 0.2);
 
   return (
     <div className="flex min-h-dvh flex-col">
@@ -40,12 +45,16 @@ export function AppShell() {
       <Suspense fallback={null}>
         <ReminderScheduler />
       </Suspense>
-      <main id="main" className="flex-1 pb-28">
+      <main id="main" className={`flex-1 ${navFixed ? 'pb-28' : 'pb-6'}`}>
         <Suspense fallback={<Loading />}>
           <Outlet />
         </Suspense>
       </main>
-      <nav aria-label={t('nav.main')} className="pb-safe fixed inset-x-0 bottom-0 z-30 border-t border-border bg-surface">
+      <nav
+        ref={navRef}
+        aria-label={t('nav.main')}
+        className={`pb-safe ${navFixed ? 'fixed inset-x-0 bottom-0 z-30' : ''} border-t border-border bg-surface`}
+      >
         <ul className="mx-auto grid max-w-2xl grid-cols-4">
           {tabs.map(({ to, key, Icon, match }) => {
             const active = isActive(pathname, match);

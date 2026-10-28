@@ -4,14 +4,49 @@ An **unofficial** companion web app for Sri Lanka Railways passengers. It does n
 
 > Not affiliated with or endorsed by Sri Lanka Railways. All timetable, fare, station and live data in this repository is **sample data**.
 
+## At a glance
+
+Dumriya is an installable, offline-capable web app (PWA) for train passengers in Sri Lanka, in English, Sinhala and Tamil. It finds trains and works out when the 30-day booking window opens, including the night-train case where two dates are possible. It counts down refund deadlines, keeps e-tickets on the phone for use with no signal, sets reminders, and hands off to the official booking sites with a look-alike-site warning. Every Sri Lanka Railways rule lives in one tested config file, and where a rule is ambiguous the app picks the reading that gives the passenger the earlier time. It is built for a 360px phone on a slow connection: 129 KB of initial JavaScript, with a 150 KB budget enforced by the build, and it stays usable at 200 % text. This is the UI phase: all data comes from a typed mock API that a Python backend will replace.
+
+**Live demo:** _not deployed yet; the link will be added here._ The demo shows sample data, and says so on every screen.
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/screenshots/home.png" width="180" alt="Search screen"><br>Search</td>
+    <td align="center"><img src="docs/screenshots/results.png" width="180" alt="Results for Colombo Fort to Badulla"><br>Results</td>
+    <td align="center"><img src="docs/screenshots/train.png" width="180" alt="Train detail with two possible booking dates"><br>Booking window</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/screenshots/refund.png" width="180" alt="Refund calculator"><br>Refund calculator</td>
+    <td align="center"><img src="docs/screenshots/board.png" width="180" alt="Station departure board (preview)"><br>Station board (preview)</td>
+    <td align="center"><img src="docs/screenshots/train-si.png" width="180" alt="Train detail in Sinhala"><br>Sinhala</td>
+  </tr>
+</table>
+
+Screenshots are taken at 360 × 740 by `npm run screenshots` (fixed date, sample data).
+
+**Tech stack:** React 19, TypeScript (strict), Vite 8, React Router 8, Tailwind CSS 4, i18next. PWA via vite-plugin-pwa (Workbox), IndexedDB via idb-keyval, Leaflet with OpenStreetMap (lazy-loaded). Tests: Vitest with happy-dom and Testing Library, Playwright with axe-core. Self-hosted Noto Sans Sinhala and Tamil fonts. No backend yet.
+
+**Tests:**
+
+```bash
+npm run check   # type check + lint + 449 unit tests (about 6 s)
+npm run e2e     # 15 Playwright tests on the production build at 360px (about 2 min; first time: npx playwright install chromium)
+```
+
+The Playwright tests cover axe-core checks in light and dark themes, layout in all three languages up to 200 % text, the offline ticket wallet, alerts, maps (with faked tiles) and font loading. All of them run under the production Content-Security-Policy.
+
+**More:** [DECISIONS.md](DECISIONS.md) (choices someone might otherwise "fix" by mistake) · [REVIEW.md](REVIEW.md) (open questions for the Sinhala and Tamil reviewers) · [HANDOVER.md](HANDOVER.md) (everything still marked "Not confirmed", "Sample" or TODO).
+
 ## Run it
 
 ```bash
 npm install
 npm run dev          # http://localhost:5173
 npm run check        # type check + lint + unit tests
-npm run e2e          # Playwright smoke test (first time: npx playwright install chromium)
-npm run build && npm run preview   # production build with the service worker
+npm run e2e          # Playwright tests (first time: npx playwright install chromium)
+npm run build && npm run preview   # production build with the service worker and the deploy headers
+npm run screenshots  # regenerate docs/screenshots
 ```
 
 `npm run build` prints the initial JS size and **fails if it exceeds 150 KB gzipped** (see `build/bundleBudget.ts`).
@@ -137,6 +172,71 @@ Every link that opens a new tab goes through `src/components/ExternalLink.tsx`, 
 - `npm test` runs Vitest with **happy-dom** (about 6 s for the full suite on the development machine; it was about 20 s with jsdom and real keystroke delays under the same load).
 - Use `setupUser()` from `src/test/user.ts` instead of `userEvent.setup()`: it types with no delay between keys, so tests never wait on real time and a frozen `vi.setSystemTime` stays exact. `fakeClipboard()` gives an in-memory clipboard.
 - Any `console.error` (including React act warnings) fails the test (`src/test/setup.ts`).
+
+**Playwright** (`npm run e2e`) builds the app and runs against `vite preview` on a 360 × 740 phone:
+
+- Every screen is listed once in `e2e/support.ts` (`SCREENS`), with the dialogs and error states to open on it. The accessibility, layout and longest-strings tests all walk this list, so a new screen added there is covered by all three.
+- Specs import `test` from `e2e/support.ts`. It fails any test that triggers a Content-Security-Policy violation, because `vite preview` serves the same headers as the deployed demo (`public/_headers`, read by `build/headers.ts`).
+- `openScreen()` waits until the mock API has answered: its fake delay is a timer, so "network idle" alone would check half-loaded screens. The mock counts its pending calls in `globalThis.__dumriyaMockPending`; this goes away with the real API.
+- The overflow check compares page width with the phone's 360px, not `window.innerWidth`. A mobile browser zooms out when a page is too wide, and `innerWidth` grows with it, which used to hide overflow.
+- Map tiles are always faked (`fakeTiles()`) with the service worker blocked, so tests never touch the real tile server.
+
+## Accessibility
+
+- **axe-core** (`e2e/a11y.spec.ts`) scans every screen, plus the reminder sheet, the "I'm on this train" demo, the delete-all dialog, form errors and the map view, in **light and dark** themes. It runs every axe rule (WCAG 2.0–2.2 A/AA plus best practices) and fails on any **serious or critical** issue. The same test checks that the sample-data and preview bars are visible on every screen that needs them.
+- **Longest strings** (`e2e/longest-strings.spec.ts`): Sinhala and Tamil at **200 % text** at 360px, on every screen and state, fail on horizontal overflow. To prove the long text really was on screen, it also checks that the 20 longest strings the sample data can show actually appeared. `e2e/layout.spec.ts` covers English at 100 % and 200 %, and Sinhala and Tamil at 100 %.
+- **Large text rules** (found by these tests): the header stays sticky, and the tab bar stays fixed, only while each takes a small part of the screen height (30 % and 20 %, `useFitsOnScreen`). Past that they scroll with the page, so they never cover the content. Single-column grids cannot grow wider than the screen, and a word too long for its line breaks rather than widening the page (`src/styles/index.css`). The stop list and the date switcher on Results stack vertically when narrow (container queries).
+- **Contrast** of the status colours and banners is computed from the CSS tokens and tested in `build/contrast.test.ts` (WCAG AA is 4.5:1 for this text size):
+
+| Text | Tokens | Light | Dark |
+|---|---|---|---|
+| On time badge | `ok` on `ok-soft` | 5.34:1 | 7.31:1 |
+| Delayed badge | `warn` on `warn-soft` | 5.74:1 | 7.58:1 |
+| Cancelled badge | `danger` on `danger-soft` | 5.75:1 | 7.21:1 |
+| On time / delayed / cancelled text on a card | `ok` / `warn` / `danger` on `surface` | 6.15 / 6.50 / 6.57:1 | 8.73 / 9.21 / 7.70:1 |
+| On time / delayed / cancelled text on the page | `ok` / `warn` / `danger` on `bg` | 5.73 / 6.05 / 6.13:1 | 9.56 / 10.09 / 8.43:1 |
+| Sample-data banner | `warn` on `warn-soft` | 5.74:1 | 7.58:1 |
+| Preview banner | `accent` on `accent-soft` | 6.22:1 | 6.34:1 |
+
+All pass AA in both themes. The light-theme badges and banners do not reach AAA (7:1). Status is never shown by colour alone: every badge has its words.
+
+## Deploying the demo (Cloudflare Pages)
+
+**Why Cloudflare Pages** (over Netlify and Vercel):
+
+- **Close to the users:** Cloudflare has had a data centre in Colombo since 2017, so the app and its updates load from inside Sri Lanka.
+- **No usage cliff:** the free plan has no bandwidth limit for static sites. Netlify's free plan now runs on 300 credits a month, and when they run out **every site is paused** until the next month; each deploy and each GB of traffic costs credits. Vercel's free Hobby plan is for **non-commercial personal use only**, which may not fit a passenger app later.
+- **Needs nothing special:** with no `404.html` in the build, Pages serves `index.html` for any unknown path, so deep links like `/stations/kandy` work. It reads our headers from `_headers`, and every site gets HTTPS on `*.pages.dev` automatically. The service worker needs HTTPS.
+
+**Files:**
+
+- `public/_headers`, copied into `dist/`: a strict Content-Security-Policy (scripts, styles and fonts from our own origin only; images and the service worker's tile fetches also from the map tile server), `X-Robots-Tag: noindex` (a sample-data demo should not show up in search results), no framing, and long caching for the hashed files in `/assets/`. `npm run preview` and every Playwright test use the same file.
+- `.node-version` pins Node 24.18.0, the version the tests run on. The Pages build image defaults to Node 22, and `engine-strict` in `.npmrc` would fail the install on anything below 22.22.0.
+
+**Steps** (about 10 minutes; Cloudflare's menu names may differ slightly):
+
+1. Create a free account at [dash.cloudflare.com](https://dash.cloudflare.com/sign-up).
+2. Go to **Workers & Pages → Create application → Pages → Connect to Git**. Choose the **Pages** option; Cloudflare also offers Workers, which this static app does not need.
+3. Connect GitHub and pick the **Dumriya** repository. Production branch: `main`.
+4. Build settings:
+   - Framework preset: **None**
+   - Build command: `npm run build`
+   - Build output directory: `dist`
+   - Root directory and environment variables: leave empty (`.node-version` sets Node).
+5. **Save and Deploy.** The first build takes a few minutes. The site is then at `https://<project-name>.pages.dev`; name the project `dumriya` for `dumriya.pages.dev` if it is free.
+6. Check the live site on a phone:
+   - Results and Train screens show **"Sample timetable — not real times"**; Live map and Station board also show **"Preview — simulated, not real train positions"**.
+   - Reload on a deep link (e.g. `/stations/kandy`): the screen opens, not a 404.
+   - The map loads tiles and shows the OpenStreetMap attribution.
+   - Save a ticket, turn on airplane mode, reopen the app: the ticket opens.
+   - Optional: in desktop Chrome DevTools → Network → the document, the response headers include `content-security-policy` and `x-robots-tag: noindex`.
+7. Replace the "Live demo" line at the top of this README with the URL.
+
+After that, every push to `main` redeploys. Pushes to other branches get their own preview URLs, which also send `noindex`.
+
+**The banners cannot be lost in deployment:** the sample-data bar follows `IS_SAMPLE_DATA`, which is `true` as long as `src/api/index.ts` uses the mock, and the preview bar is always on for preview screens. Neither depends on any environment variable. The deployed files are the same production build the Playwright tests check, and those tests fail if a bar is missing.
+
+**Map tiles:** light demo traffic is within the OpenStreetMap tile policy; a public launch is not (see "Map tiles" below).
 
 ## Reminders and alerts
 

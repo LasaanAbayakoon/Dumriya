@@ -72,23 +72,29 @@ export default function ResultsScreen() {
     <>
       <PageHeader title={title} back={homeUrl({ ...query, date })} sampleData />
       <div className="mx-auto grid max-w-2xl gap-3 p-4">
-        <nav aria-label={t('home.date')} className="flex items-center gap-2">
-          {date > today ? (
-            <ButtonLink to={resultsUrl({ ...query, date: addDays(date, -1) })} variant="secondary" aria-label={t('results.prevDay')}>
-              <BackIcon />
+        {/* Large text: below 16rem the date gets its own row, with the day buttons under it. */}
+        <div className="@container">
+          <nav
+            aria-label={t('home.date')}
+            className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 @max-[16rem]:grid-cols-2"
+          >
+            {date > today ? (
+              <ButtonLink to={resultsUrl({ ...query, date: addDays(date, -1) })} variant="secondary" aria-label={t('results.prevDay')}>
+                <BackIcon />
+              </ButtonLink>
+            ) : (
+              <Button variant="secondary" disabled aria-label={t('results.prevDay')}>
+                <BackIcon />
+              </Button>
+            )}
+            <p className="text-center font-semibold @max-[16rem]:col-span-2 @max-[16rem]:row-start-1" aria-live="polite">
+              {f.date(date)}
+            </p>
+            <ButtonLink to={resultsUrl({ ...query, date: addDays(date, 1) })} variant="secondary" aria-label={t('results.nextDay')}>
+              <ChevronRightIcon />
             </ButtonLink>
-          ) : (
-            <Button variant="secondary" disabled aria-label={t('results.prevDay')}>
-              <BackIcon />
-            </Button>
-          )}
-          <p className="min-w-0 flex-1 text-center font-semibold [overflow-wrap:anywhere]" aria-live="polite">
-            {f.date(date)}
-          </p>
-          <ButtonLink to={resultsUrl({ ...query, date: addDays(date, 1) })} variant="secondary" aria-label={t('results.nextDay')}>
-            <ChevronRightIcon />
-          </ButtonLink>
-        </nav>
+          </nav>
+        </div>
 
         <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-muted">
           <span>

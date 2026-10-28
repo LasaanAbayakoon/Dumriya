@@ -121,6 +121,8 @@
     font-family: var(--font-sans);
     line-height: 1.5;
     -webkit-tap-highlight-color: transparent;
+    /* A word too long for its line (Tamil at 200 % text) breaks instead of widening the screen. */
+    overflow-wrap: anywhere;
   }
   /* Sinhala and Tamil glyphs have tall ascenders/descenders. */
   :lang(si),
@@ -135,6 +137,19 @@
   button,
   [role='button'] {
     cursor: pointer;
+  }
+  /*
+   * Large text (200 %) on a 360px phone: a grid's default column is `auto`, which grows to fit
+   * its widest child (a long Tamil word, a date input) and pushes the whole screen sideways.
+   * A single shrinkable column instead; grid-cols-* utilities still override this.
+   */
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  input,
+  select,
+  textarea {
+    min-width: 0;
   }
 }
 

@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './support';
 
 /**
  * The ticket wallet must work with no signal: save a ticket, go offline, reload the

@@ -9,18 +9,7 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" />
     <title>Dumriya – unofficial train companion</title>
-    <script>
-      // Apply saved theme before first paint to avoid a flash.
-      (function () {
-        try {
-          var t = localStorage.getItem('dumriya.theme');
-          var dark = t === 'dark' || ((!t || t === 'system') && matchMedia('(prefers-color-scheme: dark)').matches);
-          if (dark) document.documentElement.classList.add('dark');
-          var l = localStorage.getItem('dumriya.lang');
-          if (l) document.documentElement.lang = l;
-        } catch (e) {}
-      })();
-    </script>
+    <script src="/theme-init.js"></script>
   </head>
   <body>
     <div id="root"></div>

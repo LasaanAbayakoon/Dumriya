@@ -37,7 +37,7 @@ export function CostCard({
             {reservable.map((x) => (
               <label
                 key={x.travelClass}
-                className="tap flex items-center gap-3 rounded-xl border border-border px-3 py-2 has-[:checked]:border-accent has-[:checked]:bg-accent-soft"
+                className="tap flex flex-wrap items-center gap-x-3 gap-y-1 rounded-xl border border-border px-3 py-2 has-[:checked]:border-accent has-[:checked]:bg-accent-soft"
               >
                 <input
                   type="radio"
@@ -46,8 +46,9 @@ export function CostCard({
                   onChange={() => onClassChange(x.travelClass)}
                   className="size-5 shrink-0 accent-[var(--accent)]"
                 />
-                <span className="min-w-0 flex-1 font-semibold [overflow-wrap:anywhere]">{t(`classes.${x.travelClass}`)}</span>
-                <span className="tabular whitespace-nowrap">{f.lkr(x.amountLkr)}</span>
+                {/* With large text the price wraps onto its own line instead of squeezing the class name. */}
+                <span className="min-w-0 flex-[1_1_6em] font-semibold">{t(`classes.${x.travelClass}`)}</span>
+                <span className="ms-auto tabular whitespace-nowrap">{f.lkr(x.amountLkr)}</span>
               </label>
             ))}
           </div>

@@ -33,4 +33,5 @@ The questions below need a decision, not just a wording check.
 
 - **"Pravesha"** is written in Latin letters. Should it be transliterated?
 - **Long strings.** Please read these at small phone width: the booking-window explanation (`bookingWindow.twoDatesWhy`) and the reminder toggle (`reminder.midnightToggle`).
+- **Very large text.** With the phone's largest text setting (200 %) on a small phone, a word too long for its line is broken mid-word rather than pushing the screen sideways. Where a shorter wording exists, please suggest it, especially for: the "Sample — not confirmed" label (`stations.sampleFlags`), "Not confirmed" (`common.notConfirmed`), the live-map table headings (`live.colScheduled`, `live.colPredicted`) and the bottom tab names (`nav.*`).
 - **Line-by-line check.** Every string with a `TODO(review-…)` comment still needs one.

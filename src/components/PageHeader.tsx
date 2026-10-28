@@ -1,6 +1,7 @@
-import type { ReactNode } from 'react';
+import { useRef, type ReactNode } from 'react';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { useFitsOnScreen } from '@/hooks/useFitsOnScreen';
 import { BackIcon } from './icons';
 import { PreviewBanner } from './PreviewBanner';
 import { SampleDataBanner } from './SampleDataBanner';
@@ -16,10 +17,15 @@ type Props = {
   preview?: boolean;
 };
 
-/** Sticky screen header. Each screen renders exactly one, which provides its <h1>. */
+/**
+ * Screen header. Each screen renders exactly one, which provides its <h1>. Sticky while it takes
+ * at most 30 % of the screen height; with very large text it scrolls away with the page instead.
+ */
 export function PageHeader({ title, back, actions, badge, sampleData, preview }: Props) {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const ref = useRef<HTMLElement>(null);
+  const sticky = useFitsOnScreen(ref, 0.3);
   const goBack = () => {
     if (typeof back === 'string') void navigate(back);
     else if (window.history.state?.idx > 0) void navigate(-1);
@@ -27,7 +33,7 @@ export function PageHeader({ title, back, actions, badge, sampleData, preview }:
   };
 
   return (
-    <header className="sticky top-0 z-20 border-b border-border bg-bg/95 backdrop-blur">
+    <header ref={ref} className={`${sticky ? 'sticky top-0 z-20 bg-bg/95 backdrop-blur' : 'bg-bg'} border-b border-border`}>
       <div className="mx-auto flex max-w-2xl items-center gap-1 px-2 py-1">
         {back ? (
           <button

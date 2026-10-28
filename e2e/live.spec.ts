@@ -1,14 +1,8 @@
-import { expect, test } from '@playwright/test';
-
-const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64');
+import { expect, fakeTiles, test } from './support';
 
 // Never touch the real tile server (see stations.spec.ts for why the service worker is blocked).
 test.use({ serviceWorkers: 'block' });
-test.beforeEach(async ({ page }) => {
-  await page.route(/\/\d+\/\d+\/\d+\.png$/, (route) =>
-    route.fulfill({ status: 200, contentType: 'image/png', body: PNG, headers: { 'Access-Control-Allow-Origin': '*' } }),
-  );
-});
+test.beforeEach(async ({ page }) => fakeTiles(page));
 
 test('live map: preview label, text list of stops, and the simulated train moves over time', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-11-02T12:00:00+05:30') });

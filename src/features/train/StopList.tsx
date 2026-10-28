@@ -19,8 +19,10 @@ export function StopList({ train, serviceDate, fromIdx = 0, toIdx = train.stops.
   const boardDay = train.stops[fromIdx]?.dayOffset ?? 0;
   const time = (hhmm: string, dayOffset: number) => f.time(colomboDateTime(serviceDate, hhmm, dayOffset));
 
+  // Large text: when the list is narrower than 18rem, the time moves above the station name
+  // (same DOM order, so screen readers still hear time, then station).
   return (
-    <ol className="relative">
+    <ol className="@container relative">
       {train.stops.map((s, i) => {
         const inTrip = i >= fromIdx && i <= toIdx;
         const isBoard = i === fromIdx;
@@ -28,12 +30,15 @@ export function StopList({ train, serviceDate, fromIdx = 0, toIdx = train.stops.
         const main = s.departure ?? s.arrival!;
         const showArr = s.arrival && s.departure && s.arrival !== s.departure;
         return (
-          <li key={s.stationId} className={`flex gap-3 ${inTrip ? '' : 'text-muted'}`}>
-            <div className="w-16 shrink-0 py-2 text-right tabular">
+          <li
+            key={s.stationId}
+            className={`grid grid-cols-[1rem_minmax(0,1fr)] gap-x-3 @min-[18rem]:grid-cols-[4rem_1rem_minmax(0,1fr)] ${inTrip ? '' : 'text-muted'}`}
+          >
+            <div className="col-start-2 row-start-1 pt-2 tabular @min-[18rem]:col-start-1 @min-[18rem]:pb-2 @min-[18rem]:text-right">
               <span className={`font-semibold ${isBoard || isAlight ? 'text-lg' : ''}`}>{time(main, s.dayOffset)}</span>
               <DayOffset days={s.dayOffset - boardDay} />
             </div>
-            <div className="relative flex w-4 shrink-0 justify-center" aria-hidden="true">
+            <div className="relative col-start-1 row-span-2 row-start-1 flex justify-center @min-[18rem]:col-start-2 @min-[18rem]:row-span-1" aria-hidden="true">
               <span className={`absolute inset-y-0 w-0.5 ${inTrip && i < toIdx ? 'bg-accent' : 'bg-border'}`} />
               <span
                 className={`relative mt-3.5 size-3 rounded-full border-2 ${
@@ -41,7 +46,7 @@ export function StopList({ train, serviceDate, fromIdx = 0, toIdx = train.stops.
                 }`}
               />
             </div>
-            <div className="min-w-0 flex-1 py-2 [overflow-wrap:anywhere]">
+            <div className="col-start-2 row-start-2 pb-2 @min-[18rem]:col-start-3 @min-[18rem]:row-start-1 @min-[18rem]:pt-2">
               <p className={isBoard || isAlight ? 'text-lg font-bold' : 'font-semibold'}>{f.station(stations?.get(s.stationId))}</p>
               <p className="text-sm text-muted">
                 {isBoard && <span className="font-semibold text-accent">{t('train.youBoard')}. </span>}

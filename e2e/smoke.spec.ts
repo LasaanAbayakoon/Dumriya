@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './support';
 
 test('app loads, navigates and switches language on a 360px phone', async ({ page }) => {
   await page.goto('/');

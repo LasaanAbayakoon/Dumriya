@@ -1,4 +1,5 @@
-import { expect, test, type Page } from '@playwright/test';
+import type { Page } from '@playwright/test';
+import { expect, test } from './support';
 
 /** Fonts are self-hosted and downloaded only for the script actually shown; nothing goes to Google. */
 function track(page: Page) {

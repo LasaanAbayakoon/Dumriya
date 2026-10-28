@@ -40,7 +40,7 @@ export function TrainCard({ trip }: { trip: Trip }) {
         </span>
       </div>
 
-      <h3 className="mt-1 font-semibold [overflow-wrap:anywhere]">{f.train(trip.train)}</h3>
+      <h2 className="mt-1 font-semibold [overflow-wrap:anywhere]">{f.train(trip.train)}</h2>
 
       <div className="mt-2 flex flex-wrap items-center gap-1.5">
         {trip.reservableOnline ? (

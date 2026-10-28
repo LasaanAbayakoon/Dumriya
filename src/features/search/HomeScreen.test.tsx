@@ -38,7 +38,7 @@ test('search by Sinhala and Tamil names, then results list trains in order', asy
   expect(router.state.location.search).toBe('?from=colombo-fort&to=badulla&date=2026-11-01');
   expect(await screen.findByRole('heading', { level: 1, name: 'Colombo Fort to Badulla' })).toBeInTheDocument();
   expect(await screen.findByText('3 trains')).toBeInTheDocument(); // Sunday: 1001 does not run
-  const names = screen.getAllByRole('heading', { level: 3 }).map((h) => h.textContent);
+  const names = screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent);
   expect(names).toEqual(['1005 Podi Menike', '1015 Udarata Menike', '1045 Night Mail']);
   expect(getRecentSearches()).toEqual([{ fromStationId: 'colombo-fort', toStationId: 'badulla' }]);
 });
