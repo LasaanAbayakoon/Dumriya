@@ -115,11 +115,11 @@ Every link that opens a new tab goes through `src/components/ExternalLink.tsx`, 
 ## About page, licences and version
 
 - **About** (`/settings/about`): says plainly that Dumriya is unofficial and not connected to Sri Lanka Railways, and links only to the two official sites. It also has a sample-data notice (while `IS_SAMPLE_DATA`), a privacy summary, data credits (OpenStreetMap / ODbL), the rules disclaimer, open-source licences, and the version, build date and feedback link.
-- **Privacy summary is deliberately exact:** Dumriya has no server and sends none of the user's data. It does say that the phone contacts Google Fonts, the map tile server (only when the map is open), and Google Maps or the official sites when their links are tapped, and that those see the phone's internet address like any website.
+- **Privacy summary is deliberately exact:** Dumriya has no server and sends none of the user's data. It does say that the phone contacts the map tile server (only when the map is open), and Google Maps or the official sites when their links are tapped, and that those see the phone's internet address like any website.
 - **Rules date:** `POLICY_INFO_AS_OF` in `src/config/policy.ts` (currently 2026-10-27) is the date the rules were compiled from public SLR information. Update it whenever the rules are re-checked.
-- **Licences are generated, not hand-written:** `build/licenses.ts` walks the production dependency tree in `node_modules` (plus `workbox-window`, which is bundled) and serves it as `virtual:dumriya-licenses`. Developer-only tools are excluded. The Noto fonts (SIL OFL 1.1, from Google Fonts) are listed separately.
+- **Licences are generated, not hand-written:** `build/licenses.ts` walks the production dependency tree in `node_modules` (plus `workbox-window`, which is bundled) and serves it as `virtual:dumriya-licenses`. Developer-only tools are excluded. The Noto Sans Sinhala / Tamil fonts are bundled from `@fontsource` (SIL OFL 1.1), so they appear in the list too.
 - **Version and build date** come from `package.json` and the build time (`__APP_VERSION__`, `__BUILD_DATE__`).
-- **Feedback:** `FEEDBACK_URL` in `src/config/app.ts` is **TODO: fill in** (a `mailto:` or GitHub issues URL). While it is `null`, About shows "Feedback link coming soon."
+- **Feedback:** `FEEDBACK_URL` in `src/config/app.ts` is the project's GitHub issues page. If it is set back to `null`, About shows "Feedback link coming soon."
 - **Settings** shows storage used, the browser's storage estimate and whether the browser agreed to keep the data, next to "Delete all my data". When the data isn't protected, it offers "Ask the browser to keep my data".
 
 ## Tests

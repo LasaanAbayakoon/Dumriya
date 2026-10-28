@@ -25,14 +25,20 @@ export const TILE_NETWORK_TIMEOUT_SECONDS = 4;
 export const isTileRequest = ({ request, url }: { request: Request; url: URL }) =>
   request.destination === 'image' && /\/\d+\/\d+\/\d+(@2x)?\.(png|jpg|jpeg|webp)$/.test(url.pathname);
 
+/** Self-hosted font files (same origin, .woff2). */
+export const isOwnFont = ({ request, url, sameOrigin }: { request: Request; url: URL; sameOrigin: boolean }) =>
+  sameOrigin && (request.destination === 'font' || url.pathname.endsWith('.woff2'));
+
 export const runtimeCaching: RuntimeCaching[] = [
   {
-    urlPattern: ({ url }) => url.origin === 'https://fonts.googleapis.com' || url.origin === 'https://fonts.gstatic.com',
+    // Our own Sinhala/Tamil font files: cached the first time a script is shown (not
+    // precached, so English-only users never download them). Works offline after that.
+    urlPattern: isOwnFont,
     handler: 'CacheFirst',
     options: {
-      cacheName: 'google-fonts',
-      expiration: { maxEntries: 30, maxAgeSeconds: 60 * 60 * 24 * 365 },
-      cacheableResponse: { statuses: [0, 200] },
+      cacheName: 'fonts',
+      expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 },
+      cacheableResponse: { statuses: [200] },
     },
   },
   {

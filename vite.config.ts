@@ -46,7 +46,8 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
+        // Fonts are not precached: they are cached on first use (see build/runtimeCaching.ts).
+        globPatterns: ['**/*.{js,css,html,svg,png}'],
         navigateFallback: 'index.html',
         // Tapping an alert opens the app on the Reminders screen.
         importScripts: ['sw-notifications.js'],

@@ -588,7 +588,7 @@ const en = {
     neverLocation: 'Your location (used only to sort stations when you tap “Near me”)',
     noServer: 'Dumriya has no server of its own and sends none of your data anywhere.',
     contacts:
-      'To work, your phone does contact: Google Fonts (to download the Sinhala and Tamil fonts), the map tile server (only when you open the map), and Google Maps or the official sites when you tap their links. Like any website, they see your phone’s internet address, but not your tickets, reminders or details.',
+      'To work, your phone does contact: the map tile server (only when you open the map), and Google Maps or the official sites when you tap their links. Like any website, they see your phone’s internet address, but not your tickets, reminders or details.',
     deleteHow: 'To delete everything, go to Settings and tap “Delete all my data”.',
     openSettings: 'Open Settings',
     creditsTitle: 'Data and credits',
@@ -601,7 +601,7 @@ const en = {
       'Refund, booking and warrant rules are based on public Sri Lanka Railways information as of {{date}}. Some are assumptions, marked “Not confirmed” in the app. Always check with Sri Lanka Railways before you travel or cancel.',
     licensesTitle: 'Open-source licences',
     licensesIntro: 'Dumriya is built with these open-source packages:',
-    fonts: 'Noto Sans Sinhala and Noto Sans Tamil fonts: SIL Open Font License 1.1 (from Google Fonts).',
+    fonts: 'The Noto Sans Sinhala and Noto Sans Tamil fonts are included in the app (SIL Open Font License 1.1).',
     versionTitle: 'Version',
     version: 'Version {{version}}, built {{date}}',
     feedbackTitle: 'Feedback',

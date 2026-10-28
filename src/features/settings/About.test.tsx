@@ -65,10 +65,15 @@ test('credits, rules disclaimer with date, licences, version and feedback placeh
     expect(licences.getByText(name)).toBeInTheDocument();
   }
   expect(licences.queryByText('vitest')).not.toBeInTheDocument();
-  expect(screen.getByText(/Noto Sans Sinhala and Noto Sans Tamil fonts: SIL Open Font License 1\.1/)).toBeInTheDocument();
+  expect(screen.getByText('The Noto Sans Sinhala and Noto Sans Tamil fonts are included in the app (SIL Open Font License 1.1).')).toBeInTheDocument();
+  for (const name of ['@fontsource/noto-sans-sinhala', '@fontsource/noto-sans-tamil']) expect(licences.getByText(name)).toBeInTheDocument();
+  expect(within(licences.getByText('@fontsource/noto-sans-sinhala').closest('li')!).getByText('OFL-1.1')).toBeInTheDocument();
+  expect(screen.queryByText(/Google Fonts/)).not.toBeInTheDocument();
 
   expect(screen.getByTestId('app-version')).toHaveTextContent(/^Version 0\.1\.0, built \d{2}:\d{2} on \w{3}, \d{1,2} \w{3} \d{4}$/);
-  expect(screen.getByText('Feedback link coming soon.')).toBeInTheDocument();
+  const feedback = screen.getByRole('link', { name: 'Send feedback' });
+  expect(feedback).toHaveAttribute('href', 'https://github.com/LasaanAbayakoon/Dumriya/issues');
+  expect(feedback.getAttribute('rel')!.split(' ')).toEqual(expect.arrayContaining(['noopener', 'noreferrer']));
 });
 
 describe('Settings: storage next to "Delete all my data"', () => {

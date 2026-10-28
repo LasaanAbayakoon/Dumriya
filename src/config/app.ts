@@ -49,7 +49,7 @@ export const MAX_TICKET_FILE_BYTES = 10 * 1024 * 1024;
 
 // ── Feedback ────────────────────────────────────────────────────────────────
 /**
- * Where the About page's "Send feedback" goes: a mailto: or GitHub issues URL.
- * TODO(config): fill in. While null, About shows "Feedback link coming soon".
+ * Where the About page's "Send feedback" goes (a mailto: or GitHub issues URL).
+ * If set back to null, About shows "Feedback link coming soon".
  */
-export const FEEDBACK_URL: string | null = null;
+export const FEEDBACK_URL: string | null = 'https://github.com/LasaanAbayakoon/Dumriya/issues';

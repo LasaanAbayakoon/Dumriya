@@ -3,6 +3,44 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
+ * Self-hosted Noto fonts (SIL Open Font License 1.1, via @fontsource), script subsets only.
+ * unicode-range means a browser downloads a font only when the page shows that script, so
+ * English-only users download nothing. Weights 400 and 700 only: 600 renders with 700.
+ */
+@font-face {
+  font-family: 'Noto Sans Sinhala';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('@fontsource/noto-sans-sinhala/files/noto-sans-sinhala-sinhala-400-normal.woff2') format('woff2');
+  unicode-range: U+0D80-0DFF, U+111E1-111F4, U+200C-200D, U+25CC;
+}
+@font-face {
+  font-family: 'Noto Sans Sinhala';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url('@fontsource/noto-sans-sinhala/files/noto-sans-sinhala-sinhala-700-normal.woff2') format('woff2');
+  unicode-range: U+0D80-0DFF, U+111E1-111F4, U+200C-200D, U+25CC;
+}
+@font-face {
+  font-family: 'Noto Sans Tamil';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('@fontsource/noto-sans-tamil/files/noto-sans-tamil-tamil-400-normal.woff2') format('woff2');
+  unicode-range: U+0B80-0BFF, U+11FC0-11FFF, U+200C-200D, U+25CC;
+}
+@font-face {
+  font-family: 'Noto Sans Tamil';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url('@fontsource/noto-sans-tamil/files/noto-sans-tamil-tamil-700-normal.woff2') format('woff2');
+  unicode-range: U+0B80-0BFF, U+11FC0-11FFF, U+200C-200D, U+25CC;
+}
+
+/*
  * Design tokens. One accent colour; status colours are reserved for meaning
  * (on time / delayed / cancelled) and must not be used for decoration.
  */
@@ -66,8 +104,10 @@
   --color-danger: var(--danger);
   --color-danger-soft: var(--danger-soft);
   --color-focus: var(--focus);
+  /* Bundled Sinhala/Tamil fonts first: their unicode-range limits them to those scripts,
+     so Latin text still uses the phone's system font. */
   --font-sans:
-    system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', 'Noto Sans Sinhala', 'Noto Sans Tamil', sans-serif;
+    'Noto Sans Sinhala', 'Noto Sans Tamil', system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', sans-serif;
 }
 
 @layer base {
