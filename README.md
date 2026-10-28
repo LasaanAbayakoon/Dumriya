@@ -101,7 +101,19 @@ Every link that opens a new tab goes through `src/components/ExternalLink.tsx`, 
 - Use `setupUser()` from `src/test/user.ts` instead of `userEvent.setup()`: it types with no delay between keys, so tests never wait on real time and a frozen `vi.setSystemTime` stays exact. `fakeClipboard()` gives an in-memory clipboard.
 - Any `console.error` (including React act warnings) fails the test (`src/test/setup.ts`).
 
-## Booking-opens reminders
+## Reminders and alerts
+
+**How alerts are delivered (no push server yet):** reminders are stored on the phone (IndexedDB). While Dumriya is open or running in the background, a scheduler checks every 30 s (`REMINDER_CHECK_INTERVAL_MS`), when the app comes back to the foreground, and whenever reminders change. Each due alert is shown **once**: as a phone notification if the user allowed it (through the service worker, which Android Chrome requires), and always as a banner inside the app. Alerts that came due while the app was closed appear the next time it is opened, labelled with when they were due. The Reminders screen says all of this in plain words and recommends "Add to calendar" for certainty. Tapping a notification opens the Reminders screen (`public/sw-notifications.js`).
+
+**Permission:** the browser prompt only appears after the user taps "Turn on alerts". If alerts are denied or unsupported, the screen says what still works (in-app banners, calendar). Headless Chromium always reports notifications as denied, so the Playwright test checks the in-app alert.
+
+| Reminder | Alerts | Constant |
+|---|---|---|
+| Warrant reservation (Reminders → "Add a warrant reminder") | 24 h and 2 h before it expires (earlier of booking + 7 days and journey − 48 h); if both are past, one at the expiry | `WARRANT_ALERT_HOURS_BEFORE` |
+| Refund drops (ticket → "Remind me before the refund drops") | 24 h before each future drop to a lower tier (or about a minute from now if the drop is less than 24 h away) | `REFUND_ALERT_HOURS_BEFORE` |
+| Booking opens (train → "Remind me when booking opens") | see below | |
+
+### Booking-opens reminders
 
 While `BOOKING_OPEN_TIME` is `null`, a "Remind me when booking opens" reminder uses these alerts (all in [`src/config/app.ts`](src/config/app.ts)):
 

@@ -1,5 +1,6 @@
 import { act, cleanup, fireEvent, screen, within } from '@testing-library/react';
 import type userEvent from '@testing-library/user-event';
+import { reminders, tickets } from '@/lib/storage';
 import { renderRoute } from '@/test/renderRoute';
 import { fakeClipboard, setupUser } from '@/test/user';
 
@@ -138,6 +139,7 @@ describe('privacy: nothing saved, nothing sent', () => {
     const snapshot = (s: Storage) => JSON.stringify(Object.entries(s).sort());
     const localBefore = snapshot(localStorage);
     const sessionBefore = snapshot(sessionStorage);
+    const savedBefore = JSON.stringify([await reminders.list(), await tickets.list()]);
     const dbsBefore = (await indexedDB.databases()).map((d) => d.name).sort();
     const idbOpen = vi.spyOn(indexedDB, 'open');
 
@@ -148,7 +150,10 @@ describe('privacy: nothing saved, nothing sent', () => {
 
     expect(snapshot(localStorage)).toBe(localBefore);
     expect(snapshot(sessionStorage)).toBe(sessionBefore);
-    expect(idbOpen).not.toHaveBeenCalled();
+    // The app shell's reminder scheduler may READ the reminders database; nothing else is opened,
+    // and nothing is written anywhere.
+    expect(idbOpen.mock.calls.map(([name]) => name).filter((n) => n !== 'dumriya-reminders')).toEqual([]);
+    expect(JSON.stringify([await reminders.list(), await tickets.list()])).toBe(savedBefore);
     expect((await indexedDB.databases()).map((d) => d.name).sort()).toEqual(dbsBefore);
     expect(router.state.location).toMatchObject({ pathname: '/dispute', search: '', hash: '' });
     expect(router.state.location.state).toBeNull();

@@ -10,6 +10,8 @@ import { useNow } from '@/hooks/useNow';
 import type { BookingWindow } from '@/lib/bookingWindow';
 import { buildIcs, downloadIcs } from '@/lib/ics';
 import { bookingOpensReminder, newReminderId, reminderIcsEvents } from '@/lib/reminders';
+import { notificationState } from '@/lib/notify';
+import { announceRemindersChanged } from '@/lib/reminderEvents';
 import { reminders } from '@/lib/storage';
 import type { Trip } from '@/types';
 import { useAlertText } from '../reminders/useAlertText';
@@ -32,6 +34,7 @@ export function ReminderSheet({ trip, window, onClose }: { trip: Trip; window: B
   const save = async () => {
     try {
       await reminders.put(reminder);
+      announceRemindersChanged();
       setSaveState('saved');
     } catch {
       setSaveState('error');
@@ -89,6 +92,7 @@ export function ReminderSheet({ trip, window, onClose }: { trip: Trip; window: B
             {t('reminder.saved')}
           </p>
         )}
+        {saveState === 'saved' && notificationState() !== 'granted' && <Notice>{t('reminder.alertsOff')}</Notice>}
         {saveState === 'error' && (
           <Notice tone="danger">
             <span role="alert">{t('reminder.storageError')}</span>

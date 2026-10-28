@@ -16,7 +16,7 @@ export default defineConfig({
     bundleBudget({ maxInitialGzipKb: 150 }),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'apple-touch-icon-180x180.png'],
+      includeAssets: ['favicon.svg', 'apple-touch-icon-180x180.png', 'sw-notifications.js'],
       manifest: {
         name: 'Dumriya – train companion (unofficial)',
         short_name: 'Dumriya',
@@ -39,6 +39,8 @@ export default defineConfig({
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
         navigateFallback: 'index.html',
+        // Tapping an alert opens the app on the Reminders screen.
+        importScripts: ['sw-notifications.js'],
         runtimeCaching: [
           {
             urlPattern: ({ url }) =>

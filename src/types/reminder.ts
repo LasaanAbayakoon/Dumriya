@@ -9,6 +9,11 @@ export interface ReminderAlert {
   kind: AlertKind;
   at: IsoDateTime;
   firedAt?: IsoDateTime;
+  /** For deadline alerts: the deadline this alert warns about. */
+  deadline?: IsoDateTime;
+  /** For refund alerts: the refund % before and after the drop. */
+  dropsFrom?: number;
+  dropsTo?: number;
 }
 
 /**
@@ -36,5 +41,7 @@ export interface Reminder {
     toStationId?: string;
     travelDate?: IsoDate;
     refundPercent?: number;
+    /** Warrant: which limit applied (7 days after booking, or 48 h before the journey). */
+    warrantReason?: 'days-after-booking' | 'hours-before-journey';
   };
 }

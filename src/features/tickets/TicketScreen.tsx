@@ -9,11 +9,13 @@ import { ExternalLink } from '@/components/ExternalLink';
 import { Loading } from '@/components/Loading';
 import { Notice } from '@/components/Notice';
 import { PageHeader } from '@/components/PageHeader';
-import { ChevronRightIcon, ExternalIcon, TrashIcon } from '@/components/icons';
+import { BellIcon, ChevronRightIcon, ExternalIcon, TrashIcon } from '@/components/icons';
 import { useFormat } from '@/hooks/useFormat';
 import { useNow } from '@/hooks/useNow';
 import { useStations } from '@/hooks/useStations';
-import { tickets } from '@/lib/storage';
+import { announceRemindersChanged } from '@/lib/reminderEvents';
+import { refundReminder } from '@/lib/reminders';
+import { reminders, tickets } from '@/lib/storage';
 import { isPdfTicket } from '@/lib/tickets';
 import { refundUrl } from '@/lib/urls';
 import type { SavedTicket } from '@/types';
@@ -75,6 +77,22 @@ function TicketDetail({ ticket }: { ticket: SavedTicket }) {
   const linkRef = useFileUrlRef<HTMLAnchorElement>(ticket, 'href');
   const [confirming, setConfirming] = useState(false);
   const [deleteFailed, setDeleteFailed] = useState(false);
+  const [remind, setRemind] = useState<null | 'saved' | 'none' | 'failed'>(null);
+
+  const remindRefund = async () => {
+    const r = refundReminder(ticket, { now: new Date() });
+    if (!r) {
+      setRemind('none');
+      return;
+    }
+    try {
+      await reminders.put(r);
+      announceRemindersChanged();
+      setRemind('saved');
+    } catch {
+      setRemind('failed');
+    }
+  };
 
   const title = t('train.number', { number: ticket.trainNumber });
   const seat = seatText(t, ticket);
@@ -178,6 +196,20 @@ function TicketDetail({ ticket }: { ticket: SavedTicket }) {
               {t('tickets.openRefund')}
               <ChevronRightIcon className="shrink-0" />
             </Link>
+            <Button variant="secondary" icon={<BellIcon />} onClick={() => void remindRefund()} disabled={remind === 'saved'}>
+              {t('tickets.remindRefund')}
+            </Button>
+            {remind === 'saved' && (
+              <p role="status" className="font-semibold text-ok">
+                {t('tickets.remindRefundSaved')}
+              </p>
+            )}
+            {remind === 'none' && <p role="status">{t('tickets.remindRefundNone')}</p>}
+            {remind === 'failed' && (
+              <p role="alert" className="font-semibold text-danger">
+                {t('reminders.saveFailed')}
+              </p>
+            )}
           </section>
         </Card>
 

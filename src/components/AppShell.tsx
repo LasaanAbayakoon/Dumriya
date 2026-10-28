@@ -1,9 +1,12 @@
-import { Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import { NavLink, Outlet, ScrollRestoration, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useOnline } from '@/hooks/useOnline';
 import { BellIcon, MenuIcon, SearchIcon, TicketIcon } from './icons';
 import { Loading } from './Loading';
+
+// Loaded after first paint so reminder code stays out of the initial download.
+const ReminderScheduler = lazy(() => import('@/features/reminders/ReminderScheduler').then((m) => ({ default: m.ReminderScheduler })));
 
 const tabs = [
   { to: '/', key: 'nav.search', Icon: SearchIcon, match: ['/', '/results', '/train'] },
@@ -34,6 +37,9 @@ export function AppShell() {
           {t('common.offline')}
         </div>
       )}
+      <Suspense fallback={null}>
+        <ReminderScheduler />
+      </Suspense>
       <main id="main" className="flex-1 pb-28">
         <Suspense fallback={<Loading />}>
           <Outlet />

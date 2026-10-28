@@ -14,6 +14,7 @@ const PAGES = [
   { name: 'refund', url: '/refund?departure=2026-12-09T20%3A00%3A00%2B05%3A30&fare=1240&train=1045&date=2026-12-10&from=nawalapitiya&to=badulla' },
   { name: 'dispute', url: '/dispute' },
   { name: 'tickets', url: '/tickets' },
+  { name: 'reminders', url: '/reminders' },
   { name: 'results-no-direct', url: '/results?from=aluthgama&to=bandarawela&date=2026-12-10' },
   { name: 'ticket-new', url: '/tickets/new?train=1045&date=2026-12-10&from=nawalapitiya&to=badulla&time=00:35&fare=510' },
 ];

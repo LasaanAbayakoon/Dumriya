@@ -101,7 +101,7 @@ describe('reminder sheet', () => {
     expect(dialog.getByText('Mon, 9 Nov 2026, 00:00: start of the opening day')).toBeInTheDocument();
 
     await user.click(dialog.getByRole('button', { name: 'Save reminder' }));
-    expect(await dialog.findByRole('status')).toHaveTextContent('Reminder saved. Alerts will be enabled in a later version — use Add to calendar for now.');
+    expect(await dialog.findByRole('status')).toHaveTextContent('Reminder saved on this phone.');
     const [saved] = await reminders.list();
     expect(saved?.alerts).toEqual([
       { kind: 'heads-up', at: '2026-11-08T20:00:00+05:30' },

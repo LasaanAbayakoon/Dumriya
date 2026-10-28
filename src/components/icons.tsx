@@ -114,3 +114,9 @@ export const CloseIcon = icon(<path d="M6 6l12 12M18 6 6 18" />);
 export const TrashIcon = icon(<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3" />);
 export const PlusIcon = icon(<path d="M12 5v14M5 12h14" />);
 export const ShieldIcon = icon(<path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3Z" />);
+export const CalendarIcon = icon(
+  <>
+    <rect x="3" y="5" width="18" height="16" rx="2" />
+    <path d="M3 10h18M8 3v4M16 3v4" />
+  </>,
+);

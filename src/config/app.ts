@@ -32,6 +32,16 @@ export const BOOKING_MIDNIGHT_ALERT_TIME = '00:00';
 /** The midnight alert is off unless the user turns it on. */
 export const BOOKING_MIDNIGHT_ALERT_DEFAULT = false;
 
+// ── Warrant and refund reminders ────────────────────────────────────────────
+/** Alerts this many hours before a temporary warrant reservation expires. */
+export const WARRANT_ALERT_HOURS_BEFORE = [24, 2];
+/** Alert this many hours before a ticket's refund drops to a lower tier. */
+export const REFUND_ALERT_HOURS_BEFORE = 24;
+/** How often the open app checks for due alerts (ms). */
+export const REMINDER_CHECK_INTERVAL_MS = 30_000;
+/** An alert shown more than this many minutes after its time is labelled "late". */
+export const LATE_ALERT_MINUTES = 5;
+
 // ── Local data ──────────────────────────────────────────────────────────────
 export const MAX_RECENT_SEARCHES = 5;
 /** Largest e-ticket file the wallet accepts (bytes). */

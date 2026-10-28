@@ -10,8 +10,27 @@ export function useAlertText(): AlertText {
   return useCallback<AlertText>(
     (reminder, alert) => {
       const p = reminder.params;
-      const train = p.trainNumber ? f.train({ number: p.trainNumber, name: p.trainName ?? null }) : '';
       const date = p.travelDate ? f.date(p.travelDate) : '';
+      if (reminder.kind === 'warrant-expiry') {
+        const when = f.dateTime(alert.deadline ?? reminder.eventAt);
+        return {
+          title: p.trainNumber
+            ? t('reminders.warrantTextTrain', { number: p.trainNumber, when })
+            : t('reminders.warrantText', { when }),
+        };
+      }
+      if (reminder.kind === 'refund-deadline') {
+        return {
+          title: t('reminders.refundText', {
+            number: p.trainNumber ?? '',
+            date,
+            from: alert.dropsFrom,
+            to: alert.dropsTo,
+            when: f.dateTime(alert.deadline ?? reminder.eventAt),
+          }),
+        };
+      }
+      const train = p.trainNumber ? f.train({ number: p.trainNumber, name: p.trainName ?? null }) : '';
       const key =
         alert.kind === 'heads-up' ? 'reminder.headsUpText' : alert.kind === 'midnight' ? 'reminder.midnightText' : 'reminder.openingText';
       return { title: t(key, { train, date }) };
