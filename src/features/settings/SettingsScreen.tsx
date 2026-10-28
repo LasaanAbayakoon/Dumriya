@@ -9,6 +9,7 @@ import { TrashIcon } from '@/components/icons';
 import { getSavedLanguage, LANGUAGES, setLanguage, type Language } from '@/i18n';
 import { clearAllData } from '@/lib/storage';
 import { useTheme, type ThemeChoice } from '@/hooks/useTheme';
+import { StorageInfo } from './StorageInfo';
 
 function RadioGroup<T extends string>({
   legend,
@@ -101,6 +102,7 @@ export default function SettingsScreen() {
               {t('settings.dataTitle')}
             </h2>
             <p>{t('settings.dataBody')}</p>
+            <StorageInfo version={cleared ? 1 : 0} />
             {cleared && (
               <Notice tone={cleared === 'ok' ? 'info' : 'danger'}>
                 <span role="status">{cleared === 'ok' ? t('settings.deletedAll') : t('settings.deleteAllFailed')}</span>

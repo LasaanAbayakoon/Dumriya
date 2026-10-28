@@ -194,6 +194,8 @@ describe('deleting', () => {
     const dialog = within(await screen.findByRole('dialog', { name: 'Delete all your data?' }));
     await user.click(dialog.getByRole('button', { name: 'Delete everything' }));
     expect(await screen.findByText('All your data has been deleted from this phone.')).toBeInTheDocument();
+    // Settings re-reads storage after deleting; wait for it to show nothing left.
+    expect(await screen.findByText('Your tickets use 0 B on this phone.')).toBeInTheDocument();
     expect(await tickets.list()).toEqual([]);
     expect(localStorage.getItem('dumriya.lang')).toBeNull();
     expect(localStorage.getItem('dumriya.theme')).toBeNull();

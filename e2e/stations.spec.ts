@@ -12,7 +12,8 @@ test.beforeEach(async ({ page }) => {
   tilesServed = 0;
   await page.route(/\/\d+\/\d+\/\d+\.png$/, (route) => {
     tilesServed++;
-    return route.fulfill({ status: 200, contentType: 'image/png', body: PNG });
+    // Tiles are requested with CORS, like a real tile server answers them.
+    return route.fulfill({ status: 200, contentType: 'image/png', body: PNG, headers: { 'Access-Control-Allow-Origin': '*' } });
   });
 });
 

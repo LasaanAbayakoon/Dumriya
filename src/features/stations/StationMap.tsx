@@ -27,7 +27,8 @@ export default function StationMap({ stations, label, openLabel, ariaLabel, youA
   useEffect(() => {
     if (!el.current) return;
     const map = L.map(el.current, { center: MAP_DEFAULT_CENTER, zoom: MAP_DEFAULT_ZOOM, attributionControl: true });
-    L.tileLayer(MAP_TILE_URL, { attribution: MAP_TILE_ATTRIBUTION, maxZoom: MAP_MAX_ZOOM }).addTo(map);
+    // CORS requests, so the service worker can cache real (not opaque) responses.
+    L.tileLayer(MAP_TILE_URL, { attribution: MAP_TILE_ATTRIBUTION, maxZoom: MAP_MAX_ZOOM, crossOrigin: true }).addTo(map);
     const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#0b5f6b';
 
     const points: L.LatLngExpression[] = [];

@@ -18,6 +18,7 @@ const TicketScreen = lazy(() => import('@/features/tickets/TicketScreen'));
 const RemindersScreen = lazy(() => import('@/features/reminders/RemindersScreen'));
 const StationsScreen = lazy(() => import('@/features/stations/StationsScreen'));
 const StationScreen = lazy(() => import('@/features/stations/StationScreen'));
+const AboutScreen = lazy(() => import('@/features/settings/AboutScreen'));
 const MoreScreen = lazy(() => import('@/features/more/MoreScreen'));
 const SettingsScreen = lazy(() => import('@/features/settings/SettingsScreen'));
 const NotFoundScreen = lazy(() => import('@/features/NotFoundScreen'));
@@ -51,7 +52,7 @@ export const routes: RouteObject[] = [
       { path: '/stations/:stationId/board', element: el(todo('board')) },
       { path: '/more', element: <MoreScreen /> },
       { path: '/settings', element: <SettingsScreen /> },
-      { path: '/settings/about', element: el(todo('about')) },
+      { path: '/settings/about', element: <AboutScreen /> },
       { path: '*', element: <NotFoundScreen /> },
     ],
   },

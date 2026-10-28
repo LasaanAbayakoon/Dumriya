@@ -5,8 +5,16 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import { bundleBudget } from './build/bundleBudget.ts';
+import { runtimeCaching } from './build/runtimeCaching.ts';
+import { licensesPlugin } from './build/licenses.ts';
+import pkg from './package.json' with { type: 'json' };
 
 export default defineConfig({
+  // Shown on the About page.
+  define: {
+    __APP_VERSION__: JSON.stringify(pkg.version),
+    __BUILD_DATE__: JSON.stringify(new Date().toISOString()),
+  },
   resolve: {
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
   },
@@ -14,6 +22,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
     bundleBudget({ maxInitialGzipKb: 150 }),
+    licensesPlugin(fileURLToPath(new URL('.', import.meta.url))),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'apple-touch-icon-180x180.png', 'sw-notifications.js'],
@@ -41,29 +50,7 @@ export default defineConfig({
         navigateFallback: 'index.html',
         // Tapping an alert opens the app on the Reminders screen.
         importScripts: ['sw-notifications.js'],
-        runtimeCaching: [
-          {
-            urlPattern: ({ url }) =>
-              url.origin === 'https://fonts.googleapis.com' || url.origin === 'https://fonts.gstatic.com',
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'google-fonts',
-              expiration: { maxEntries: 30, maxAgeSeconds: 60 * 60 * 24 * 365 },
-              cacheableResponse: { statuses: [0, 200] },
-            },
-          },
-          {
-            // Map tiles from any provider configured in src/config/app.ts (z/x/y tile paths).
-            urlPattern: ({ request, url }) =>
-              request.destination === 'image' && /\/\d+\/\d+\/\d+(@2x)?\.(png|jpg|webp)$/.test(url.pathname),
-            handler: 'StaleWhileRevalidate',
-            options: {
-              cacheName: 'map-tiles',
-              expiration: { maxEntries: 400, maxAgeSeconds: 60 * 60 * 24 * 30 },
-              cacheableResponse: { statuses: [0, 200] },
-            },
-          },
-        ],
+        runtimeCaching,
       },
     }),
   ],

@@ -76,7 +76,15 @@ Every outbound booking link goes through `isOfficialUrl()` (https and an exact o
 
 ## Map tiles
 
-Tile URL and attribution are in `src/config/app.ts` (`MAP_TILE_URL`, `MAP_TILE_ATTRIBUTION`). The OSM standard tile server is for light use only; switch provider before public launch.
+Tile URL and attribution are in `src/config/app.ts` (`MAP_TILE_URL`, `MAP_TILE_ATTRIBUTION`).
+
+> ⚠️ **Before any public launch we must switch to a tile provider that allows our usage.** The current URL is the OpenStreetMap Foundation's standard tile server. Its [tile usage policy](https://operations.osmfoundation.org/policies/tiles/) allows only light use: it is run by volunteers on donated servers, offers no service guarantee, forbids bulk downloading and prefetching, and may block apps that cause heavy traffic. A public app used by many passengers would be heavy use. Options: a commercial tile provider with a plan that covers our traffic, or self-hosted tiles built from OSM data. Whichever we choose, the attribution must stay visible.
+
+**How tiles are cached** (`build/runtimeCaching.ts`, tested in `build/runtimeCaching.test.ts`):
+- Only tiles the user has already viewed are cached. Tiles are never prefetched: they are not in the service worker's precache list, and no code fetches tiles ahead of time.
+- **Network first:** while online, tile requests go through the browser's normal HTTP cache, so the tile server's `Cache-Control` / `Expires` headers decide freshness. The service worker's copy is only an offline fallback.
+- At most 300 tiles, each kept 7 days. The tile cache is dropped first if the phone runs low on space, before anything else.
+- Tiles are requested with CORS, and only real `200` responses are cached. Opaque responses would each count as about 7 MB of the site's storage quota in Chrome and could crowd out saved tickets.
 
 ## Privacy: payment dispute helper
 
@@ -103,6 +111,16 @@ Tile URL and attribution are in `src/config/app.ts` (`MAP_TILE_URL`, `MAP_TILE_A
 ## External links
 
 Every link that opens a new tab goes through `src/components/ExternalLink.tsx`, which always sets `rel="noopener noreferrer"`. A test fails if any other source file uses `target="_blank"` (`build/source-guards.test.ts`, which reads `src/` from disk at run time so Vitest's on-disk module cache can never hide a new file), and another renders each screen with outbound links and checks every `target=_blank` link.
+
+## About page, licences and version
+
+- **About** (`/settings/about`): says plainly that Dumriya is unofficial and not connected to Sri Lanka Railways, and links only to the two official sites. It also has a sample-data notice (while `IS_SAMPLE_DATA`), a privacy summary, data credits (OpenStreetMap / ODbL), the rules disclaimer, open-source licences, and the version, build date and feedback link.
+- **Privacy summary is deliberately exact:** Dumriya has no server and sends none of the user's data. It does say that the phone contacts Google Fonts, the map tile server (only when the map is open), and Google Maps or the official sites when their links are tapped, and that those see the phone's internet address like any website.
+- **Rules date:** `POLICY_INFO_AS_OF` in `src/config/policy.ts` (currently 2026-10-27) is the date the rules were compiled from public SLR information. Update it whenever the rules are re-checked.
+- **Licences are generated, not hand-written:** `build/licenses.ts` walks the production dependency tree in `node_modules` (plus `workbox-window`, which is bundled) and serves it as `virtual:dumriya-licenses`. Developer-only tools are excluded. The Noto fonts (SIL OFL 1.1, from Google Fonts) are listed separately.
+- **Version and build date** come from `package.json` and the build time (`__APP_VERSION__`, `__BUILD_DATE__`).
+- **Feedback:** `FEEDBACK_URL` in `src/config/app.ts` is **TODO: fill in** (a `mailto:` or GitHub issues URL). While it is `null`, About shows "Feedback link coming soon."
+- **Settings** shows storage used, the browser's storage estimate and whether the browser agreed to keep the data, next to "Delete all my data". When the data isn't protected, it offers "Ask the browser to keep my data".
 
 ## Tests
 

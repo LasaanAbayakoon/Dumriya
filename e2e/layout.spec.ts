@@ -17,6 +17,8 @@ const PAGES = [
   { name: 'reminders', url: '/reminders' },
   { name: 'stations', url: '/stations' },
   { name: 'station', url: '/stations/kandy' },
+  { name: 'settings', url: '/settings' },
+  { name: 'about', url: '/settings/about' },
   { name: 'results-no-direct', url: '/results?from=aluthgama&to=bandarawela&date=2026-12-10' },
   { name: 'ticket-new', url: '/tickets/new?train=1045&date=2026-12-10&from=nawalapitiya&to=badulla&time=00:35&fare=510' },
 ];

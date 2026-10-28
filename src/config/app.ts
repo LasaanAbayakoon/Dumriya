@@ -46,3 +46,10 @@ export const LATE_ALERT_MINUTES = 5;
 export const MAX_RECENT_SEARCHES = 5;
 /** Largest e-ticket file the wallet accepts (bytes). */
 export const MAX_TICKET_FILE_BYTES = 10 * 1024 * 1024;
+
+// ── Feedback ────────────────────────────────────────────────────────────────
+/**
+ * Where the About page's "Send feedback" goes: a mailto: or GitHub issues URL.
+ * TODO(config): fill in. While null, About shows "Feedback link coming soon".
+ */
+export const FEEDBACK_URL: string | null = null;

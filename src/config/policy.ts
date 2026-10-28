@@ -12,6 +12,9 @@
 export const POLICY_TIMEZONE = 'Asia/Colombo';
 export const POLICY_UTC_OFFSET = '+05:30';
 
+/** Date the rules in this file were last compiled from public SLR information (shown on About). */
+export const POLICY_INFO_AS_OF = '2026-10-27';
+
 // ── Reserved-seat booking window ────────────────────────────────────────────
 
 /**
