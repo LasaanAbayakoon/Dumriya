@@ -60,9 +60,13 @@ describe('permission prompt', () => {
     expect(await screen.findByText(/This browser cannot show phone alerts/)).toBeInTheDocument();
   });
 
-  test('how alerts work is stated in plain words', async () => {
+  test('how alerts work is stated honestly: background alerts can be late', async () => {
     renderRoute('/reminders');
-    expect(await screen.findByText(/If the phone is off or Dumriya is closed, the alert appears the next time you open it/)).toBeInTheDocument();
+    expect(
+      await screen.findByText(
+        'Alerts appear while Dumriya is open on your screen. If Dumriya is in the background or closed, alerts can be late or only appear when you reopen Dumriya. Add to calendar for exact timing.',
+      ),
+    ).toBeInTheDocument();
   });
 });
 

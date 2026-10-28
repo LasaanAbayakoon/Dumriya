@@ -255,7 +255,7 @@ const en = {
     saved: 'Reminder saved on this phone.',
     alertsOff: 'Phone alerts are off. Turn them on under Reminders, or use “Add to calendar”.',
     addToCalendar: 'Add to calendar (.ics)',
-    calendarHint: 'App alerts only work while Dumriya can run on your phone. Adding the reminder to your calendar makes sure it goes off.',
+    calendarHint: 'Alerts can be late or only appear when you reopen Dumriya. Add to calendar for exact timing.',
     storageError: 'Could not save on this phone. Use “Add to calendar” instead.',
     cancel: 'Cancel',
   },
@@ -469,7 +469,7 @@ const en = {
   },
   reminders: {
     intro: 'Booking openings, warrant deadlines and refund deadlines you asked Dumriya to remind you about.',
-    how: 'Alerts appear while Dumriya is open on this phone or running in the background. If the phone is off or Dumriya is closed, the alert appears the next time you open it. To be sure, also add each reminder to your calendar.',
+    how: 'Alerts appear while Dumriya is open on your screen. If Dumriya is in the background or closed, alerts can be late or only appear when you reopen Dumriya. Add to calendar for exact timing.',
     permDefaultTitle: 'Turn on phone alerts?',
     permDefaultBody: 'Dumriya needs your permission to show alerts. It only uses this for the reminders on this screen.',
     permAllow: 'Turn on alerts',

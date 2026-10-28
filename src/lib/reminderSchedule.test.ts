@@ -154,3 +154,22 @@ describe('notifications fall back gracefully', () => {
     Reflect.deleteProperty(navigator, 'serviceWorker');
   });
 });
+
+describe('warrant reminder: same rule through the reminder builder', () => {
+  const booked = at('2026-11-01T10:00:00');
+  const plus = (h: number) => new Date(booked.getTime() + h * 3_600_000);
+  test('journey 47 h after booking: no reminder (already expired)', () => {
+    expect(warrantReminder({ bookedAt: booked, journeyDeparture: plus(47), now: booked })).toBeNull();
+  });
+  test('journey 49 h after booking: one alert at the expiry, 1 h after booking', () => {
+    const r = warrantReminder({ bookedAt: booked, journeyDeparture: plus(49), now: booked })!;
+    expect(iso(r.eventAt)).toBe(iso(plus(1)));
+    expect(r.alerts.map((a) => iso(a.at))).toEqual([iso(plus(1))]);
+  });
+  test('booked 1 h ago, journey 30 days away: expires 7 days after booking', () => {
+    const now = plus(1);
+    const r = warrantReminder({ bookedAt: booked, journeyDeparture: plus(30 * 24), now })!;
+    expect(iso(r.eventAt)).toBe(iso(plus(7 * 24)));
+    expect(r.params.warrantReason).toBe('days-after-booking');
+  });
+});

@@ -1,6 +1,7 @@
 /**
  * Browser notifications. There is no push server: alerts are shown by the app itself
- * while it is open or running in the background, and caught up when it is opened again.
+ * while it is open; browsers throttle background timers, so alerts can be late or only
+ * appear when the user reopens the app (the UI says so).
  */
 
 export type NotificationState = 'unsupported' | 'default' | 'granted' | 'denied';
