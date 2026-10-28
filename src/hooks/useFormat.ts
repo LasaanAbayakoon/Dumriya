@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { formatDate, formatNumber, formatShortDate, formatTime, stationName, trainLabel } from '@/lib/format';
+import { formatDate, formatMoney, formatShortDate, formatTime, stationName, trainLabel } from '@/lib/format';
 import type { IsoDate, Station, Train } from '@/types';
 
 /** Formatters bound to the current language. */
@@ -13,7 +13,7 @@ export function useFormat() {
       date: (d: IsoDate | Date | string) => formatDate(d, lng),
       shortDate: (d: IsoDate | Date | string) => formatShortDate(d, lng),
       time: (d: Date | string) => formatTime(d, lng),
-      lkr: (n: number) => t('format.lkr', { amount: formatNumber(n, lng) }),
+      lkr: (n: number) => t('format.lkr', { amount: formatMoney(n, lng) }),
       duration: (min: number) =>
         min < 60
           ? t('format.durationM', { m: min })

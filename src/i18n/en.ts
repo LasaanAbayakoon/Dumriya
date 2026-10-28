@@ -164,6 +164,10 @@ const en = {
     changeSearch: 'Change search',
     missing: 'Choose stations and a date to search.',
     fromPrice: 'From {{price}}',
+    noDirectTitle: 'No direct train between these stations',
+    noDirect: '{{from}} and {{to}} are on different lines, so no train goes directly between them. You may need to change trains, for example at {{via}}.',
+    searchLeg: 'Search {{from}} to {{to}}',
+    noDirectPlain: '{{from}} and {{to}} are on different lines, so no train goes directly between them.',
   },
   train: {
     number: 'Train {{number}}',

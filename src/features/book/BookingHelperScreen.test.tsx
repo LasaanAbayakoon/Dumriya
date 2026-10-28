@@ -72,12 +72,12 @@ describe('true total', () => {
     // Default class is the first reservable one (observation saloon).
     const obsFare = within(cost.getByRole('radio', { name: /1st class observation saloon/ }).closest('label')!).getByText(/^Rs /);
     const fare = Number(obsFare.textContent!.replace(/[^\d.]/g, ''));
-    expect(cost.getByTestId('true-total')).toHaveTextContent(`Rs ${(fare * 1.05).toLocaleString('en-GB', { maximumFractionDigits: 2 })}`);
+    expect(cost.getByTestId('true-total')).toHaveTextContent(`Rs ${(fare * 1.05).toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
 
     await user.click(cost.getByRole('radio', { name: /2nd class/ }));
     const plan = await section('How many bookings you need');
     await user.click(plan.getByRole('button', { name: 'One passenger more' }));
-    expect(cost.getByText(/^Fare Rs [\d,]+ × 2$/)).toBeInTheDocument();
+    expect(cost.getByText(/^Fare Rs [\d,]+\.\d{2} × 2$/)).toBeInTheDocument();
     expect(cost.getByText('Convenience fee (5 %)')).toBeInTheDocument();
     expect(cost.getByText('Pay by card or LANKAQR only.')).toBeInTheDocument();
   });

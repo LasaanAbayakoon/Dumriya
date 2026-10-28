@@ -67,13 +67,13 @@ test('save from Train detail: details are prefilled to confirm; file stored; ref
   await user.type(screen.getByLabelText('Coach (optional)'), 'B');
   await user.type(screen.getByLabelText('Seat (optional)'), '12');
   await user.type(screen.getByLabelText('Ticket fare (Rs)'), '510');
-  expect(screen.getByLabelText('Service charge (not refundable)')).toHaveValue('25.5');
+  expect(screen.getByLabelText('Service charge (not refundable)')).toHaveValue('25.50');
   await user.click(screen.getByRole('button', { name: 'Save ticket' }));
 
   expect(await screen.findByRole('heading', { level: 1, name: 'Train 1045' })).toBeInTheDocument();
   expect(screen.getByText('Coach B, seat 12')).toBeInTheDocument();
   const refund = within(screen.getByRole('heading', { name: 'Refund if you cancel' }).closest('section')!);
-  expect(refund.getByText('Refund if you cancel now: 75 % (Rs 382.5)')).toBeInTheDocument();
+  expect(refund.getByText('Refund if you cancel now: 75 % (Rs 382.50)')).toBeInTheDocument();
   expect(refund.getByTestId('ticket-countdown')).toHaveTextContent(/^Drops to 50 % in 31 d 8 h 0 min at 20:00 on Wed, 2 Dec 2026$/);
   // Station names load separately; wait for them.
   expect(await refund.findByText(/counted from when the train leaves Colombo Fort \(20:00 on Wed, 9 Dec 2026\)/)).toBeInTheDocument();
@@ -88,8 +88,8 @@ test('save from Train detail: details are prefilled to confirm; file stored; ref
   await user.click(refund.getByRole('link', { name: 'Open refund calculator' }));
   expect(await screen.findByLabelText('Departure date')).toHaveValue('2026-12-09');
   expect(screen.getByLabelText('Departure time')).toHaveValue('20:00');
-  expect(screen.getByLabelText('Ticket fare (Rs)')).toHaveValue('510');
-  expect(screen.getByLabelText('Service charge (not refundable)')).toHaveValue('25.5');
+  expect(screen.getByLabelText('Ticket fare (Rs)')).toHaveValue('510.00');
+  expect(screen.getByLabelText('Service charge (not refundable)')).toHaveValue('25.50');
 });
 
 test('list shows the ticket with seat and a live refund line', async () => {
@@ -98,7 +98,7 @@ test('list shows the ticket with seat and a live refund line', async () => {
   const card = (await screen.findByRole('heading', { name: 'Train 1015' })).closest('a')!;
   expect(await within(card).findByText('Colombo Fort to Ella')).toBeInTheDocument();
   expect(within(card).getByText('Coach A, seat 14')).toBeInTheDocument();
-  expect(within(card).getByText('Refund if you cancel now: 75 % (Rs 750)')).toBeInTheDocument();
+  expect(within(card).getByText('Refund if you cancel now: 75 % (Rs 750.00)')).toBeInTheDocument();
   expect(within(card).getByTestId('ticket-countdown')).toHaveTextContent(/^Drops to 50 % in 31 d 20 h 30 min$/);
   expect(screen.getByRole('heading', { name: 'Upcoming trips' })).toBeInTheDocument();
   expect(screen.getByTestId('tickets-usage')).toHaveTextContent('Your tickets use 2 KB on this phone.');

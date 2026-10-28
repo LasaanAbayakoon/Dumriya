@@ -165,6 +165,10 @@ const ta: Messages = {
     changeSearch: 'தேடலை மாற்று', // TODO(review-ta)
     missing: 'தேட நிலையங்களையும் தேதியையும் தேர்ந்தெடுக்கவும்.', // TODO(review-ta)
     fromPrice: '{{price}} முதல்', // TODO(review-ta)
+    noDirectTitle: 'இந்த நிலையங்களுக்கு இடையே நேரடி ரயில் இல்லை', // TODO(review-ta)
+    noDirect: '{{from}} மற்றும் {{to}} வெவ்வேறு பாதைகளில் உள்ளதால், அவற்றுக்கு இடையே நேரடியாக எந்த ரயிலும் செல்லாது. நீங்கள் ரயில் மாற வேண்டியிருக்கலாம், உதாரணமாக {{via}} இல்.', // TODO(review-ta)
+    searchLeg: '{{from}} முதல் {{to}} வரை தேடு', // TODO(review-ta)
+    noDirectPlain: '{{from}} மற்றும் {{to}} வெவ்வேறு பாதைகளில் உள்ளதால், அவற்றுக்கு இடையே நேரடியாக எந்த ரயிலும் செல்லாது.', // TODO(review-ta)
   },
   train: {
     number: 'ரயில் {{number}}', // TODO(review-ta)

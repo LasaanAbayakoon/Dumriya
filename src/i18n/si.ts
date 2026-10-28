@@ -165,6 +165,10 @@ const si: Messages = {
     changeSearch: 'සෙවුම වෙනස් කරන්න', // TODO(review-si)
     missing: 'සෙවීමට ස්ථාන සහ දිනයක් තෝරන්න.', // TODO(review-si)
     fromPrice: '{{price}} සිට', // TODO(review-si)
+    noDirectTitle: 'මෙම ස්ථාන අතර සෘජු දුම්රියක් නැත', // TODO(review-si)
+    noDirect: '{{from}} සහ {{to}} වෙනස් මාර්ගවල ඇති නිසා ඒවා අතර සෘජුව දුම්රියක් නොයයි. ඔබට දුම්රිය මාරු කිරීමට සිදු විය හැක, උදාහරණයක් ලෙස {{via}} හිදී.', // TODO(review-si)
+    searchLeg: '{{from}} සිට {{to}} දක්වා සොයන්න', // TODO(review-si)
+    noDirectPlain: '{{from}} සහ {{to}} වෙනස් මාර්ගවල ඇති නිසා ඒවා අතර සෘජුව දුම්රියක් නොයයි.', // TODO(review-si)
   },
   train: {
     number: 'දුම්රිය අංක {{number}}', // TODO(review-si)

@@ -13,6 +13,7 @@ import { useAsync } from '@/hooks/useAsync';
 import { useFormat } from '@/hooks/useFormat';
 import { useNow } from '@/hooks/useNow';
 import { useStations } from '@/hooks/useStations';
+import { moneyInput, prefillMoney } from '@/lib/format';
 import { defaultServiceCharge, refundQuote, type RefundQuote } from '@/lib/refund';
 import { colomboDateOf, colomboDateTime, colomboTimeOf, isClockTime, isIsoDate } from '@/lib/time';
 
@@ -30,12 +31,12 @@ export default function RefundScreen() {
   const prefillDate = prefill && !Number.isNaN(Date.parse(prefill)) ? new Date(prefill) : null;
   const [depDate, setDepDate] = useState(prefillDate ? colomboDateOf(prefillDate) : '');
   const [depTime, setDepTime] = useState(prefillDate ? colomboTimeOf(prefillDate) : '');
-  const [fare, setFare] = useState(params.get('fare') ?? '');
+  const [fare, setFare] = useState(() => prefillMoney(params.get('fare')));
   // The service charge follows the fare (5 %) until the user edits it.
-  const [serviceCharge, setServiceCharge] = useState<string | null>(params.get('sc'));
+  const [serviceCharge, setServiceCharge] = useState<string | null>(() => (params.get('sc') === null ? null : prefillMoney(params.get('sc'))));
 
   const fareN = parseAmount(fare);
-  const scText = serviceCharge ?? (fareN !== null && fareN > 0 ? String(defaultServiceCharge(fareN)) : '');
+  const scText = serviceCharge ?? (fareN !== null && fareN > 0 ? moneyInput(defaultServiceCharge(fareN)) : '');
   const scN = parseAmount(scText);
   const departure = isIsoDate(depDate) && isClockTime(depTime) ? colomboDateTime(depDate, depTime) : null;
 

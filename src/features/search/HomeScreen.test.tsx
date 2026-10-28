@@ -91,3 +91,28 @@ describe('results', () => {
     expect(screen.getByRole('link', { name: 'Next day' })).toHaveAttribute('href', '/results?from=colombo-fort&to=kandy&date=2026-11-02');
   });
 });
+
+test('stations on different lines: says there is no direct train and offers both legs via Colombo Fort', async () => {
+  renderRoute('/results?from=aluthgama&to=bandarawela&date=2026-11-02');
+  expect(await screen.findByText('No direct train between these stations')).toBeInTheDocument();
+  expect(
+    screen.getByText(
+      'Aluthgama and Bandarawela are on different lines, so no train goes directly between them. You may need to change trains, for example at Colombo Fort.',
+    ),
+  ).toBeInTheDocument();
+  expect(screen.queryByText('Try another date or an earlier time.')).not.toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Search Aluthgama to Colombo Fort' })).toHaveAttribute(
+    'href',
+    '/results?from=aluthgama&to=colombo-fort&date=2026-11-02',
+  );
+  expect(screen.getByRole('link', { name: 'Search Colombo Fort to Bandarawela' })).toHaveAttribute(
+    'href',
+    '/results?from=colombo-fort&to=bandarawela&date=2026-11-02',
+  );
+});
+
+test('stations on the same line with no train that day still suggest another date', async () => {
+  renderRoute('/results?from=colombo-fort&to=kandy&date=2026-11-02&time=23:00');
+  expect(await screen.findByText('Try another date or an earlier time.')).toBeInTheDocument();
+  expect(screen.queryByText('No direct train between these stations')).not.toBeInTheDocument();
+});

@@ -13,6 +13,7 @@ import { MAX_TICKET_FILE_BYTES } from '@/config/app';
 import { useAsync } from '@/hooks/useAsync';
 import { useFormat } from '@/hooks/useFormat';
 import { useStations } from '@/hooks/useStations';
+import { moneyInput, prefillMoney } from '@/lib/format';
 import { defaultServiceCharge } from '@/lib/refund';
 import { newId } from '@/lib/id';
 import { requestPersistence, StorageError, tickets } from '@/lib/storage';
@@ -45,14 +46,14 @@ export default function TicketNewScreen() {
   const [coach, setCoach] = useState('');
   const [seat, setSeat] = useState('');
   const [reference, setReference] = useState('');
-  const [fare, setFare] = useState(params.get('fare') ?? '');
+  const [fare, setFare] = useState(() => prefillMoney(params.get('fare')));
   const [sc, setSc] = useState<string | null>(null);
   const [attempted, setAttempted] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<StorageError['reason'] | null>(null);
 
   const fareN = amount(fare);
-  const scText = sc ?? (fareN !== null && fareN > 0 ? String(defaultServiceCharge(fareN)) : '');
+  const scText = sc ?? (fareN !== null && fareN > 0 ? moneyInput(defaultServiceCharge(fareN)) : '');
   const scN = amount(scText);
   const trimmedTrain = trainNumber.trim();
   const known = useAsync(() => (trimmedTrain ? getTrain(trimmedTrain) : Promise.resolve(null)), [trimmedTrain]);

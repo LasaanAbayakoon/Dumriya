@@ -29,16 +29,16 @@ test('opened from Train detail: departure, fare and 5 % service charge are prefi
   expect(screen.getByLabelText('Departure time')).toHaveValue('08:30');
   const fare = Number((screen.getByLabelText('Ticket fare (Rs)') as HTMLInputElement).value);
   expect(fare).toBeGreaterThan(0);
-  expect(screen.getByLabelText('Service charge (not refundable)')).toHaveValue(String(Math.round(fare * 0.05 * 100) / 100));
+  expect(screen.getByLabelText('Service charge (not refundable)')).toHaveValue((Math.round(fare * 5) / 100).toFixed(2));
   expect(await screen.findByText('For 1015 Udarata Menike, Thu, 10 Dec 2026.')).toBeInTheDocument();
 });
 
 test('current refund, exact tier timeline in Sri Lanka time, and the next drop', async () => {
   renderRoute(manual());
   const now = await section('If you cancel now');
-  expect(now.getByTestId('refund-amount')).toHaveTextContent('You get back Rs 750');
+  expect(now.getByTestId('refund-amount')).toHaveTextContent('You get back Rs 750.00');
   expect(now.getByText('75 % of the fare')).toBeInTheDocument();
-  expect(now.getByText('Not refunded: Rs 300, including the service charge of Rs 50.')).toBeInTheDocument();
+  expect(now.getByText('Not refunded: Rs 300.00, including the service charge of Rs 50.00.')).toBeInTheDocument();
   expect(now.getByTestId('refund-countdown')).toHaveTextContent('Drops to 50 % in 31 d 20 h 30 min at 08:30 on Thu, 3 Dec 2026');
 
   const timeline = await section('Refund timeline');
@@ -91,7 +91,7 @@ test('service charge follows the fare until edited, then stays', async () => {
   const fare = await screen.findByLabelText('Ticket fare (Rs)');
   const sc = screen.getByLabelText('Service charge (not refundable)');
   await user.type(fare, '2000');
-  expect(sc).toHaveValue('100');
+  expect(sc).toHaveValue('100.00');
   await user.clear(sc);
   await user.type(sc, '80');
   await user.clear(fare);

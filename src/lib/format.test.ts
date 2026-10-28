@@ -1,5 +1,5 @@
 import { setLanguage } from '@/i18n';
-import { formatDate, formatShortDate, formatTime, formatWeekday } from './format';
+import { formatDate, formatMoney, formatShortDate, formatTime, formatWeekday, moneyInput, prefillMoney } from './format';
 
 beforeAll(async () => {
   // Make sure the Sinhala and Tamil bundles are loaded, then return to English.
@@ -31,4 +31,23 @@ test('weekday names', () => {
   expect(formatWeekday(1, 'en', 'long')).toBe('Monday');
   expect(formatWeekday(0, 'si')).toBe('ඉරිදා');
   expect(formatWeekday(6, 'ta', 'long')).toBe('சனி');
+});
+
+test.each([
+  { lng: 'en', n: 382.5, expected: '382.50' },
+  { lng: 'en', n: 1240, expected: '1,240.00' },
+  { lng: 'en', n: 0.05, expected: '0.05' },
+  { lng: 'si', n: 382.5, expected: '382.50' },
+  { lng: 'ta', n: 1240, expected: '1,240.00' },
+])('money in $lng always has two decimals: $n → $expected', ({ lng, n, expected }) => {
+  expect(formatMoney(n, lng)).toBe(expected);
+});
+
+test('prefilled amounts in input boxes have two decimals', () => {
+  expect(moneyInput(25.5)).toBe('25.50');
+  expect(prefillMoney('510')).toBe('510.00');
+  expect(prefillMoney('25.5')).toBe('25.50');
+  expect(prefillMoney('')).toBe('');
+  expect(prefillMoney(null)).toBe('');
+  expect(prefillMoney('abc')).toBe('abc');
 });

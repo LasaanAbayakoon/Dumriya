@@ -60,7 +60,25 @@ export function formatWeekday(day: Weekday, lng: string, width: 'short' | 'long'
   return weekdayName(day, lng, width);
 }
 
-/** Digits are Latin in all three languages; only grouping comes from Intl (safe fallback). */
+/**
+ * Rupee amounts: always exactly two decimals ("382.50", "1,240.00") in every language.
+ * Digits are Latin in all three languages; only grouping comes from Intl.
+ */
+export function formatMoney(n: number, lng: string): string {
+  return new Intl.NumberFormat(loc(lng), { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
+}
+
+/** A prefilled amount for an input box: "25.50" (no grouping, so it parses back cleanly). */
+export const moneyInput = (n: number): string => n.toFixed(2);
+
+/** A money value from a URL parameter, shown as "510.00"; anything unparseable is kept as typed. */
+export function prefillMoney(raw: string | null): string {
+  if (raw === null || raw.trim() === '') return '';
+  const n = Number(raw);
+  return Number.isFinite(n) ? moneyInput(n) : raw;
+}
+
+/** Plain numbers (not money). */
 export function formatNumber(n: number, lng: string): string {
   return new Intl.NumberFormat(loc(lng), { maximumFractionDigits: 2 }).format(n);
 }

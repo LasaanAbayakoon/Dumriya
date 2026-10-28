@@ -12,7 +12,22 @@ import { useFormat } from '@/hooks/useFormat';
 import { useStations } from '@/hooks/useStations';
 import { addDays, isClockTime, isIsoDate, todayInColombo } from '@/lib/time';
 import { homeUrl, resultsUrl } from '@/lib/urls';
+import type { Station } from '@/types';
 import { TrainCard } from './TrainCard';
+
+/**
+ * When two stations share no line, returns them plus a station on both lines where people
+ * could change (e.g. Colombo Fort for Coastal ↔ Main). Null when they share a line.
+ */
+function differentLines(stations: Map<string, Station>, fromId: string, toId: string) {
+  const from = stations.get(fromId);
+  const to = stations.get(toId);
+  if (!from || !to || from.lines.some((l) => to.lines.includes(l))) return null;
+  const via = [...stations.values()].find(
+    (s) => s.id !== fromId && s.id !== toId && s.lines.some((l) => from.lines.includes(l)) && s.lines.some((l) => to.lines.includes(l)),
+  );
+  return { from, to, via };
+}
 
 export default function ResultsScreen() {
   const { t } = useTranslation();
@@ -32,6 +47,9 @@ export default function ResultsScreen() {
     () => (valid ? searchTrains({ fromStationId: from, toStationId: to, date, time }) : Promise.resolve([])),
     [from, to, date, time, valid],
   );
+
+  // Stations on different lines: no direct train on any day, so "try another date" would mislead.
+  const noDirect = valid && stations ? differentLines(stations, from, to) : null;
 
   const title = valid
     ? t('results.route', { from: f.station(stations?.get(from)), to: f.station(stations?.get(to)) })
@@ -91,7 +109,26 @@ export default function ResultsScreen() {
             </Button>
           </Notice>
         )}
-        {trips.status === 'ready' && trips.data.length === 0 && (
+        {trips.status === 'ready' && trips.data.length === 0 && noDirect && (
+          <div className="grid gap-3">
+            <Notice title={t('results.noDirectTitle')}>
+              {noDirect.via
+                ? t('results.noDirect', { from: f.station(noDirect.from), to: f.station(noDirect.to), via: f.station(noDirect.via) })
+                : t('results.noDirectPlain', { from: f.station(noDirect.from), to: f.station(noDirect.to) })}
+            </Notice>
+            {noDirect.via && (
+              <>
+                <ButtonLink to={resultsUrl({ from, to: noDirect.via.id, date, time })} variant="secondary">
+                  {t('results.searchLeg', { from: f.station(noDirect.from), to: f.station(noDirect.via) })}
+                </ButtonLink>
+                <ButtonLink to={resultsUrl({ from: noDirect.via.id, to, date })} variant="secondary">
+                  {t('results.searchLeg', { from: f.station(noDirect.via), to: f.station(noDirect.to) })}
+                </ButtonLink>
+              </>
+            )}
+          </div>
+        )}
+        {trips.status === 'ready' && trips.data.length === 0 && !noDirect && (
           <div className="grid gap-3">
             <Notice>
               <p className="font-semibold">{time ? t('results.noneAfter', { time }) : t('results.none')}</p>
