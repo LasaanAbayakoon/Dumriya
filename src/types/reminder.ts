@@ -1,9 +1,9 @@
 import type { IsoDate, IsoDateTime, LocalizedName } from './common';
 
-export type ReminderKind = 'booking-opens' | 'warrant-expiry' | 'refund-deadline';
+export type ReminderKind = 'booking-opens' | 'warrant-expiry' | 'refund-deadline' | 'train-follow';
 
 /** What a single alert says. `heads-up`/`midnight`/`opening` are for booking-opens reminders. */
-export type AlertKind = 'heads-up' | 'midnight' | 'opening' | 'deadline';
+export type AlertKind = 'heads-up' | 'midnight' | 'opening' | 'deadline' | 'delay' | 'cancelled';
 
 export interface ReminderAlert {
   kind: AlertKind;
@@ -14,6 +14,9 @@ export interface ReminderAlert {
   /** For refund alerts: the refund % before and after the drop. */
   dropsFrom?: number;
   dropsTo?: number;
+  /** For follow alerts (simulated in the preview): delay and where. */
+  delayMin?: number;
+  stationId?: string;
 }
 
 /**
@@ -43,5 +46,8 @@ export interface Reminder {
     refundPercent?: number;
     /** Warrant: which limit applied (7 days after booking, or 48 h before the journey). */
     warrantReason?: 'days-after-booking' | 'hours-before-journey';
+    /** Follow settings (to restore the toggles). */
+    followDelayOverMin?: number | null;
+    followCancellation?: boolean;
   };
 }

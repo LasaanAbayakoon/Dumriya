@@ -4,11 +4,11 @@
  */
 import { DELAYED_THRESHOLD_MIN, SIMULATED_POSITION_AGE_MIN } from '@/config/app';
 import { addDays, colomboDateOf, colomboIso, colomboTimeOf, minutesBetween, MINUTE, toColomboIso, weekdayOf } from '@/lib/time';
-import type { BoardEntry, Fare, IsoDate, Station, Train, TravelClass, Trip } from '@/types';
+import type { BoardEntry, Fare, FollowEvent, FollowOptions, IsoDate, LivePosition, Station, Train, TravelClass, Trip } from '@/types';
 import type { DumriyaApi, GetTripParams, SearchTrainsParams } from '../contract';
 import { fareTable, stationById, stations, trainById, trains } from './data';
 import { respond } from './delay';
-import { simulate, stopTimes } from './simulate';
+import { isCancelled, simulate, stopTimes } from './simulate';
 
 // ── Stations ────────────────────────────────────────────────────────────────
 
@@ -104,7 +104,7 @@ function findTrip({ trainId, date, fromStationId, toStationId }: GetTripParams):
 
 // ── Live (Preview, simulated) ───────────────────────────────────────────────
 
-function livePosition(trainId: string, serviceDate: IsoDate, now: Date) {
+function livePosition(trainId: string, serviceDate: IsoDate, now: Date): LivePosition | null {
   const train = trainById.get(trainId);
   if (!train) return null;
   const updatedAt = new Date(now.getTime() - SIMULATED_POSITION_AGE_MIN * MINUTE);
@@ -126,7 +126,41 @@ function livePosition(trainId: string, serviceDate: IsoDate, now: Date) {
     nextStopPredicted: pred && sim.status !== 'cancelled' ? toColomboIso(pred) : null,
     updatedAt: toColomboIso(updatedAt),
     source: 'simulated' as const,
+    stops: train.stops.map((st, i) => {
+      const t = times[i]!;
+      const cancelled = sim.status === 'cancelled';
+      const iso = (d: Date | null) => (d ? toColomboIso(d) : null);
+      const leftAt = t.actualDep ?? t.actualArr;
+      return {
+        stationId: st.stationId,
+        scheduledArrival: iso(t.scheduledArr),
+        scheduledDeparture: iso(t.scheduledDep),
+        predictedArrival: cancelled ? null : iso(t.actualArr),
+        predictedDeparture: cancelled ? null : iso(t.actualDep),
+        passed: !cancelled && leftAt !== null && leftAt.getTime() <= updatedAt.getTime(),
+      };
+    }),
   };
+}
+
+/**
+ * Simulated follow events: a delay event at the first stop where the simulated delay is
+ * MORE than the limit, and a cancellation announced 2 h before the train leaves its origin.
+ */
+function followEvents(trainId: string, serviceDate: IsoDate, options: FollowOptions): FollowEvent[] {
+  const train = trainById.get(trainId);
+  if (!train || !train.runningDays.includes(weekdayOf(serviceDate))) return [];
+  const times = stopTimes(train, serviceDate);
+  if (isCancelled(trainId, serviceDate)) {
+    if (!options.cancellation) return [];
+    const announced = new Date(times[0]!.scheduledDep!.getTime() - 2 * 60 * MINUTE);
+    return [{ kind: 'cancelled', at: toColomboIso(announced) }];
+  }
+  if (options.delayOverMin === null) return [];
+  const i = times.findIndex((t) => t.delayMin > options.delayOverMin!);
+  if (i < 0) return [];
+  const t = times[i]!;
+  return [{ kind: 'delay', at: toColomboIso((t.actualArr ?? t.actualDep)!), delayMin: t.delayMin, stationId: train.stops[i]!.stationId }];
 }
 
 function stationBoard(stationId: string, now: Date, limit: number): BoardEntry[] {
@@ -171,5 +205,6 @@ export const mockApi: DumriyaApi = {
   getTrain: (id) => respond(trainById.get(id) ?? null),
   getTrip: (params) => respond(findTrip(params)),
   getLivePosition: (trainId, serviceDate, now = new Date()) => respond(livePosition(trainId, serviceDate, now)),
+  getFollowEvents: (trainId, serviceDate, options) => respond(followEvents(trainId, serviceDate, options)),
   getStationBoard: (stationId, now = new Date(), limit = 10) => respond(stationBoard(stationId, now, limit)),
 };

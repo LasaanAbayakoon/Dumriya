@@ -99,6 +99,16 @@ Tile URL and attribution are in `src/config/app.ts` (`MAP_TILE_URL`, `MAP_TILE_A
 - **Directions** open Google Maps with the station's coordinates through `ExternalLink`.
 - **Tests never use the real tile server:** the Playwright map tests serve a blank tile for every tile request and block the service worker, because Playwright cannot intercept requests the service worker makes itself.
 
+## Preview screens (simulated)
+
+Every preview screen shows a permanent **"Preview — simulated, not real train positions"** bar (`PageHeader preview`). It is separate from the sample-data bar and stays even with a real timetable API, until a live feed exists.
+
+- **Live map** (`/train/:id/live?date=`): a simulated train marker moves along the line between stops (deterministic per train and date), refreshing every 15 s (`LIVE_REFRESH_MS`). The screen shows "Last updated N min ago", the next stop scheduled vs predicted, and a status badge (on time / delayed / cancelled; status colours only). **Text alternative:** a table of every stop with scheduled, predicted and passed/next.
+- **"I'm on this train":** explains exactly what a future version would share (approximate location rounded to ~100 m, train number and time, every 60 s while sharing and the app is open) and when it would stop (end of the journey, at most 6 hours, Stop, or closing the app). The design values are in `src/config/app.ts`. **The preview never calls the geolocation API and sends nothing** (tested); "Start demo" only changes what the dialog shows.
+- **Follow a train:** "delayed more than N min" (`FOLLOW_DELAY_OPTIONS`) and "cancelled" toggles. The API's `getFollowEvents()` returns simulated events (first stop where the delay is more than N; cancellation announced 2 h before the origin departure), stored as a `train-follow` reminder and fired by the Stage 7 alert engine.
+- **Station board** (`/stations/:id/board`): next 10 departures, scheduled vs expected, status, and platform or "Platform not known"; refreshes every minute.
+- Leaflet is one shared lazy chunk (about 43 KB gzipped JS + 6 KB CSS) used by both map screens; only `StationMap.tsx` and `LiveTrainMap.tsx` may import it.
+
 ## Ticket wallet (offline)
 
 - Tickets live only in IndexedDB on the phone (`dumriya-tickets`); the file is stored as raw bytes (`ArrayBuffer`, up to `MAX_TICKET_FILE_BYTES` = 10 MB, PDF or image) and is **never read or parsed**. The user types or confirms every detail.

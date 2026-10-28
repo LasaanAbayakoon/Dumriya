@@ -1,11 +1,8 @@
-import { lazy, type ComponentType } from 'react';
+import { lazy } from 'react';
 import { createBrowserRouter, type RouteObject } from 'react-router';
-import { useTranslation } from 'react-i18next';
 import { AppShell } from '@/components/AppShell';
-import type en from '@/i18n/en';
 
 // Screens are code-split so the first load on a slow phone stays small.
-const Placeholder = lazy(() => import('@/components/Placeholder').then((m) => ({ default: m.Placeholder })));
 const HomeScreen = lazy(() => import('@/features/search/HomeScreen'));
 const ResultsScreen = lazy(() => import('@/features/results/ResultsScreen'));
 const TrainScreen = lazy(() => import('@/features/train/TrainScreen'));
@@ -19,18 +16,11 @@ const RemindersScreen = lazy(() => import('@/features/reminders/RemindersScreen'
 const StationsScreen = lazy(() => import('@/features/stations/StationsScreen'));
 const StationScreen = lazy(() => import('@/features/stations/StationScreen'));
 const AboutScreen = lazy(() => import('@/features/settings/AboutScreen'));
+const LiveScreen = lazy(() => import('@/features/live/LiveScreen'));
+const BoardScreen = lazy(() => import('@/features/stations/BoardScreen'));
 const MoreScreen = lazy(() => import('@/features/more/MoreScreen'));
 const SettingsScreen = lazy(() => import('@/features/settings/SettingsScreen'));
 const NotFoundScreen = lazy(() => import('@/features/NotFoundScreen'));
-
-function todo(key: keyof typeof en.screens, back = true): ComponentType {
-  return function TodoScreen() {
-    const { t } = useTranslation();
-    return <Placeholder title={t(`screens.${key}`)} back={back} />;
-  };
-}
-
-const el = (C: ComponentType) => <C />;
 
 export const routes: RouteObject[] = [
   {
@@ -40,7 +30,7 @@ export const routes: RouteObject[] = [
       { path: '/results', element: <ResultsScreen /> },
       { path: '/train/:trainId', element: <TrainScreen /> },
       { path: '/train/:trainId/book', element: <BookingHelperScreen /> },
-      { path: '/train/:trainId/live', element: el(todo('live')) },
+      { path: '/train/:trainId/live', element: <LiveScreen /> },
       { path: '/tickets', element: <TicketsScreen /> },
       { path: '/tickets/new', element: <TicketNewScreen /> },
       { path: '/tickets/:ticketId', element: <TicketScreen /> },
@@ -49,7 +39,7 @@ export const routes: RouteObject[] = [
       { path: '/reminders', element: <RemindersScreen /> },
       { path: '/stations', element: <StationsScreen /> },
       { path: '/stations/:stationId', element: <StationScreen /> },
-      { path: '/stations/:stationId/board', element: el(todo('board')) },
+      { path: '/stations/:stationId/board', element: <BoardScreen /> },
       { path: '/more', element: <MoreScreen /> },
       { path: '/settings', element: <SettingsScreen /> },
       { path: '/settings/about', element: <AboutScreen /> },

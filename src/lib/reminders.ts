@@ -1,6 +1,6 @@
 /** Builds Reminder records and their calendar (.ics) events. Display text is supplied by the caller (i18n). */
 import { REFUND_ALERT_HOURS_BEFORE, WARRANT_ALERT_HOURS_BEFORE } from '@/config/app';
-import type { IsoDate, IsoDateTime, Reminder, ReminderAlert, SavedTicket, Trip } from '@/types';
+import type { FollowEvent, FollowOptions, IsoDate, IsoDateTime, Reminder, ReminderAlert, SavedTicket, Trip } from '@/types';
 import { bookingOpenAlerts, type BookingWindow } from './bookingWindow';
 import type { IcsEvent } from './ics';
 import { newId } from './id';
@@ -161,4 +161,38 @@ export function sortReminders(list: Reminder[]): { upcoming: Reminder[]; done: R
   const upcoming = list.filter((r) => nextAlert(r)).sort((a, b) => Date.parse(nextAlert(a)!.at) - Date.parse(nextAlert(b)!.at));
   const done = list.filter((r) => !nextAlert(r)).sort((a, b) => Date.parse(b.eventAt) - Date.parse(a.eventAt));
   return { upcoming, done };
+}
+
+// ── Following a train (preview: events are simulated) ───────────────────────
+
+/** Stable id, so following the same service again replaces the old settings. */
+export const followReminderId = (trainId: string, serviceDate: IsoDate) => `follow-${trainId}-${serviceDate}`;
+
+export function followReminder(
+  train: Pick<Trip['train'], 'id' | 'number' | 'name'>,
+  serviceDate: IsoDate,
+  originDeparture: Date,
+  options: FollowOptions,
+  events: FollowEvent[],
+  now: Date = new Date(),
+): Reminder {
+  return {
+    id: followReminderId(train.id, serviceDate),
+    kind: 'train-follow',
+    alerts: events.map((e) =>
+      e.kind === 'delay'
+        ? { kind: 'delay', at: e.at, delayMin: e.delayMin, stationId: e.stationId }
+        : { kind: 'cancelled', at: e.at },
+    ),
+    eventAt: toColomboIso(originDeparture),
+    createdAt: toColomboIso(now),
+    trainId: train.id,
+    params: {
+      trainNumber: train.number,
+      ...(train.name ? { trainName: train.name } : {}),
+      travelDate: serviceDate,
+      followDelayOverMin: options.delayOverMin,
+      followCancellation: options.cancellation,
+    },
+  };
 }

@@ -15,6 +15,7 @@ const KIND_LABEL = {
   'booking-opens': 'reminders.kindBooking',
   'warrant-expiry': 'reminders.kindWarrant',
   'refund-deadline': 'reminders.kindRefund',
+  'train-follow': 'follow.kind',
 } as const;
 
 export function ReminderCard({ reminder, onDelete }: { reminder: Reminder; onDelete: (id: string) => Promise<void> }) {
@@ -42,7 +43,14 @@ export function ReminderCard({ reminder, onDelete }: { reminder: Reminder; onDel
         : t('reminders.bookingAt', { when: f.dateTime(reminder.eventAt) })
       : reminder.kind === 'warrant-expiry'
         ? t('reminders.warrantExpires', { when: f.dateTime(reminder.eventAt) })
-        : null;
+        : reminder.kind === 'train-follow'
+          ? [
+              p.followDelayOverMin != null ? t('follow.summaryDelay', { min: p.followDelayOverMin }) : null,
+              p.followCancellation ? t('follow.summaryCancel') : null,
+            ]
+              .filter(Boolean)
+              .join(' · ')
+          : null;
 
   return (
     <Card>

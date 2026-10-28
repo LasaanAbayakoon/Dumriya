@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { BackIcon } from './icons';
+import { PreviewBanner } from './PreviewBanner';
 import { SampleDataBanner } from './SampleDataBanner';
 
 type Props = {
@@ -11,10 +12,12 @@ type Props = {
   badge?: ReactNode;
   /** Set on screens that show train data: adds the permanent sample-data bar while the mock API is active. */
   sampleData?: boolean;
+  /** Set on preview screens: adds the permanent "Preview — simulated" bar. */
+  preview?: boolean;
 };
 
 /** Sticky screen header. Each screen renders exactly one, which provides its <h1>. */
-export function PageHeader({ title, back, actions, badge, sampleData }: Props) {
+export function PageHeader({ title, back, actions, badge, sampleData, preview }: Props) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const goBack = () => {
@@ -41,6 +44,7 @@ export function PageHeader({ title, back, actions, badge, sampleData }: Props) {
         {badge}
         {actions}
       </div>
+      {preview && <PreviewBanner />}
       {sampleData && <SampleDataBanner />}
     </header>
   );

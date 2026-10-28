@@ -95,7 +95,7 @@ export default function ResultsScreen() {
             {trips.status === 'ready' && t('results.count', { count: trips.data.length })}
             {time && <> · {t('results.leavingAfter', { time })}</>}
           </span>
-          <Link to={homeUrl({ ...query, date })} className="tap inline-flex items-center font-semibold text-accent underline">
+          <Link to={homeUrl({ ...query, date })} className="tap inline-flex max-w-full items-center font-semibold text-accent underline [overflow-wrap:anywhere]">
             {t('results.changeSearch')}
           </Link>
         </div>

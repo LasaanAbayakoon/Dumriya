@@ -1,4 +1,4 @@
-import { getLivePosition, getStationBoard, getTrain, getTrip, searchStations, searchTrains } from '@/api';
+import { getFollowEvents, getLivePosition, getStationBoard, getTrain, getTrip, searchStations, searchTrains } from '@/api';
 import { isCancelled } from '@/api/mock/simulate';
 import { addDays } from '@/lib/time';
 
@@ -127,5 +127,46 @@ describe('Preview: live position and station board (simulated)', () => {
     const times = board.map((b) => b.scheduled);
     expect([...times].sort()).toEqual(times);
     expect(board[0]?.trainId).toBe('8058');
+  });
+});
+
+describe('Preview: per-stop live times and follow events (simulated)', () => {
+  let date = MON;
+  while (isCancelled('1015', date)) date = addDays(date, 1);
+
+  test('every stop has scheduled and predicted times; passed stops come first', async () => {
+    const pos = (await getLivePosition('1015', date, new Date(`${date}T12:00:00+05:30`)))!;
+    expect(pos.stops.map((s) => s.stationId)).toEqual((await getTrain('1015'))!.stops.map((s) => s.stationId));
+    for (const s of pos.stops) {
+      const sched = s.scheduledDeparture ?? s.scheduledArrival;
+      const pred = s.predictedDeparture ?? s.predictedArrival;
+      expect(sched && pred && Date.parse(pred) >= Date.parse(sched)).toBe(true);
+    }
+    const passed = pos.stops.map((s) => s.passed);
+    expect(passed.indexOf(false)).toBeGreaterThan(0);
+    expect(passed.slice(passed.indexOf(false)).every((p) => !p)).toBe(true);
+  });
+
+  test('delay events fire at the first stop where the delay is MORE than the limit', async () => {
+    const pos = (await getLivePosition('1015', date, new Date(`${date}T23:00:00+05:30`)))!;
+    const finalDelay = pos.delayMin;
+    const limit = Math.max(0, finalDelay - 1);
+    const events = await getFollowEvents('1015', date, { delayOverMin: limit, cancellation: false });
+    expect(events).toHaveLength(1);
+    expect(events[0]).toMatchObject({ kind: 'delay' });
+    expect((events[0] as { delayMin: number }).delayMin).toBeGreaterThan(limit);
+    expect(await getFollowEvents('1015', date, { delayOverMin: 60, cancellation: false })).toEqual([]);
+  });
+
+  test('a cancelled service gives a cancellation event 2 h before it leaves its origin, and no delays', async () => {
+    let d = MON;
+    while (!isCancelled('1015', d)) d = addDays(d, 1);
+    const events = await getFollowEvents('1015', d, { delayOverMin: 0, cancellation: true });
+    expect(events).toEqual([{ kind: 'cancelled', at: `${d}T06:30:00+05:30` }]);
+    expect(await getFollowEvents('1015', d, { delayOverMin: 0, cancellation: false })).toEqual([]);
+  });
+
+  test('a train that does not run that day has no events', async () => {
+    expect(await getFollowEvents('1029', SAT, { delayOverMin: 0, cancellation: true })).toEqual([]);
   });
 });

@@ -27,4 +27,5 @@ export const searchTrains: DumriyaApi['searchTrains'] = (...a) => api.searchTrai
 export const getTrain: DumriyaApi['getTrain'] = (...a) => api.getTrain(...a);
 export const getTrip: DumriyaApi['getTrip'] = (...a) => api.getTrip(...a);
 export const getLivePosition: DumriyaApi['getLivePosition'] = (...a) => api.getLivePosition(...a);
+export const getFollowEvents: DumriyaApi['getFollowEvents'] = (...a) => api.getFollowEvents(...a);
 export const getStationBoard: DumriyaApi['getStationBoard'] = (...a) => api.getStationBoard(...a);

@@ -281,7 +281,7 @@ function HowToRefund() {
         </h2>
         <p className="font-semibold">{t('refund.howInPerson')}</p>
         <p>{t('refund.howDocs')}</p>
-        <Link to="/stations" className="tap inline-flex items-center gap-1 font-semibold text-accent underline">
+        <Link to="/stations" className="tap inline-flex max-w-full items-center gap-1 font-semibold text-accent underline [overflow-wrap:anywhere]">
           {t('refund.findStations')}
           <ChevronRightIcon className="shrink-0" />
         </Link>

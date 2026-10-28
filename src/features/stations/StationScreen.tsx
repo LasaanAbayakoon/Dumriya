@@ -10,7 +10,7 @@ import { ExternalLink } from '@/components/ExternalLink';
 import { Loading } from '@/components/Loading';
 import { Notice } from '@/components/Notice';
 import { PageHeader } from '@/components/PageHeader';
-import { CheckIcon, ChevronRightIcon, CloseIcon, ExternalIcon, MapIcon, PinIcon, SearchIcon } from '@/components/icons';
+import { CheckIcon, ChevronRightIcon, ClockIcon, CloseIcon, ExternalIcon, MapIcon, PinIcon, SearchIcon } from '@/components/icons';
 import { directionsUrl } from '@/config/links';
 import { useAsync } from '@/hooks/useAsync';
 import { useFormat } from '@/hooks/useFormat';
@@ -147,6 +147,9 @@ function StationDetail({ station }: { station: Station }) {
           <p className="text-center text-sm text-muted">{t('stations.directionsHint')}</p>
           <ButtonLink to={`/stations?view=map&focus=${encodeURIComponent(station.id)}`} variant="secondary" icon={<MapIcon />}>
             {t('stations.showOnMap')}
+          </ButtonLink>
+          <ButtonLink to={`/stations/${encodeURIComponent(station.id)}/board`} variant="secondary" icon={<ClockIcon />}>
+            {t('board.link')}
           </ButtonLink>
           <ButtonLink to={homeUrl({ from: station.id })} variant="secondary" icon={<SearchIcon />}>
             {t('stations.findTrains')}

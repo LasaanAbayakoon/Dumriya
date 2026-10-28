@@ -9,6 +9,7 @@ import { announceRemindersChanged, REMINDERS_CHANGED } from '@/lib/reminderEvent
 import { dueAlerts, markFired } from '@/lib/reminders';
 import { reminders } from '@/lib/storage';
 import type { Reminder } from '@/types';
+import { useStations } from '@/hooks/useStations';
 import { useAlertText } from './useAlertText';
 
 interface Shown {
@@ -30,6 +31,8 @@ export function ReminderScheduler() {
   const textRef = useRef(alertText);
   const titleRef = useRef(t('reminders.inAppTitle'));
   const [shown, setShown] = useState<Shown[]>([]);
+  // Alert texts can name stations: start checking once the station list is loaded.
+  const ready = useStations() !== null;
 
   useEffect(() => {
     textRef.current = alertText;
@@ -37,6 +40,7 @@ export function ReminderScheduler() {
   }, [alertText, t]);
 
   useEffect(() => {
+    if (!ready) return;
     let stopped = false;
     let running = false;
 
@@ -82,7 +86,7 @@ export function ReminderScheduler() {
       document.removeEventListener('visibilitychange', onVisible);
       window.removeEventListener(REMINDERS_CHANGED, onVisible);
     };
-  }, []);
+  }, [ready]);
 
   if (shown.length === 0) return null;
   return (

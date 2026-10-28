@@ -53,3 +53,17 @@ export const MAX_TICKET_FILE_BYTES = 10 * 1024 * 1024;
  * If set back to null, About shows "Feedback link coming soon".
  */
 export const FEEDBACK_URL: string | null = 'https://github.com/LasaanAbayakoon/Dumriya/issues';
+
+// ── Preview: following a train and "I'm on this train" ─────────────────────
+/** Delay limits a follower can choose (minutes); alerts fire when the delay is MORE than this. */
+export const FOLLOW_DELAY_OPTIONS = [5, 10, 15, 30];
+export const FOLLOW_DELAY_DEFAULT = 15;
+/** How often the live map refreshes (ms). */
+export const LIVE_REFRESH_MS = 15_000;
+/**
+ * Design values for a FUTURE "I'm on this train" feature, shown in the preview's
+ * explanation only. The preview never reads the location and sends nothing.
+ */
+export const SHARE_PRECISION_METERS = 100;
+export const SHARE_INTERVAL_SECONDS = 60;
+export const SHARE_MAX_HOURS = 6;

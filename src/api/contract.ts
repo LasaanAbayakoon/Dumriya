@@ -3,7 +3,7 @@
  * The mock implementation (./mock) and the future FastAPI client must both
  * satisfy this interface, so screens never change when the backend does.
  */
-import type { BoardEntry, IsoDate, ClockTime, LivePosition, Station, Train, Trip } from '@/types';
+import type { BoardEntry, ClockTime, FollowEvent, FollowOptions, IsoDate, LivePosition, Station, Train, Trip } from '@/types';
 
 export interface SearchTrainsParams {
   fromStationId: string;
@@ -36,6 +36,8 @@ export interface DumriyaApi {
 
   /** Preview: simulated live position for a train service (by the date it left its origin). */
   getLivePosition(trainId: string, serviceDate: IsoDate, now?: Date): Promise<LivePosition | null>;
+  /** Preview: the (simulated) delay / cancellation events a follower would be alerted about. */
+  getFollowEvents(trainId: string, serviceDate: IsoDate, options: FollowOptions): Promise<FollowEvent[]>;
   /** Preview: next departures from a station. */
   getStationBoard(stationId: string, now?: Date, limit?: number): Promise<BoardEntry[]>;
 }

@@ -31,9 +31,11 @@ test('only ExternalLink may set target="_blank" (it always adds rel="noopener no
   expect(offenders).toEqual([]);
 });
 
-test('only the map module imports Leaflet (so it stays out of every other screen)', () => {
+const LEAFLET_MODULES = ['features/stations/StationMap.tsx', 'features/live/LiveTrainMap.tsx'];
+
+test('only the lazy-loaded map modules import Leaflet (so it stays out of every other screen)', () => {
   const offenders = files
-    .filter((f) => f.path !== 'features/stations/StationMap.tsx' && /from ['"]leaflet|import\(['"]leaflet|['"]leaflet\/dist/.test(f.code))
+    .filter((f) => !LEAFLET_MODULES.includes(f.path) && /from ['"]leaflet|import\(['"]leaflet|['"]leaflet\/dist/.test(f.code))
     .map((f) => f.path);
   expect(offenders).toEqual([]);
 });

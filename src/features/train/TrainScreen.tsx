@@ -154,7 +154,7 @@ export default function TrainScreen() {
             to: trip.to.stationId,
             time: f.time(trip.departure),
           })}`}
-          className="tap inline-flex items-center gap-1 font-semibold text-accent underline"
+          className="tap inline-flex max-w-full items-center gap-1 font-semibold text-accent underline [overflow-wrap:anywhere]"
         >
           {t('train.saveTicket')}
           <ChevronRightIcon className="shrink-0" />
@@ -173,7 +173,7 @@ export default function TrainScreen() {
                 from: trip.from.stationId,
                 to: trip.to.stationId,
               })}
-              className="tap mt-2 inline-flex items-center gap-1 font-semibold text-accent underline"
+              className="tap mt-2 inline-flex max-w-full items-center gap-1 font-semibold text-accent underline [overflow-wrap:anywhere]"
             >
               {t('train.refundLink')}
               <ChevronRightIcon className="shrink-0" />

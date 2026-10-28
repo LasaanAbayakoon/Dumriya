@@ -191,7 +191,7 @@ function TicketDetail({ ticket }: { ticket: SavedTicket }) {
                 from: ticket.trainId ? ticket.fromStationId : undefined,
                 to: ticket.trainId ? ticket.toStationId : undefined,
               })}
-              className="tap inline-flex items-center gap-1 font-semibold text-accent underline"
+              className="tap inline-flex max-w-full items-center gap-1 font-semibold text-accent underline [overflow-wrap:anywhere]"
             >
               {t('tickets.openRefund')}
               <ChevronRightIcon className="shrink-0" />
