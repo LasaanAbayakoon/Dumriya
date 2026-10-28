@@ -82,6 +82,15 @@ Tile URL and attribution are in `src/config/app.ts` (`MAP_TILE_URL`, `MAP_TILE_A
 
 `/dispute` collects name, mobile, location, payment date/time, reference number, last 4 card digits and email **only in React component state**. It never writes them to IndexedDB, localStorage, sessionStorage, the URL or history state, and sends nothing over the network (tested: storage snapshots, IndexedDB, router location, fetch/XHR/sendBeacon/WebSocket spies). The form clears when the user leaves the screen or on `pagehide`, and autofill is off. The card field refuses any input with more than 4 digits (it never truncates a pasted card number). "Copy all" puts an English text block on the clipboard; the only link is to the official reservation site, for Contact Us → "Payment issue".
 
+## Stations and map
+
+- `/stations`: searchable list (English, Sinhala, Tamil names and codes) with the lines each station serves, and a List / Map switch. `/stations/:id`: lines, facility flags, the next 5 departures (sample timetable), Directions, Show on map, Find trains from here.
+- **Facility flags are sample data** (`reservationCounter`, `mTicketing`, `praveshaVerification` in `src/mocks/stations.json`) and are labelled "Sample — not confirmed" on screen.
+- **Map:** Leaflet is imported only by `src/features/stations/StationMap.tsx` (a guard test enforces this), which is lazy-loaded when the Map view opens: about 44 KB gzipped JS + 6 KB CSS, outside the initial bundle. Tile URL and attribution come from `MAP_TILE_URL` / `MAP_TILE_ATTRIBUTION` in `src/config/app.ts`; the attribution control is always on, and a Playwright test checks it is visible and not covered by the bottom navigation. Markers are circle markers (no image assets); the station list is the accessible alternative to the map.
+- **Near me:** the browser is asked for location only when the user taps "Near me". The position stays in component state for sorting: it is never put in the URL, storage or any request. Refused, unavailable and unsupported each get a plain-words message, and the list keeps working.
+- **Directions** open Google Maps with the station's coordinates through `ExternalLink`.
+- **Tests never use the real tile server:** the Playwright map tests serve a blank tile for every tile request and block the service worker, because Playwright cannot intercept requests the service worker makes itself.
+
 ## Ticket wallet (offline)
 
 - Tickets live only in IndexedDB on the phone (`dumriya-tickets`); the file is stored as raw bytes (`ArrayBuffer`, up to `MAX_TICKET_FILE_BYTES` = 10 MB, PDF or image) and is **never read or parsed**. The user types or confirms every detail.

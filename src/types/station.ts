@@ -10,10 +10,13 @@ export interface Station {
   lines: LineId[];
   lat: number;
   lng: number;
+  /** SAMPLE DATA – every flag is unconfirmed; the UI labels them "Sample — not confirmed". */
   facilities: {
     /** Has a counter for reserved-seat bookings and refunds. */
     reservationCounter: boolean;
     /** Has an mTicketing / commuter ticket counter. */
     mTicketing: boolean;
+    /** Staff can check Pravesha (commuter) e-tickets here. */
+    praveshaVerification: boolean;
   };
 }

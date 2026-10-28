@@ -30,3 +30,10 @@ test('only ExternalLink may set target="_blank" (it always adds rel="noopener no
   const offenders = files.filter((f) => f.path !== 'components/ExternalLink.tsx' && /_blank/.test(f.code)).map((f) => f.path);
   expect(offenders).toEqual([]);
 });
+
+test('only the map module imports Leaflet (so it stays out of every other screen)', () => {
+  const offenders = files
+    .filter((f) => f.path !== 'features/stations/StationMap.tsx' && /from ['"]leaflet|import\(['"]leaflet|['"]leaflet\/dist/.test(f.code))
+    .map((f) => f.path);
+  expect(offenders).toEqual([]);
+});
